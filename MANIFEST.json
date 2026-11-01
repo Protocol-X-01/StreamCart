@@ -26,8 +26,8 @@
   },
   {
     "path": "README.md",
-    "sha256": "64dd17da9c9fd11c9fdb2eaa8b8950e6afbf611fd8a279b9520f3f0e60888d47",
-    "bytes": 3094
+    "sha256": "db238ab33a6ce5d729684fcb56a38f5f3f8e0416211a98a992bc00107950baa9",
+    "bytes": 4223
   },
   {
     "path": "api/index.mjs",
@@ -241,8 +241,8 @@
   },
   {
     "path": "docs/demo-script.md",
-    "sha256": "22b9aaec5a6f9e934fbb532054cb6f94b68ca91e74b6f839b300bf2967f42848",
-    "bytes": 5711
+    "sha256": "c5a52aef8e9722b0227f5116b2dd121a4c9aa1e1f6a22be73e20ea7d16f5eea0",
+    "bytes": 6353
   },
   {
     "path": "docs/security.md",
@@ -250,9 +250,14 @@
     "bytes": 1916
   },
   {
+    "path": "docs/submission-checklist.md",
+    "sha256": "602d95d70bdc5c76aba7a7cf8b2199f4f01c9b4dbe6b6e8ac432f877808ea298",
+    "bytes": 2305
+  },
+  {
     "path": "docs/submission.md",
-    "sha256": "bc50a63564596d86c0a6a9c7b4c0f5436c1bcf8fa075c729d52c8f148cec7e1f",
-    "bytes": 3052
+    "sha256": "52c6ccc6f194786099737685d2a70cc52edb9c9f52c5f03872b9693ad8eb3d75",
+    "bytes": 3507
   },
   {
     "path": "docs/twitch-listing.md",

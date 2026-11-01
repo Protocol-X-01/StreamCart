@@ -15,10 +15,11 @@ Livestream product discovery usually becomes either an unstructured link dump or
 | 0:38–1:02 | As broadcaster, send `!gear streaming microphone` in Twitch chat and show the recommendation context change. | “The creator steers the AI from Twitch chat. A signed EventSub webhook accepts this command only from that broadcaster.” |
 | 1:02–1:22 | Show an AI-discovered microphone, then select **Approve this find** as broadcaster. | “The AI proposes; the creator decides. Approval changes the provenance in place, and the API binds that write to Twitch’s signed channel claim.” |
 | 1:22–1:40 | Show the viewer form of the card and select **Save interest** once. | “Viewer intent is explicit. StreamCart stores no viewer ID, profile, or browsing history—only channel, product, action, and aggregate count.” |
-| 1:40–1:58 | Open **Catalogue** and tap a brand chip while showing creator-pick versus AI-discovery labels. | “The unlocked Channel3 collection spans real brands. StreamCart preserves them as instant filters while keeping the same server-side safety policy and visible provenance.” |
-| 1:58–2:15 | Return to the prepared five-save cohort. | “Counts stay hidden below five and are then bucketed. A single viewer can’t be inferred from an exact low number.” |
-| 2:15–2:34 | Show the concise validation summary, not environment files or raw headers. | “The live Twitch subscription is enabled, Channel3 returns real products, secrets stay server-side, and nine automated tests cover signatures, authority, privacy, CORS, and fail-closed configuration.” |
-| 2:34–2:50 | End on the approved Twitch product card. | “StreamCart: creator-controlled discovery, useful AI, and privacy by design—inside Twitch.” |
+| 1:40–1:56 | Open **Catalogue** and tap one brand chip while showing creator-pick versus AI-discovery labels. Do not open a retailer page. | “Channel3 supplies the live catalogue. StreamCart turns the returned brands into instant filters while keeping the same server-side safety policy and visible provenance.” |
+| 1:56–2:12 | Return to the prepared five-save cohort. | “Counts stay hidden below five and are then bucketed. A single viewer can’t be inferred from an exact low number.” |
+| 2:12–2:31 | Show the Codex chat title/session ID beside one concise implementation diff or the public commit history. | “Codex took over the vertical slice, verified the Twitch and Channel3 contracts, built the signed authority and privacy boundaries, and kept the release evidence tied to this session.” |
+| 2:31–2:45 | Show the concise validation summary, not environment files or raw headers. | “The live Twitch subscription is enabled, Channel3 returns real products, and CI covers builds, nine API tests, 22 listing checks, and the dependency audit.” |
+| 2:45–2:55 | End on the approved Twitch product card. | “StreamCart: creator-controlled discovery, useful AI, and privacy by design—inside Twitch.” |
 
 ## Recording checklist
 
@@ -27,6 +28,8 @@ Livestream product discovery usually becomes either an unstructured link dump or
 - Keep one approved product and one AI-discovered product in the visible result set.
 - Run `npm run check` immediately before recording and retain its output as evidence.
 - Confirm the final video is under three minutes and visibly demonstrates the Twitch interaction and Codex-built implementation.
+- Include visible Codex footage or evidence, not narration alone. Keep the primary session ID `01a193cc-90fd-7643-9517-dfd3517e1d11` readable.
+- Use no copyrighted music. Avoid opening retailer pages or dwelling on third-party branding; the Twitch interaction, StreamCart UI, and Codex evidence are the subject.
 - Before recording, complete one rehearsal using only the exact path above. Do not improvise console, configuration, or alternate-product paths.
 - Keep a clean validation-summary tab ready; never open `.env`, Vercel settings, Twitch Developer Console, or raw webhook traffic while recording.
 
@@ -39,7 +42,7 @@ Livestream product discovery usually becomes either an unstructured link dump or
 - The selected AI result can be approved and appears as `creator_approved` after refresh.
 - The prepared cohort displays a bucketed total of at least five.
 - Both **View product** and **View catalogue** open the intended destination.
-- A timed rehearsal finishes by 2:50 without showing credentials or developer consoles.
+- A timed rehearsal includes both working-on-Twitch footage and visible Codex build evidence, and finishes by 2:55.
 
 The real broadcaster command path was proven on 1 November 2026 against the public preview. Re-run it during the recorded rehearsal only after the final stable deployment and EventSub callback are in place.
 
