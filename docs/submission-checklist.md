@@ -20,6 +20,7 @@ Verified against the official Devpost overview and FAQ on 1 November 2026.
 | Footage showing how Codex built the project | Timed Codex evidence beat in `docs/demo-script.md` | Pending recording |
 | YouTube title, description, settings, and upload validation | `docs/youtube-upload.md` | Ready |
 | One-screen Codex and validation slate | `https://streamcart-twitchcon.vercel.app/proof/` | Ready |
+| Twitch Hosted Test package | Version `0.0.2`, hash-matched and available in Extension Manager | Ready; channel installation pending |
 | Final Devpost Submit action | Owner-controlled | **Missing** |
 
 ## Judge access

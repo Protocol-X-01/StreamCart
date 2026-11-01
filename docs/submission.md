@@ -6,7 +6,7 @@ StreamCart turns live Twitch context into creator-controlled product discovery, 
 
 ## Project description
 
-Shopping recommendations during livestreams usually force a bad choice: generic affiliate link dumps or invisible behavioural tracking. StreamCart is a Twitch Video Component Extension that keeps control with the broadcaster and makes every recommendation's origin visible.
+Shopping recommendations during livestreams usually force a bad choice: generic affiliate link dumps or invisible behavioural tracking. StreamCart is a Twitch Panel Extension that keeps control with the broadcaster and makes every recommendation's origin visible.
 
 A broadcaster sets the live topic directly from Twitch chat with `!gear <topic>`. StreamCart verifies Twitch's signed EventSub webhook and accepts the command only from that channel's broadcaster. Channel3 then discovers relevant in-stock products. The broadcaster can approve an AI-discovered result in the extension, instantly changing its provenance to a creator pick.
 
@@ -20,7 +20,7 @@ Primary Codex session/thread ID: `01a193cc-90fd-7643-9517-dfd3517e1d11`
 
 ## Technology
 
-- Twitch Video Component Extension and Extension Helper
+- Twitch Panel Extension and Extension Helper
 - Twitch EventSub `channel.chat.message` webhook
 - Channel3 product search
 - React, Vite, TypeScript, Express, Zod
@@ -36,7 +36,7 @@ StreamCart ranks with contextual relevance, creator approval, catalogue quality,
 - Repository: `https://github.com/Protocol-X-01/StreamCart`
 - Stable production application: `https://streamcart-twitchcon.vercel.app`
 - Public judge walkthrough: `https://streamcart-twitchcon.vercel.app/?channel=demo` (read-only creator actions; no Twitch credentials required)
-- Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.1`
+- Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.2`
 - Demo video URL: add after the final sub-three-minute recording is validated.
 
 The Hosted Test URL is recording evidence for the owner's Twitch account, not a judge-install route. Twitch's hackathon FAQ states that judges cannot install an unreviewed Extension; judges receive the public walkthrough, repository instructions, and the video showing the Extension functioning inside Twitch.

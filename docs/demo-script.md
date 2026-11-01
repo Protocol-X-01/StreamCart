@@ -10,12 +10,12 @@ Livestream product discovery usually becomes either an unstructured link dump or
 
 | Time | Action on screen | Narration |
 | --- | --- | --- |
-| 0:00–0:18 | Start on the expanded Twitch **Finds** card showing a creator pick beside its privacy-safe aggregate. | “This is the result: a relevant product inside Twitch, visibly approved by the creator, with viewer interest shown only after a safe cohort forms.” |
+| 0:00–0:18 | Start on the expanded Twitch 0.0.2 **Finds from the stream** card showing a creator pick beside its privacy-safe aggregate. | “This is the result: a relevant product inside Twitch, visibly approved by the creator, with viewer interest shown only after a safe cohort forms.” |
 | 0:18–0:38 | Collapse and reopen **Finds**; point to the provenance label and **View product** action. | “StreamCart combines creator picks with live Channel3 discovery. Every recommendation explains where it came from, and viewers can open the real product or the full catalogue.” |
 | 0:38–1:02 | As broadcaster, send `!gear streaming microphone` in Twitch chat and show the recommendation context change. | “The creator steers the AI from Twitch chat. A signed EventSub webhook accepts this command only from that broadcaster.” |
 | 1:02–1:22 | Show an AI-discovered microphone, then select **Approve this find** as broadcaster. | “The AI proposes; the creator decides. Approval changes the provenance in place, and the API binds that write to Twitch’s signed channel claim.” |
 | 1:22–1:40 | Show the viewer form of the card and select **Save interest** once. | “Viewer intent is explicit. StreamCart stores no viewer ID, profile, or browsing history—only channel, product, action, and aggregate count.” |
-| 1:40–1:56 | Open **Catalogue** and tap one brand chip while showing creator-pick versus AI-discovery labels. Do not open a retailer page. | “Channel3 supplies the live catalogue. StreamCart turns the returned brands into instant filters while keeping the same server-side safety policy and visible provenance.” |
+| 1:40–1:56 | Open **Catalogue**, point out the live collection count, and tap one brand chip while showing creator-pick versus AI-discovery labels. Do not open a retailer page. | “Channel3 supplies the live catalogue. StreamCart turns the returned brands into instant filters while keeping the same server-side safety policy and visible provenance.” |
 | 1:56–2:12 | Return to the prepared five-save cohort. | “Counts stay hidden below five and are then bucketed. A single viewer can’t be inferred from an exact low number.” |
 | 2:12–2:31 | Show the clean public `/proof/` slate with the Codex session ID, validated live path, and test counts. | “Codex took over the vertical slice, verified the Twitch and Channel3 contracts, built the signed authority and privacy boundaries, and kept the release evidence tied to this session.” |
 | 2:31–2:45 | Show the concise validation summary, not environment files or raw headers. | “The live Twitch subscription is enabled, Channel3 returns real products, and CI covers builds, eleven API tests, 22 listing checks, and the dependency audit.” |
@@ -38,7 +38,9 @@ Livestream product discovery usually becomes either an unstructured link dump or
 - `npm run demo:preflight` passes. It runs the local build/tests, then checks the public API, catalogue, Twitch panel, live discovery, and matching enabled EventSub subscription without printing credentials.
 - Public `/health` reports `mode: live` and `safeSearch: true`.
 - EventSub subscription status is `enabled`.
+- Twitch Extension Manager and the installed channel panel both identify Hosted Test version `0.0.2`; do not record the older `0.0.1` panel.
 - Broadcaster `!gear streaming microphone` changes the public discovery topic.
+- Contextual discovery returns up to 20 ranked results; the separate full Twitch collection browse returned 29 finds in the latest validation but is live data. Read the on-screen count rather than promising a fixed number, and do not conflate the two counts in narration.
 - The selected AI result can be approved and appears as `creator_approved` after refresh.
 - The prepared cohort displays a bucketed total of at least five.
 - Both **View product** and **View catalogue** open the intended destination.
