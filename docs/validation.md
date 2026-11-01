@@ -32,11 +32,13 @@ Updated: 1 November 2026.
 - Expanded Channel3 collection check returned 20 microphone results across 13 named brands (including Sony, Logitech, Sennheiser, JBL, MSI, Yamaha, and others). StreamCart now preserves every returned brand, displays the primary brand in Twitch, and builds dynamic zero-round-trip brand filters in the catalogue.
 - The product image/title block is now a first-class direct link: live Channel3 products open their product URL, while deterministic placeholder products fall back to the StreamCart catalogue. The existing explicit action remains available.
 - Twitch package `streamcart-twitch-extension.zip` was built only after Git publication, strict validation, production deployment, and rendered checks passed. It contains `panel.html`, `config.html`, `index.html`, and two hashed assets; uncompressed payload is 236,521 bytes. SHA-256: `f9a9e3b00a8c8eecc4b82d3bde88579bb5a01d3b07696bfe7c0fd177481f4d20`.
-- Archive audit proved all Twitch entrypoints are at the ZIP root, the stable production origin is embedded, and none of the real Channel3/Twitch secret values occur in the browser package. The ZIP has not yet been uploaded to Twitch.
+- Archive audit proved all Twitch entrypoints are at the ZIP root, the stable production origin is embedded, and none of the real Channel3/Twitch secret values occur in the browser package.
+- Twitch accepted the owner-approved upload for Extension `3z76w1eigzegdllmz3ud4l2q8bwjly`, version `0.0.1`. The console-reported MD5 `213c0fb1dacbedb7c44bd002b9787f0d` exactly matches the local archive.
+- Twitch reports `Current Status: Hosted Test` and serves the extension from `https://3z76w1eigzegdllmz3ud4l2q8bwjly.ext-twitch.tv/`, with `config.html` and `panel.html` as the configured entrypoints. Public review was not submitted.
 - Container image build is not verified because the current account cannot access the local Docker service.
 - Final video and Devpost submission do not exist yet.
-- GitHub Actions runs `41310597302` and `41312379918` completed successfully: clean checkout/install, workspace builds, all 9 tests, and the production dependency audit passed.
+- GitHub Actions runs `41310597302`, `41312379918`, and `41312583175` completed successfully: clean checkout/install, workspace builds, all 9 tests, and the production dependency audit passed.
 - Public repository published at `https://github.com/Protocol-X-01/StreamCart`, initial validated commit `b90f8dddccd10743d014e9565b2e9baf8eec286a`.
 - Earlier zero-step billing-lock failures are superseded by the successful reruns of `41310597302`; GitHub-hosted CI is operational again.
 
-The remaining gates are Git publication, final validated Twitch Extension packaging/upload, and final recording/submission. They require separate owner approval and must not be represented as complete until directly verified.
+The remaining gates are an installed-channel Hosted Test rendering check, final recording, and final submission. Public review/submission remains a separate owner-approved action and must not be represented as complete until directly verified.

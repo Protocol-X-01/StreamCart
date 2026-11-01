@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title">
+  <title id="title">StreamCart live signal mark</title>
+  <circle cx="12" cy="12" r="12" fill="#0d0c13"/>
+  <circle cx="12" cy="12" r="9.5" fill="#8b5cf6"/>
+  <circle cx="12" cy="12" r="5.4" fill="#171520" stroke="#f7f5ff" stroke-width="1.4"/>
+  <circle cx="12" cy="12" r="2.7" fill="#ff7958"/>
+</svg>

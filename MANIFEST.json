@@ -185,6 +185,41 @@
     "bytes": 436
   },
   {
+    "path": "assets/twitch/discovery-300x200.png",
+    "sha256": "bf04dc6758068fdba5a627d51151ded2d2e9d676394620cb0f1f24486eaeb294",
+    "bytes": 68726
+  },
+  {
+    "path": "assets/twitch/listing.json",
+    "sha256": "2fde2ee5deb9cb57c620486e1e7207cafbce3c121c00e4e85421abaced8637d7",
+    "bytes": 1033
+  },
+  {
+    "path": "assets/twitch/logo-100x100.png",
+    "sha256": "aab0219fa30428c195883576b52bfae73aeef9838cde41dbdac2a3032c4882d2",
+    "bytes": 11655
+  },
+  {
+    "path": "assets/twitch/screenshot-1024x768.png",
+    "sha256": "f11aa8919b60c54a9af200f46bf8faf85636ccb7c2b5a0ec790da8ea5357b0d5",
+    "bytes": 49965
+  },
+  {
+    "path": "assets/twitch/screenshot-source.svg",
+    "sha256": "4942f33df938f6c1b33c8f3d42c75f154ac78b1f78fed7e9545173fed50bcaf9",
+    "bytes": 4433
+  },
+  {
+    "path": "assets/twitch/taskbar-24x24.png",
+    "sha256": "f0bb067c8bd6e7d4d77d7984477440d461810e099f4268d696b7ccf81c861d11",
+    "bytes": 1666
+  },
+  {
+    "path": "assets/twitch/taskbar-source.svg",
+    "sha256": "50c02fad42fabbb97219e365739a89e41c5b999624897a427816cacde2b67476",
+    "bytes": 398
+  },
+  {
     "path": "config/catalogue-plan.json",
     "sha256": "88b1038ea1a300ccd967dfac26fd01847bd73a89ff02c35a1e1ea324b2a7fa31",
     "bytes": 430
@@ -216,8 +251,13 @@
   },
   {
     "path": "docs/submission.md",
-    "sha256": "6c5eceef58e52b507d234bb55ca390244c21b605fac42fa8b6225e488f692cb6",
-    "bytes": 3078
+    "sha256": "bc50a63564596d86c0a6a9c7b4c0f5436c1bcf8fa075c729d52c8f148cec7e1f",
+    "bytes": 3052
+  },
+  {
+    "path": "docs/twitch-listing.md",
+    "sha256": "c68ded924178de0e81a523b5041fe7a94dbba0c0399a009ce7fa3aedfc801848",
+    "bytes": 2830
   },
   {
     "path": "docs/twitch-setup.md",
@@ -226,8 +266,8 @@
   },
   {
     "path": "docs/validation.md",
-    "sha256": "1f95ce638e2d7954e4e7820c873addd88447659be0659788bcffca9280937782",
-    "bytes": 6304
+    "sha256": "945e58b834c796de26325f996c4efd90f4b6b2a3625fd7167dcfe66088280bca",
+    "bytes": 6731
   },
   {
     "path": "fixtures/products.json",
@@ -241,8 +281,8 @@
   },
   {
     "path": "package.json",
-    "sha256": "8016fe1dac037c932f8d625d6c83dd7999297620ddf10c709847790655196082",
-    "bytes": 1070
+    "sha256": "72ff343d749dcd95a1ec500eba13f489a599d9eba67b74f72a2c64a8b4711c49",
+    "bytes": 1180
   },
   {
     "path": "scripts/authorize-twitch.mjs",
@@ -308,6 +348,11 @@
     "path": "scripts/validate-release.mjs",
     "sha256": "e8ed59ca6f04b3b0d1ef4c671be93125e1c6b1120fd7e914abe46b3900fda8ec",
     "bytes": 4472
+  },
+  {
+    "path": "scripts/validate-twitch-listing.mjs",
+    "sha256": "1e27883cdf54b9b888a39a5fb82826e26214c5b9cfa7e9da65bb0f1838b90524",
+    "bytes": 2604
   },
   {
     "path": "vercel.json",

@@ -35,5 +35,5 @@ StreamCart ranks with contextual relevance, creator approval, catalogue quality,
 
 - Repository: `https://github.com/Protocol-X-01/StreamCart`
 - Stable production application: `https://streamcart-twitchcon.vercel.app`
-- Twitch Hosted Test URL: add after the EventSub callback migration, validated extension package, and Twitch upload.
+- Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.1`
 - Demo video URL: add after the final sub-three-minute recording is validated.
