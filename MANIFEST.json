@@ -226,8 +226,8 @@
   },
   {
     "path": "docs/validation.md",
-    "sha256": "157bd62864132ed5c131da545a77d0943c95b9bb3dcb5c5a003e7e2c925bbf9b",
-    "bytes": 5959
+    "sha256": "b0a688de1727b8bb9e72069cc381614664d9a1d83cc6ea098bfc4f35c3ce9898",
+    "bytes": 5935
   },
   {
     "path": "fixtures/products.json",
