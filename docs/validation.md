@@ -33,5 +33,7 @@ Updated: 1 November 2026.
 - Container image build is not verified because the current account cannot access the local Docker service.
 - Final video and Devpost submission do not exist yet.
 - A credential-free GitHub Actions workflow is ready to repeat the build, 9-test suite, and production dependency audit after publication.
+- Public repository published at `https://github.com/Protocol-X-01/StreamCart`, initial validated commit `b90f8dddccd10743d014e9565b2e9baf8eec286a`.
+- GitHub Actions run `41310109378` was accepted but executed zero steps because the GitHub account is locked by a billing issue. This is not CI proof and is not represented as a code failure; the unchanged run should not be retried until billing state changes.
 
 The remaining gates are Git publication, final validated Twitch Extension packaging/upload, and final recording/submission. They require separate owner approval and must not be represented as complete until directly verified.
