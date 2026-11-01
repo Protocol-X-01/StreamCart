@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node scripts/build-vercel.mjs",
+  "outputDirectory": "dist/vercel",
+  "functions": {
+    "api/index.mjs": { "maxDuration": 30 }
+  },
+  "redirects": [
+    { "source": "/", "destination": "/extension/index.html", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/health", "destination": "/api/index" },
+    { "source": "/v1/:path*", "destination": "/api/index" }
+  ]
+}

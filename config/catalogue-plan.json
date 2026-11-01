@@ -1,0 +1,21 @@
+{
+  "name": "StreamCart \u2014 Twitch Creator Essentials (US)",
+  "version": 4,
+  "market": {
+    "country": "US",
+    "language": "en",
+    "currency": "USD"
+  },
+  "safe_search_default": true,
+  "sections": [
+    "gaming-peripherals",
+    "creator-setup",
+    "audio-video",
+    "desk-comfort",
+    "collectibles",
+    "apparel-accessories",
+    "mobile-travel",
+    "creative-making"
+  ],
+  "weapons_override_allowed": false
+}

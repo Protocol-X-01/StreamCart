@@ -1,0 +1,53 @@
+[
+  {
+    "id": "kb1",
+    "title": "Compact Mechanical Keyboard",
+    "description": "Hot-swappable keyboard",
+    "imageUrl": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80",
+    "productUrl": "https://example.com/keyboard",
+    "price": 79.99,
+    "currency": "USD",
+    "available": true,
+    "tags": [
+      "keyboard",
+      "gaming"
+    ],
+    "quality": 0.95,
+    "category": "Electronics",
+    "age": "adult"
+  },
+  {
+    "id": "mic1",
+    "title": "USB Streaming Microphone",
+    "description": "Creator microphone",
+    "imageUrl": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80",
+    "productUrl": "https://example.com/mic",
+    "price": 99,
+    "currency": "USD",
+    "available": true,
+    "tags": [
+      "streaming",
+      "microphone"
+    ],
+    "quality": 0.92,
+    "category": "Electronics",
+    "age": "adult"
+  },
+  {
+    "id": "light1",
+    "title": "Streaming Key Light",
+    "description": "Dimmable creator lighting",
+    "imageUrl": "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?auto=format&fit=crop&w=600&q=80",
+    "productUrl": "https://example.com/light",
+    "price": 39,
+    "currency": "USD",
+    "available": true,
+    "tags": [
+      "streaming",
+      "light"
+    ],
+    "quality": 0.86,
+    "category": "Lighting",
+    "age": "adult"
+  }
+]

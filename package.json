@@ -1,0 +1,28 @@
+{
+  "name": "streamcart",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:api": "npm run dev -w @streamcart/api",
+    "dev:extension": "npm run dev -w @streamcart/extension",
+    "dev:catalogue": "npm run dev -w @streamcart/catalogue",
+    "build": "npm run build --workspaces",
+    "test": "npm run test -w @streamcart/api",
+    "check": "npm run build --workspaces && npm run test",
+    "validate:release": "node scripts/validate-release.mjs",
+    "manifest:release": "node scripts/generate-manifest.mjs",
+    "demo:preflight": "npm run check && node --env-file=.env scripts/demo-preflight.mjs",
+    "channel3:create": "node scripts/create-collection.mjs",
+    "channel3:smoke": "node scripts/smoke.mjs",
+    "twitch:authorize": "node scripts/authorize-twitch.mjs",
+    "twitch:eventsub": "node scripts/register-eventsub.mjs",
+    "twitch:eventsub:migrate": "node --env-file=.env scripts/migrate-eventsub.mjs",
+    "package:twitch": "node scripts/package-extension.mjs"
+  }
+}
