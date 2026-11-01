@@ -13,7 +13,7 @@ Livestream product discovery usually becomes either an unstructured link dump or
 | Time | Action on screen | Narration |
 | --- | --- | --- |
 | 0:00–0:18 | Start on the expanded Twitch 0.0.2 **Finds from the stream** card showing a creator pick beside its privacy-safe aggregate. | “This is the result: a relevant product inside Twitch, visibly approved by the creator, with viewer interest shown only after a safe cohort forms.” |
-| 0:18–0:38 | Collapse and reopen **Finds**; point to the provenance label and **View product** action. | “StreamCart combines creator picks with live Channel3 discovery. Every recommendation explains where it came from, and viewers can open the real product or the full catalogue.” |
+| 0:18–0:38 | Collapse and reopen **Finds**; point to the provenance label and **View product** action. In the standalone judge view, briefly drag the compact capsule to show it can move out of the way. | “StreamCart combines creator picks with live Channel3 discovery. Every recommendation explains where it came from, and viewers can open the real product or the full catalogue.” |
 | 0:38–1:02 | As broadcaster, send `!gear streaming microphone` in Twitch chat and show the recommendation context change. | “The creator steers the AI from Twitch chat. A signed EventSub webhook accepts this command only from that broadcaster.” |
 | 1:02–1:22 | Show an AI-discovered microphone, then select **Approve this find** as broadcaster. | “The AI proposes; the creator decides. Approval changes the provenance in place, and the API binds that write to Twitch’s signed channel claim.” |
 | 1:22–1:40 | Show the viewer form of the card and select **Save interest** once. | “Viewer intent is explicit. StreamCart stores no viewer ID, profile, or browsing history—only channel, product, action, and aggregate count.” |
@@ -26,6 +26,7 @@ Livestream product discovery usually becomes either an unstructured link dump or
 ## Recording checklist
 
 - Use a test broadcaster account and Twitch Hosted Test; do not expose the Developer Console or terminal environment.
+- Twitch registers StreamCart as a Panel below the channel, so it cannot cover the video player. The Twitch panel starts collapsed and can be reopened; the standalone judge overlay is draggable in both compact and expanded states.
 - Pre-seed five aggregate saves for the cohort-safe metric moment. Never display secrets, JWTs, `.env`, or raw webhook headers.
 - Keep one approved product and one AI-discovered product in the visible result set.
 - Run `npm run check` immediately before recording and retain its output as evidence.

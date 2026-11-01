@@ -30,6 +30,7 @@ function App() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const overlayRef = useRef<HTMLElement>(null);
   const dragRef = useRef<null | { x: number; y: number; position: { x: number; y: number }; rect: DOMRect }>(null);
+  const movedRef = useRef(false);
 
   useEffect(() => { window.Twitch?.ext?.onAuthorized((auth) => { setChannel(auth.channelId); setToken(auth.token); setIsBroadcaster(twitchRole(auth.token) === 'broadcaster'); }); }, []);
   useEffect(() => {
@@ -68,6 +69,7 @@ function App() {
   function startDrag(event: React.PointerEvent<HTMLButtonElement>) {
     const rect = overlayRef.current?.getBoundingClientRect();
     if (!rect || panelMode) return;
+    movedRef.current = false;
     dragRef.current = { x: event.clientX, y: event.clientY, position, rect };
     event.currentTarget.setPointerCapture(event.pointerId);
   }
@@ -75,6 +77,7 @@ function App() {
     const active = dragRef.current;
     if (!active || !event.currentTarget.hasPointerCapture(event.pointerId)) return;
     const deltaX = event.clientX - active.x, deltaY = event.clientY - active.y;
+    if (Math.abs(deltaX) + Math.abs(deltaY) > 4) movedRef.current = true;
     const left = Math.min(Math.max(8, active.rect.left + deltaX), Math.max(8, window.innerWidth - active.rect.width - 8));
     const top = Math.min(Math.max(8, active.rect.top + deltaY), Math.max(8, window.innerHeight - active.rect.height - 8));
     setPosition({ x: active.position.x + left - active.rect.left, y: active.position.y + top - active.rect.top });
@@ -83,11 +86,13 @@ function App() {
   const placeholderProduct = product && (() => { try { return new URL(product.productUrl).hostname === 'example.com'; } catch { return true; } })();
   const productDestination = product && (placeholderProduct ? catalogueUrl : product.productUrl);
   const recordProductView = () => { if (!placeholderProduct) void record('view'); };
+  const finishDrag = (event: React.PointerEvent<HTMLButtonElement>) => { dragRef.current = null; if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); };
+  const nudge = (event: React.KeyboardEvent<HTMLButtonElement>) => { const directions: Record<string, [number, number]> = { ArrowLeft: [-12, 0], ArrowRight: [12, 0], ArrowUp: [0, -12], ArrowDown: [0, 12] }; const movement = directions[event.key]; if (movement) { event.preventDefault(); moveWithinViewport(...movement); } };
   return <main ref={overlayRef} className={`overlay ${panelMode ? 'panel-mode' : ''}`} style={panelMode ? undefined : { transform: `translate3d(${position.x}px,${position.y}px,0)` }}>
-    {!panelMode && <button className="tab" aria-expanded={open} onClick={() => setOpen(!open)}><span>SC</span> Stream finds <i>{open ? '×' : '+'}</i></button>}
+    {!panelMode && <button className="tab" aria-expanded={open} aria-label="Move or open stream finds" title="Drag to move · Arrow keys to nudge · Double-click to reset" onPointerDown={startDrag} onPointerMove={drag} onPointerUp={finishDrag} onDoubleClick={() => setPosition({ x: 0, y: 0 })} onKeyDown={nudge} onClick={() => { if (movedRef.current) { movedRef.current = false; return; } setOpen(!open); }}><span>SC</span> Stream finds <i>{open ? '×' : '+'}</i></button>}
     {panelMode && !open && <button className="panel-capsule" aria-expanded="false" onClick={() => setOpen(true)}><span>SC</span><b>Finds from the stream</b><i>+</i></button>}
     {open && <section className="find-card">
-      {!panelMode && <button className="drag-bar" aria-label="Move recommendation panel" title="Drag to move · Arrow keys to nudge · Double-click to reset" onPointerDown={startDrag} onPointerMove={drag} onPointerUp={(event) => { dragRef.current = null; event.currentTarget.releasePointerCapture(event.pointerId); }} onDoubleClick={() => setPosition({ x: 0, y: 0 })} onKeyDown={(event) => { const directions: Record<string, [number, number]> = { ArrowLeft: [-12, 0], ArrowRight: [12, 0], ArrowUp: [0, -12], ArrowDown: [0, 12] }; const movement = directions[event.key]; if (movement) { event.preventDefault(); moveWithinViewport(...movement); } }}><span>MOVE PANEL</span><i aria-hidden="true">••••••</i></button>}
+      {!panelMode && <button className="drag-bar" aria-label="Move recommendation panel" title="Drag to move · Arrow keys to nudge · Double-click to reset" onPointerDown={startDrag} onPointerMove={drag} onPointerUp={finishDrag} onDoubleClick={() => setPosition({ x: 0, y: 0 })} onKeyDown={nudge}><span>MOVE PANEL</span><i aria-hidden="true">••••••</i></button>}
       <header><div><b>NOW IN FRAME</b><small>{data.topic || 'Waiting for stream context'}</small></div><span className="live-dot">LIVE</span>{panelMode && <button className="panel-collapse" aria-label="Collapse finds" onClick={() => setOpen(false)}>−</button>}</header>
       {product ? <>
         <a className="product-primary" href={productDestination} target="_blank" rel="noreferrer" onClick={recordProductView} aria-label={`${placeholderProduct ? 'Open in catalogue' : 'View product'}: ${product.title}`}>
