@@ -2,6 +2,8 @@
 
 Target runtime: 2:40. Hard stop: 2:55. Record at 1080p with the Twitch player, chat, and StreamCart panel readable.
 
+The upload-ready caption and teleprompter track is `docs/demo-captions.srt`. Its cues match the run of show below and end at the 2:55 hard stop.
+
 ## Situation and proof
 
 Livestream product discovery usually becomes either an unstructured link dump or invisible behavioural tracking. In under three minutes, prove the opposite: a creator changes the live shopping context from Twitch, AI finds relevant real products, the creator visibly approves one, and a viewer expresses interest without creating a viewer profile.

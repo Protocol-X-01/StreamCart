@@ -58,6 +58,25 @@ const proof = fs.readFileSync(path.join(root, 'apps/proof/index.html'), 'utf8');
   'Twitch listing checks',
 ].every((marker) => proof.includes(marker)) ? pass('recording proof slate matches submission candidate') : fail('recording proof slate matches submission candidate');
 
+const captions = fs.readFileSync(path.join(root, 'docs/demo-captions.srt'), 'utf8');
+const cuePattern = /^(\d{2}):(\d{2}):(\d{2}),(\d{3}) --> (\d{2}):(\d{2}):(\d{2}),(\d{3})$/gm;
+const seconds = (parts) => Number(parts[1]) * 3600 + Number(parts[2]) * 60 + Number(parts[3]) + Number(parts[4]) / 1000;
+let previousEnd = 0;
+let finalEnd = 0;
+let ordered = true;
+let cueCount = 0;
+for (const match of captions.matchAll(cuePattern)) {
+  const start = seconds(match.slice(0, 5));
+  const end = seconds(['', ...match.slice(5, 9)]);
+  if (start < previousEnd || end <= start) ordered = false;
+  previousEnd = end;
+  finalEnd = end;
+  cueCount += 1;
+}
+cueCount === 10 && ordered && finalEnd <= 175
+  ? pass('demo captions are ordered and end by the 2:55 hard stop')
+  : fail(`demo caption timing (cues=${cueCount}, ordered=${ordered}, final=${finalEnd}s)`);
+
 const requiredTwitch = ['TWITCH_EXTENSION_SECRET', 'TWITCH_WEBHOOK_SECRET', 'TWITCH_CLIENT_ID', 'TWITCH_CLIENT_SECRET', 'TWITCH_EXTENSION_ID', 'TWITCH_BROADCASTER_ID', 'TWITCH_EVENTSUB_CALLBACK'];
 const twitchReady = requiredTwitch.every((name) => process.env[name]?.trim());
 (twitchReady ? pass : wait)('Twitch credentials and callback configured');
@@ -72,5 +91,5 @@ const remote = run('git', ['remote', 'get-url', 'origin']);
 (remote.status === 0 && remote.stdout.trim() ? pass : wait)('Git publication remote configured');
 
 if (strict && pending.length) failures.push(...pending.map((name) => `pending: ${name}`));
-console.log(JSON.stringify({ ok: failures.length === 0, strict, passed: 7 + Number(Boolean(twitchReady)) + Number(Boolean(originsReady)) + Number(Boolean(remote.status === 0 && remote.stdout.trim())), pending: pending.length, failed: failures.length }));
+console.log(JSON.stringify({ ok: failures.length === 0, strict, passed: 8 + Number(Boolean(twitchReady)) + Number(Boolean(originsReady)) + Number(Boolean(remote.status === 0 && remote.stdout.trim())), pending: pending.length, failed: failures.length }));
 if (failures.length) process.exitCode = 1;
