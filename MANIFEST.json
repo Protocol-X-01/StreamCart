@@ -256,8 +256,8 @@
   },
   {
     "path": "docs/submission-checklist.md",
-    "sha256": "602d95d70bdc5c76aba7a7cf8b2199f4f01c9b4dbe6b6e8ac432f877808ea298",
-    "bytes": 2305
+    "sha256": "4a2b61e65d3127103d6685c20dc6d72cd4ebcd9fceeb23c14340d14c4d4e5b1e",
+    "bytes": 2406
   },
   {
     "path": "docs/submission.md",
@@ -276,8 +276,8 @@
   },
   {
     "path": "docs/validation.md",
-    "sha256": "945e58b834c796de26325f996c4efd90f4b6b2a3625fd7167dcfe66088280bca",
-    "bytes": 6731
+    "sha256": "39baa5a91d32ab79d3aaed8ded97c9e061c5d8c8319f1ccbc7bbd737d62e37ec",
+    "bytes": 7563
   },
   {
     "path": "fixtures/products.json",

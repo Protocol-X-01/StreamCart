@@ -18,6 +18,7 @@ Verified against the official Devpost overview and FAQ on 1 November 2026.
 | Publicly visible YouTube demo under three minutes | URL pending recording/upload | **Missing** |
 | Footage showing the project functioning on Twitch | Timed Hosted Test sequence in `docs/demo-script.md` | Pending recording |
 | Footage showing how Codex built the project | Timed Codex evidence beat in `docs/demo-script.md` | Pending recording |
+| One-screen Codex and validation slate | `https://streamcart-twitchcon.vercel.app/proof/` | Ready |
 | Final Devpost Submit action | Owner-controlled | **Missing** |
 
 ## Judge access
