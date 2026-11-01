@@ -226,8 +226,8 @@
   },
   {
     "path": "docs/validation.md",
-    "sha256": "b0a688de1727b8bb9e72069cc381614664d9a1d83cc6ea098bfc4f35c3ce9898",
-    "bytes": 5935
+    "sha256": "1f95ce638e2d7954e4e7820c873addd88447659be0659788bcffca9280937782",
+    "bytes": 6304
   },
   {
     "path": "fixtures/products.json",
@@ -281,8 +281,8 @@
   },
   {
     "path": "scripts/package-extension.mjs",
-    "sha256": "115a59c74942b475d4db44f039074ed95a0b313f319646c6555a795cd57cd1f6",
-    "bytes": 662
+    "sha256": "260076513832f8851299c61c061dea2dba35282f1a9513a2c24e2a94a9fd3a0f",
+    "bytes": 805
   },
   {
     "path": "scripts/push-vercel-env.mjs",
