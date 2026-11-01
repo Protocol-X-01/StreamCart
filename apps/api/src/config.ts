@@ -11,6 +11,7 @@ const schema = z.object({
   DATA_FILE: z.string().default('./data/streamcart.json'),
   CHANNEL3_API_KEY: optionalString(),
   CHANNEL3_COLLECTION_ID: optionalString(),
+  CHANNEL3_COLLECTION_NAME: z.string().min(1).max(80).default('Twitch'),
   CHANNEL3_BASE_URL: z.string().url().default('https://api.trychannel3.com'),
   CHANNEL3_COUNTRY: z.string().default('US'),
   CHANNEL3_LANGUAGE: z.string().default('en'),
@@ -30,6 +31,7 @@ if (config.NODE_ENV === 'production') {
   const missing = [
     config.DEMO_MODE ? 'DEMO_MODE=false' : '',
     !config.CHANNEL3_API_KEY ? 'CHANNEL3_API_KEY' : '',
+    !config.CHANNEL3_COLLECTION_ID ? 'CHANNEL3_COLLECTION_ID' : '',
     !config.TWITCH_EXTENSION_SECRET ? 'TWITCH_EXTENSION_SECRET' : '',
     !config.TWITCH_WEBHOOK_SECRET ? 'TWITCH_WEBHOOK_SECRET' : '',
     config.ALLOWED_ORIGINS.length === 0 ? 'ALLOWED_ORIGINS' : '',

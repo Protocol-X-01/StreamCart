@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import { z } from 'zod';
-import { searchProducts } from './channel3.js';
+import { browseCollection, searchProducts } from './channel3.js';
 import { config } from './config.js';
 import { rank } from './discovery.js';
 import { eventSub, extensionAuth } from './security.js';
@@ -56,7 +56,8 @@ export function createApp(store: StorePort = createStore(), options: AppOptions 
   app.use(express.json({ limit: '64kb' }));
   app.get('/health', (_request, response) => response.json({ ok: true, mode: demoMode ? 'demo' : 'live', safeSearch: config.SAFE_SEARCH }));
   app.get('/v1/channels/:id/discovery', async (request, response, next) => { try { const channelId = String(request.params.id), topic = await store.topic(channelId); response.json({ channelId, topic, items: rank(await searchProducts(topic), topic, await store.approved(channelId), await store.metrics(channelId)) }); } catch (error) { next(error); } });
-  app.get('/v1/catalogue/search', async (request, response, next) => { try { const term = z.string().min(2).max(120).parse(request.query.q); const channelId = z.string().max(80).default('demo').parse(request.query.channelId); response.json({ channelId, topic: term, items: rank(await searchProducts(term), term, await store.approved(channelId), await store.metrics(channelId)) }); } catch (error) { next(error); } });
+  app.get('/v1/catalogue/browse', async (request, response, next) => { try { const channelId = z.string().max(80).default('demo').parse(request.query.channelId); response.json({ channelId, topic: `${config.CHANNEL3_COLLECTION_NAME} collection`, collectionName: config.CHANNEL3_COLLECTION_NAME, source: demoMode ? 'demo_fixture' : 'channel3_api', items: rank(await browseCollection(), '', await store.approved(channelId), await store.metrics(channelId)) }); } catch (error) { next(error); } });
+  app.get('/v1/catalogue/search', async (request, response, next) => { try { const term = z.string().trim().min(2).max(120).parse(request.query.q); const channelId = z.string().max(80).default('demo').parse(request.query.channelId); response.json({ channelId, topic: term, collectionName: config.CHANNEL3_COLLECTION_NAME, source: demoMode ? 'demo_fixture' : 'channel3_api', items: rank(await searchProducts(term), term, await store.approved(channelId), await store.metrics(channelId)) }); } catch (error) { next(error); } });
   const creatorAuth = extensionAuth({ roles: ['broadcaster'], demoMode, secret: options.extensionSecret });
   const viewerAuth = extensionAuth({ roles: ['viewer', 'broadcaster'], demoMode, secret: options.extensionSecret });
   app.post('/v1/creator/products', creatorAuth, async (request, response) => { const productId = z.string().min(1).max(160).parse(request.body.productId); await store.approve(response.locals.channelId, productId); response.status(201).json({ ok: true }); });

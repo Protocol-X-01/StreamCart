@@ -23,7 +23,7 @@ curl -X POST http://localhost:8787/v1/demo/channels/demo/trigger -H 'content-typ
 
 ## Live Channel3
 
-Put `CHANNEL3_API_KEY` and the optional `CHANNEL3_COLLECTION_ID` in `.env`, then run a credential-safe contract check:
+Put `CHANNEL3_API_KEY` and the curated Twitch `CHANNEL3_COLLECTION_ID` in `.env`, then run a credential-safe contract check. Production fails closed without both values. Stream finds use contextual search inside the collection; the full catalogue uses Channel3 browse with the same collection:
 
 ```bash
 node --env-file=.env scripts/smoke.mjs "streaming microphone"

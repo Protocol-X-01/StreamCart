@@ -60,6 +60,20 @@ test('viewer intent stores aggregate counts without viewer identity', () => with
   assert.equal(invalid.status, 201);
 }));
 
+test('catalogue browse is collection-scoped and short searches fail safely', () => withApi(async (base) => {
+  const browse = await fetch(`${base}/v1/catalogue/browse?channelId=demo`);
+  assert.equal(browse.status, 200);
+  const payload = await browse.json() as { collectionName: string; source: string; items: unknown[] };
+  assert.equal(payload.collectionName, 'Twitch');
+  assert.equal(payload.source, 'demo_fixture');
+  assert.ok(payload.items.length > 0);
+  for (const query of ['', 'a', ' ']) {
+    const response = await fetch(`${base}/v1/catalogue/search?q=${encodeURIComponent(query)}&channelId=demo`);
+    assert.equal(response.status, 400);
+    assert.deepEqual(await response.json(), { error: 'invalid_request' });
+  }
+}));
+
 test('CORS exposes responses only to configured browser origins', () => withApi(async (base) => {
   const allowed = await fetch(`${base}/health`, { headers: { origin: 'http://localhost:5173' } });
   assert.equal(allowed.headers.get('access-control-allow-origin'), 'http://localhost:5173');
@@ -110,6 +124,27 @@ test('production configuration rejects demo mode', () => {
   });
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /Unsafe production configuration: DEMO_MODE=false/);
+});
+
+test('production configuration requires a curated Channel3 collection', () => {
+  const result = spawnSync(process.execPath, ['--import', 'tsx', '-e', "import('./src/config.ts')"], {
+    cwd: path.resolve(import.meta.dirname, '..'),
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      NODE_ENV: 'production',
+      DEMO_MODE: 'false',
+      CHANNEL3_API_KEY: 'test-only',
+      CHANNEL3_COLLECTION_ID: '',
+      TWITCH_EXTENSION_SECRET: '0123456789abcdef',
+      TWITCH_WEBHOOK_SECRET: '0123456789abcdef',
+      ALLOWED_ORIGINS: 'https://extension.example',
+      PRODUCT_URL_HOSTS: 'buy.trychannel3.com',
+      IMAGE_URL_HOSTS: 'cdn.trychannel3.com',
+    },
+  });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Unsafe production configuration: CHANNEL3_COLLECTION_ID/);
 });
 
 test('development configuration accepts empty optional Twitch placeholders', () => {

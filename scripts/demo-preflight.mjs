@@ -30,6 +30,14 @@ if (health.mode !== 'live' || health.safeSearch !== true) throw new Error('Publi
 const discovery = await get(new URL(`/v1/channels/${encodeURIComponent(broadcasterId)}/discovery`, apiOrigin), 'Public discovery').then((response) => response.json());
 if (!Array.isArray(discovery.items) || discovery.items.length === 0) throw new Error('Public discovery returned no products');
 
+const catalogue = await get(new URL(`/v1/catalogue/browse?channelId=${encodeURIComponent(broadcasterId)}`, apiOrigin), 'Curated catalogue').then((response) => response.json());
+if (catalogue.collectionName !== 'Twitch' || catalogue.source !== 'channel3_api' || !Array.isArray(catalogue.items) || catalogue.items.length === 0) {
+  throw new Error('Public catalogue is not backed by the Twitch Channel3 collection');
+}
+if (catalogue.items.some((item) => new URL(item.productUrl).hostname !== 'buy.trychannel3.com')) {
+  throw new Error('Public catalogue contains a product link not returned through Channel3');
+}
+
 await get(catalogueOrigin, 'Public catalogue');
 await get(new URL('/extension/panel.html', apiOrigin), 'Public Twitch panel');
 
@@ -62,7 +70,7 @@ console.log(JSON.stringify({
   publicOrigin: apiOrigin.origin,
   health: { mode: health.mode, safeSearch: health.safeSearch },
   discovery: { topic: discovery.topic, itemCount: discovery.items.length },
-  catalogue: 'reachable',
+  catalogue: { collection: catalogue.collectionName, source: catalogue.source, itemCount: catalogue.items.length },
   twitchPanel: 'reachable',
   eventSub: { id: subscription.id, status: subscription.status, type: subscription.type },
 }, null, 2));

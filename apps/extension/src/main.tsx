@@ -22,7 +22,7 @@ function App() {
   const fallbackChannel = parameters.get('channel') ?? 'demo';
   const [channel, setChannel] = useState(fallbackChannel);
   const [token, setToken] = useState('');
-  const [open, setOpen] = useState(panelMode);
+  const [open, setOpen] = useState(false);
   const [data, setData] = useState<any>({ items: [] });
   const [intentState, setIntentState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [isBroadcaster, setIsBroadcaster] = useState(parameters.get('creator') === 'true');
@@ -85,9 +85,10 @@ function App() {
   const recordProductView = () => { if (!placeholderProduct) void record('view'); };
   return <main ref={overlayRef} className={`overlay ${panelMode ? 'panel-mode' : ''}`} style={panelMode ? undefined : { transform: `translate3d(${position.x}px,${position.y}px,0)` }}>
     {!panelMode && <button className="tab" aria-expanded={open} onClick={() => setOpen(!open)}><span>SC</span> Stream finds <i>{open ? '×' : '+'}</i></button>}
+    {panelMode && !open && <button className="panel-capsule" aria-expanded="false" onClick={() => setOpen(true)}><span>SC</span><b>Finds from the stream</b><i>+</i></button>}
     {open && <section className="find-card">
       {!panelMode && <button className="drag-bar" aria-label="Move recommendation panel" title="Drag to move · Arrow keys to nudge · Double-click to reset" onPointerDown={startDrag} onPointerMove={drag} onPointerUp={(event) => { dragRef.current = null; event.currentTarget.releasePointerCapture(event.pointerId); }} onDoubleClick={() => setPosition({ x: 0, y: 0 })} onKeyDown={(event) => { const directions: Record<string, [number, number]> = { ArrowLeft: [-12, 0], ArrowRight: [12, 0], ArrowUp: [0, -12], ArrowDown: [0, 12] }; const movement = directions[event.key]; if (movement) { event.preventDefault(); moveWithinViewport(...movement); } }}><span>MOVE PANEL</span><i aria-hidden="true">••••••</i></button>}
-      <header><div><b>NOW IN FRAME</b><small>{data.topic || 'Waiting for stream context'}</small></div><span className="live-dot">LIVE</span></header>
+      <header><div><b>NOW IN FRAME</b><small>{data.topic || 'Waiting for stream context'}</small></div><span className="live-dot">LIVE</span>{panelMode && <button className="panel-collapse" aria-label="Collapse finds" onClick={() => setOpen(false)}>−</button>}</header>
       {product ? <>
         <a className="product-primary" href={productDestination} target="_blank" rel="noreferrer" onClick={recordProductView} aria-label={`${placeholderProduct ? 'Open in catalogue' : 'View product'}: ${product.title}`}>
           <div className="product-media"><img src={product.imageUrl} alt=""/><span>{product.provenance === 'creator_approved' ? 'CREATOR PICK' : 'AI DISCOVERY'}</span></div>

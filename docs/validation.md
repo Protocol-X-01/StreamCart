@@ -5,7 +5,7 @@ Updated: 1 November 2026.
 ## Proven locally
 
 - All three workspaces build successfully.
-- Automated suite: 9 tests passing, covering EventSub signature/challenge handling, broadcaster-only chat commands, duplicate delivery, identity-free intent, CORS, JWT channel binding, creator approval removal, production fail-closed configuration, optional development credentials, cohort privacy, and catalogue safety policy.
+- Automated suite: 11 tests passing, covering EventSub signature/challenge handling, broadcaster-only chat commands, duplicate delivery, identity-free intent, CORS, JWT channel binding, creator approval removal, collection-scoped browsing, short-query failure safety, production fail-closed configuration, optional development credentials, cohort privacy, and catalogue safety policy.
 - Production dependency audit: zero known vulnerabilities from `npm audit --omit=dev`.
 - Live Channel3 credential smoke: HTTP 200 with three products.
 - Live Channel3 through the StreamCart API: 20 normalized results for `streaming microphone`, including valid USD price and allowlisted `buy.trychannel3.com`/`cdn.trychannel3.com` URLs.
@@ -36,7 +36,7 @@ Updated: 1 November 2026.
 - Twitch accepted the owner-approved upload for Extension `3z76w1eigzegdllmz3ud4l2q8bwjly`, version `0.0.1`. The console-reported MD5 `213c0fb1dacbedb7c44bd002b9787f0d` exactly matches the local archive.
 - Twitch reports `Current Status: Hosted Test` and serves the extension from `https://3z76w1eigzegdllmz3ud4l2q8bwjly.ext-twitch.tv/`, with `config.html` and `panel.html` as the configured entrypoints. Public review was not submitted.
 - Twitch Version Details now retain the validated summary, chat-command disclosure, privacy boundary, viewer summary, `Viewer Engagement` category, 100x100 logo, 24x24 taskbar icon, opaque 300x200 discovery image, and 1024x768 screenshot. After the owner-approved Local Test edit, Twitch returned version `0.0.1` to Hosted Test without the previous missing-information alert; `Submit For Review` is enabled but was deliberately not selected.
-- The public `/proof/` recording slate renders the primary Codex session, validated Twitch-to-Channel3 path, 9 API tests, 22 listing checks, 20 live results, and zero high production vulnerabilities in a single 720p viewport. No credentials or private account data are present.
+- The public `/proof/` recording slate renders the primary Codex session, validated Twitch-to-Channel3 path, 11 API tests, 22 listing checks, 20 live results, and zero high production vulnerabilities in a single 720p viewport. No credentials or private account data are present.
 - Container image build is not verified because the current account cannot access the local Docker service.
 - Final video and Devpost submission do not exist yet.
 - GitHub Actions runs `41310597302`, `41312379918`, and `41312583175` completed successfully: clean checkout/install, workspace builds, all 9 tests, and the production dependency audit passed.

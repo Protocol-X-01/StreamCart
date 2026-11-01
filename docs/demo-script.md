@@ -18,7 +18,7 @@ Livestream product discovery usually becomes either an unstructured link dump or
 | 1:40–1:56 | Open **Catalogue** and tap one brand chip while showing creator-pick versus AI-discovery labels. Do not open a retailer page. | “Channel3 supplies the live catalogue. StreamCart turns the returned brands into instant filters while keeping the same server-side safety policy and visible provenance.” |
 | 1:56–2:12 | Return to the prepared five-save cohort. | “Counts stay hidden below five and are then bucketed. A single viewer can’t be inferred from an exact low number.” |
 | 2:12–2:31 | Show the clean public `/proof/` slate with the Codex session ID, validated live path, and test counts. | “Codex took over the vertical slice, verified the Twitch and Channel3 contracts, built the signed authority and privacy boundaries, and kept the release evidence tied to this session.” |
-| 2:31–2:45 | Show the concise validation summary, not environment files or raw headers. | “The live Twitch subscription is enabled, Channel3 returns real products, and CI covers builds, nine API tests, 22 listing checks, and the dependency audit.” |
+| 2:31–2:45 | Show the concise validation summary, not environment files or raw headers. | “The live Twitch subscription is enabled, Channel3 returns real products, and CI covers builds, eleven API tests, 22 listing checks, and the dependency audit.” |
 | 2:45–2:55 | End on the approved Twitch product card. | “StreamCart: creator-controlled discovery, useful AI, and privacy by design—inside Twitch.” |
 
 ## Recording checklist
