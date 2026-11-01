@@ -26,8 +26,8 @@
   },
   {
     "path": "README.md",
-    "sha256": "db238ab33a6ce5d729684fcb56a38f5f3f8e0416211a98a992bc00107950baa9",
-    "bytes": 4223
+    "sha256": "241c888cabb055423954f2100b6273ef7b9a3eecad30d8c4b01d3d02c86e526c",
+    "bytes": 4345
   },
   {
     "path": "api/index.mjs",
@@ -185,6 +185,11 @@
     "bytes": 436
   },
   {
+    "path": "apps/proof/index.html",
+    "sha256": "d619741fb5a41a1c63b927c06a1f05d937ce3e48b710cc4c30fe4a9dc6858d11",
+    "bytes": 9025
+  },
+  {
     "path": "assets/twitch/discovery-300x200.png",
     "sha256": "bf04dc6758068fdba5a627d51151ded2d2e9d676394620cb0f1f24486eaeb294",
     "bytes": 68726
@@ -241,8 +246,8 @@
   },
   {
     "path": "docs/demo-script.md",
-    "sha256": "c5a52aef8e9722b0227f5116b2dd121a4c9aa1e1f6a22be73e20ea7d16f5eea0",
-    "bytes": 6353
+    "sha256": "2e0dc29dfb307b5247eb3a3fd8c60839d2c10e66c91260810d1d3b0bd31b7f18",
+    "bytes": 6350
   },
   {
     "path": "docs/security.md",
@@ -296,8 +301,8 @@
   },
   {
     "path": "scripts/build-vercel.mjs",
-    "sha256": "59ef784369e5c995297a2cd1bbec9af3d145c7215d6e2b4c1ff3919f452475c6",
-    "bytes": 1067
+    "sha256": "cb867503e8e6e0f42199aa1ee81a698d58ccbc160dd6dfb2fd66911fa82574b7",
+    "bytes": 1177
   },
   {
     "path": "scripts/create-collection.mjs",

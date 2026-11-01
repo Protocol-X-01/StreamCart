@@ -62,6 +62,7 @@ Twitch does not let judges install an unreviewed Extension. The public judge rou
 1. Open the [standalone StreamCart overlay](https://streamcart-twitchcon.vercel.app/?channel=demo) and expand **Stream finds**.
 2. Open the [browse-all catalogue](https://streamcart-twitchcon.vercel.app/catalogue/) to inspect live Channel3 results, provenance, and client-side brand filters.
 3. Read the [validation record](docs/validation.md) for the real broadcaster chat → signed EventSub → Channel3 proof and the Hosted Test package identity.
-4. Run `npm ci && npm run check` for a credential-free local verification. Live Channel3, EventSub, and creator-authority checks require the environment variables documented in `.env.example`; no credentials are committed.
+4. Open the deployment's `/proof/` page for the credential-free Codex session and validation slate used in the recording.
+5. Run `npm ci && npm run check` for a credential-free local verification. Live Channel3, EventSub, and creator-authority checks require the environment variables documented in `.env.example`; no credentials are committed.
 
 The submission video is the authoritative evidence for the Extension running inside Twitch. The standalone route is intentionally read-only for creator-only actions because production writes require a Twitch-signed, channel-bound Extension JWT.
