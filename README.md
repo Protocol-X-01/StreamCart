@@ -2,6 +2,8 @@
 
 Creator-controlled, AI-assisted product discovery for Twitch. StreamCart combines visibly creator-approved products with Channel3-powered discoveries, using only explicit viewer intent and identity-free aggregate metrics.
 
+Live products open directly from the Twitch card. The browse-all catalogue preserves every brand returned by Channel3 and turns the current result set into instant brand filters without adding a tracking profile or another network request.
+
 ## Local demo
 
 Requires Node.js 20 or newer.

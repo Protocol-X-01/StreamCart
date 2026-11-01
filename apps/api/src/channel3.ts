@@ -18,6 +18,7 @@ function normalize(input: any): Product | null {
   const title = String(input.title ?? '');
   const imageUrl = allowedUrl(input.images?.[0]?.cleaned_url ?? input.images?.[0]?.url ?? input.image_url ?? input.imageUrl, config.IMAGE_URL_HOSTS);
   const productUrl = allowedUrl(offer.url ?? input.url ?? input.productUrl, config.PRODUCT_URL_HOSTS);
+  const brands = (Array.isArray(input.brands) ? input.brands : [input.brand]).map((brand: any) => String(brand?.name ?? brand?.title ?? brand ?? '').trim()).filter(Boolean);
   if (!id || !title || !imageUrl || !productUrl) return null;
   return {
     id,
@@ -30,6 +31,8 @@ function normalize(input: any): Product | null {
     available: typeof input.available === 'boolean' ? input.available : !['SoldOut', 'OutOfStock'].includes(offer.availability),
     tags: Array.isArray(input.tags) ? input.tags.map(String) : [],
     quality: Number.isFinite(Number(input.quality)) ? Number(input.quality) : .8,
+    brand: brands[0] ?? '',
+    brands,
     category: String(input.category?.title ?? input.category?.slug ?? input.category ?? ''),
     age: input.age,
   };

@@ -10,7 +10,7 @@ Shopping recommendations during livestreams usually force a bad choice: generic 
 
 A broadcaster sets the live topic directly from Twitch chat with `!gear <topic>`. StreamCart verifies Twitch's signed EventSub webhook and accepts the command only from that channel's broadcaster. Channel3 then discovers relevant in-stock products. The broadcaster can approve an AI-discovered result in the extension, instantly changing its provenance to a creator pick.
 
-Viewers can browse the current finds and explicitly save interest. StreamCart does not accept or persist a viewer identity, profile, or browsing history. It stores only channel/product/action totals, hides small cohorts, and buckets visible counts. Server-side safety policy, URL allowlists, channel-bound Twitch JWT authorization, replay controls, and production fail-closed configuration protect the demo path.
+Viewers can open a live product directly, browse the wider catalogue, filter dynamically across every brand Channel3 returns, and explicitly save interest. StreamCart does not accept or persist a viewer identity, profile, or browsing history. It stores only channel/product/action totals, hides small cohorts, and buckets visible counts. Server-side safety policy, URL allowlists, channel-bound Twitch JWT authorization, replay controls, and production fail-closed configuration protect the demo path.
 
 ## How Codex was used
 

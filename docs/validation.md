@@ -29,6 +29,8 @@ Updated: 1 November 2026.
 
 - Owner-approved EventSub migration completed: preview subscription `f6721d8f-bee4-4e3b-9bf2-a702fea18cfc` was replaced by production subscription `ab5ae7f1-4642-4208-835c-13a84471d602`, which is `enabled` at `https://streamcart-twitchcon.vercel.app/v1/twitch/eventsub`.
 - Full `npm run demo:preflight` passes against stable production: all builds, 9 automated tests, live/SafeSearch health, `streaming microphone` discovery with 20 products, catalogue, Twitch panel, and matching enabled EventSub.
+- Expanded Channel3 collection check returned 20 microphone results across 13 named brands (including Sony, Logitech, Sennheiser, JBL, MSI, Yamaha, and others). StreamCart now preserves every returned brand, displays the primary brand in Twitch, and builds dynamic zero-round-trip brand filters in the catalogue.
+- The product image/title block is now a first-class direct link: live Channel3 products open their product URL, while deterministic placeholder products fall back to the StreamCart catalogue. The existing explicit action remains available.
 - Twitch Local/Hosted Test ZIP has not been built or uploaded; packaging remains blocked until the Git publication remote exists and strict validation passes.
 - Container image build is not verified because the current account cannot access the local Docker service.
 - Final video and Devpost submission do not exist yet.

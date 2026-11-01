@@ -26,8 +26,8 @@
   },
   {
     "path": "README.md",
-    "sha256": "5298ac9128069e5d49d6de271a2bbcff08f603a5ddbf23eb5165d679ff8d74e5",
-    "bytes": 2853
+    "sha256": "64dd17da9c9fd11c9fdb2eaa8b8950e6afbf611fd8a279b9520f3f0e60888d47",
+    "bytes": 3094
   },
   {
     "path": "api/index.mjs",
@@ -46,8 +46,8 @@
   },
   {
     "path": "apps/api/src/channel3.ts",
-    "sha256": "95f63db00f6c61eb8fe34582fd99f3c876fa731cbdef629a1c7b4f517c28f8b4",
-    "bytes": 3616
+    "sha256": "63d46641efb2bad267499862e8ccdcbc2ebdbe337757611fcca164311d9c84ba",
+    "bytes": 3830
   },
   {
     "path": "apps/api/src/config.ts",
@@ -81,13 +81,13 @@
   },
   {
     "path": "apps/api/src/types.ts",
-    "sha256": "1bde181c77f7d0a957b6eb647060b6f4bfb13bec7eb6a2cfc2564a12aaa53d25",
-    "bytes": 391
+    "sha256": "47d2634defd2513b50962f5a79bea639858e879bb600ee16a9fd78045f7fb081",
+    "bytes": 422
   },
   {
     "path": "apps/api/test/app.test.ts",
-    "sha256": "2fd0b72df0c03a7ed589d5c7b4c9fce7b0e512f0f0f562a43e188827a4cd3a28",
-    "bytes": 8301
+    "sha256": "29082765baca7d77d61334eeda374b71a163b438b9eae9189f27059607c8ba65",
+    "bytes": 8433
   },
   {
     "path": "apps/api/test/discovery.test.ts",
@@ -116,13 +116,13 @@
   },
   {
     "path": "apps/catalogue/src/main.tsx",
-    "sha256": "bfcd0aeae7109c31cbc35af3c9fd9025ab7f38b1847c058134ea5ec52f20cec9",
-    "bytes": 2859
+    "sha256": "71d917adae174154729d77aec64fb27a17f71572b4e8886731da7f75b82930c9",
+    "bytes": 3711
   },
   {
     "path": "apps/catalogue/src/style.css",
-    "sha256": "11a9a6152543692076bec46503c88e8d0f3c585cd08f1570f1f1ce98294b4729",
-    "bytes": 5763
+    "sha256": "5a759129a7a9648a8817c5eee1e19bbb7efef4da7072d781c317cd3796fd9a18",
+    "bytes": 6303
   },
   {
     "path": "apps/catalogue/src/vite-env.d.ts",
@@ -161,13 +161,13 @@
   },
   {
     "path": "apps/extension/src/main.tsx",
-    "sha256": "386480a2f1fbe0a01330859be3a3811ad7d0e859bbaf9fbc430077f1c7602ad8",
-    "bytes": 8474
+    "sha256": "4dd1b693727db4989cfe1c6c54b4039202f5dbc60f94f19d0dc9931019a2c4bf",
+    "bytes": 8881
   },
   {
     "path": "apps/extension/src/style.css",
-    "sha256": "8401d1b0777f41c38a1313f26b7b15b8909cc2055b4ad4ebfdea56a7e63e0476",
-    "bytes": 5393
+    "sha256": "6b1e4d28de6ac656dea42a138231084fdafe5d6768104d4d1101ba64042de91a",
+    "bytes": 5805
   },
   {
     "path": "apps/extension/src/vite-env.d.ts",
@@ -206,8 +206,8 @@
   },
   {
     "path": "docs/demo-script.md",
-    "sha256": "c62d6588e2ba588be861033829c822740afaa2c9a25fc12f21f6f5adab9e13f6",
-    "bytes": 5630
+    "sha256": "22b9aaec5a6f9e934fbb532054cb6f94b68ca91e74b6f839b300bf2967f42848",
+    "bytes": 5711
   },
   {
     "path": "docs/security.md",
@@ -216,8 +216,8 @@
   },
   {
     "path": "docs/submission.md",
-    "sha256": "972608a053fed6d16eeb7dc302e8d6e4d0f36b16b67c10b13cda3beafe6338e6",
-    "bytes": 2989
+    "sha256": "6c5eceef58e52b507d234bb55ca390244c21b605fac42fa8b6225e488f692cb6",
+    "bytes": 3078
   },
   {
     "path": "docs/twitch-setup.md",
@@ -226,13 +226,13 @@
   },
   {
     "path": "docs/validation.md",
-    "sha256": "03ee33ab2aeb1bcef9988c06c96e43c4689f5df9bb46373d1525121ce9772bb0",
-    "bytes": 5405
+    "sha256": "157bd62864132ed5c131da545a77d0943c95b9bb3dcb5c5a003e7e2c925bbf9b",
+    "bytes": 5959
   },
   {
     "path": "fixtures/products.json",
-    "sha256": "a08f776c34078430859a44edcc1af5d3f1661c43b1ad08ee14ce8935c41576b9",
-    "bytes": 1387
+    "sha256": "53f31c3ed6921c897f64fb74211de3f773d0ac16e93c8430f5138887a34ce2cd",
+    "bytes": 1515
   },
   {
     "path": "package-lock.json",

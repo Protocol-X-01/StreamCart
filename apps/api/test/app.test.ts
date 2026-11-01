@@ -49,9 +49,11 @@ test('only broadcaster !gear commands update topic and duplicate delivery is ide
 }));
 
 test('viewer intent stores aggregate counts without viewer identity', () => withApi(async (base, store) => {
-  const discovery = await fetch(`${base}/v1/channels/demo/discovery`).then((response) => response.json()) as { items: Array<{ id: string; price: number; currency: string }> };
+  const discovery = await fetch(`${base}/v1/channels/demo/discovery`).then((response) => response.json()) as { items: Array<{ id: string; price: number; currency: string; brand?: string; brands?: string[] }> };
   const keyboard = discovery.items.find((item) => item.id === 'kb1');
   assert.deepEqual(keyboard && { price: keyboard.price, currency: keyboard.currency }, { price: 79.99, currency: 'USD' });
+  assert.equal(keyboard?.brand, 'KeyForge');
+  assert.deepEqual(keyboard?.brands, ['KeyForge']);
   const response = await fetch(`${base}/v1/viewer/intent`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ channelId: 'demo', productId: 'kb1', action: 'save' }) });
   assert.equal(response.status, 201); assert.deepEqual(store.metrics('demo').kb1, { view: 0, save: 1 });
   const invalid = await fetch(`${base}/v1/viewer/intent`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ channelId: 'demo', productId: 'kb1', action: 'save', viewerId: 'should-not-be-required' }) });

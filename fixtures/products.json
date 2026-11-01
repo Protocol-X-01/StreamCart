@@ -13,6 +13,7 @@
       "gaming"
     ],
     "quality": 0.95,
+    "brands": [{ "name": "KeyForge" }],
     "category": "Electronics",
     "age": "adult"
   },
@@ -30,6 +31,7 @@
       "microphone"
     ],
     "quality": 0.92,
+    "brands": [{ "name": "Creator Audio" }],
     "category": "Electronics",
     "age": "adult"
   },
@@ -47,6 +49,7 @@
       "light"
     ],
     "quality": 0.86,
+    "brands": [{ "name": "Luma Studio" }],
     "category": "Lighting",
     "age": "adult"
   }
