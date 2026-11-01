@@ -47,8 +47,16 @@ leaked.length === 0 ? pass('no obvious credential assignments in release files')
 const evidence = fs.readFileSync(path.join(root, 'docs/codex-sessions.md'), 'utf8');
 evidence.includes('01a193cc-90fd-7643-9517-dfd3517e1d11') ? pass('Codex session evidence retained') : fail('Codex session evidence retained');
 
-const requiredDocs = ['README.md', 'docs/demo-script.md', 'docs/security.md', 'docs/submission.md', 'docs/twitch-setup.md', 'docs/validation.md'];
+const requiredDocs = ['README.md', 'docs/demo-script.md', 'docs/security.md', 'docs/submission.md', 'docs/submission-checklist.md', 'docs/twitch-setup.md', 'docs/validation.md', 'docs/youtube-upload.md'];
 requiredDocs.every((name) => fs.existsSync(path.join(root, name))) ? pass('submission and operations documentation') : fail('submission and operations documentation');
+
+const proof = fs.readFileSync(path.join(root, 'apps/proof/index.html'), 'utf8');
+[
+  '01a193cc-90fd-7643-9517-dfd3517e1d11',
+  'Twitch Hosted Test 0.0.2',
+  'API and trust-boundary tests',
+  'Twitch listing checks',
+].every((marker) => proof.includes(marker)) ? pass('recording proof slate matches submission candidate') : fail('recording proof slate matches submission candidate');
 
 const requiredTwitch = ['TWITCH_EXTENSION_SECRET', 'TWITCH_WEBHOOK_SECRET', 'TWITCH_CLIENT_ID', 'TWITCH_CLIENT_SECRET', 'TWITCH_EXTENSION_ID', 'TWITCH_BROADCASTER_ID', 'TWITCH_EVENTSUB_CALLBACK'];
 const twitchReady = requiredTwitch.every((name) => process.env[name]?.trim());
@@ -64,5 +72,5 @@ const remote = run('git', ['remote', 'get-url', 'origin']);
 (remote.status === 0 && remote.stdout.trim() ? pass : wait)('Git publication remote configured');
 
 if (strict && pending.length) failures.push(...pending.map((name) => `pending: ${name}`));
-console.log(JSON.stringify({ ok: failures.length === 0, strict, passed: 6 + Number(Boolean(twitchReady)) + Number(Boolean(originsReady)) + Number(Boolean(remote.status === 0 && remote.stdout.trim())), pending: pending.length, failed: failures.length }));
+console.log(JSON.stringify({ ok: failures.length === 0, strict, passed: 7 + Number(Boolean(twitchReady)) + Number(Boolean(originsReady)) + Number(Boolean(remote.status === 0 && remote.stdout.trim())), pending: pending.length, failed: failures.length }));
 if (failures.length) process.exitCode = 1;
