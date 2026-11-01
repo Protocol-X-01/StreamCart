@@ -43,7 +43,9 @@ async function fixtureProducts() {
 }
 async function channel3Products(path: '/v1/search' | '/v1/browse', body: object) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 7_000);
+  // Collection browse is materially slower than contextual search in Channel3.
+  // Keep search snappy while allowing the bounded catalogue request to finish.
+  const timer = setTimeout(() => controller.abort(), path === '/v1/browse' ? 15_000 : 7_000);
   try {
     const response = await fetch(new URL(path, config.CHANNEL3_BASE_URL), { method: 'POST', headers: { 'x-api-key': config.CHANNEL3_API_KEY!, 'content-type': 'application/json', 'x-user-id': 'streamcart-aggregate' }, body: JSON.stringify(body), signal: controller.signal });
     if (!response.ok) throw new Error(`Channel3 request failed (${response.status})`);
