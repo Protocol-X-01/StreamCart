@@ -97,9 +97,10 @@ function App() {
         <div className={`signal ${product.provenance === 'creator_approved' ? 'approved' : 'discovered'}`}><i/>{product.provenance === 'creator_approved' ? 'Approved by this creator' : 'Matched to the live topic'}</div>
         {isBroadcaster && <button className="creator-control" disabled={approvalState === 'saving'} onClick={() => void toggleApproval()}><span>BROADCASTER CONTROL</span>{approvalState === 'saving' ? 'Saving…' : approvalState === 'error' ? 'Try again' : product.provenance === 'creator_approved' ? 'Remove approval' : 'Approve this find'}</button>}
         <small className="social-proof" title="Aggregate save actions; small counts are hidden and larger totals are grouped for privacy.">{saveSummary}</small>
+        <p className="link-notice">Product links may earn commission. Channel3 and retailers may process click data.</p>
         <div className="actions"><a href={productDestination} target="_blank" rel="noreferrer" onClick={recordProductView}>{placeholderProduct ? 'View catalogue ↗' : 'View product ↗'}</a><button disabled={intentState === 'saving' || intentState === 'saved'} onClick={() => void record('save')}>{intentState === 'saving' ? 'Saving…' : intentState === 'saved' ? 'Saved ✓' : intentState === 'error' ? 'Try again' : 'Save interest'}</button></div>
       </> : <p className="empty">No find yet. The creator can set the topic from chat.</p>}
-      <footer><span>No personal tracking</span><a href={catalogueUrl} target="_blank" rel="noreferrer">Open catalogue →</a></footer>
+      <footer><span>No viewer ad profiles</span><a href={catalogueUrl} target="_blank" rel="noreferrer">Open catalogue →</a></footer>
     </section>}
   </main>;
 }

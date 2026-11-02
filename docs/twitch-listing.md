@@ -10,9 +10,9 @@ The authoritative copy is stored in `assets/twitch/listing.json` and is checked 
 
 - **Name:** StreamCart
 - **General category:** Viewer Engagement
-- **Summary (140 characters):** Creator-controlled product discovery: set the live topic in chat, approve AI finds, and let viewers save interest without personal tracking.
+- **Summary:** Creator-controlled product discovery: set a live topic, approve AI finds, and let viewers save interest without ad profiles.
 - **Viewer summary (136 characters):** Explore products matched to the live topic, see which finds the creator approved, and save interest without creating a personal profile.
-- **Description:** StreamCart gives creators control over live product discovery. The broadcaster sets the current topic with `!gear <topic>` in their own channel chat; StreamCart accepts that command only after Twitch verifies the signed EventSub message and broadcaster identity. Channel3 then discovers relevant products. The creator can approve or remove a find, making its source clear to viewers. Viewers can explore the catalogue and explicitly save interest. StreamCart does not build viewer profiles or track people across channels: it retains channel/product/action totals, hides small cohorts, and shows only bucketed aggregate interest.
+- **Description:** StreamCart gives creators control over live product discovery. The broadcaster sets the current topic with `!gear <topic>` in their own channel chat; StreamCart accepts that command only after Twitch verifies the signed EventSub message and broadcaster identity. Channel3 then discovers relevant products. The creator can approve or remove a find, making its source clear to viewers. Viewers can explore the catalogue and explicitly save interest. StreamCart does not build viewer profiles for advertising or track people across channels: it retains channel/product/action totals, hides small cohorts, and shows only bucketed aggregate interest. Product links may earn commission; Channel3 and retailers may process click data.
 
 ## Image assets
 
