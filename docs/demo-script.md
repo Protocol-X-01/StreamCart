@@ -64,7 +64,7 @@ If Twitch or Channel3 is unavailable during recording, do not pretend the live p
 
 ## Post-migration recording checkpoint — 2 November 2026
 
-- Full stable preflight passed with 12 API tests and 22 listing checks; HEAD `0b2835e` has successful CI run `41404698342`.
+- Latest full stable preflight returned 12 API tests, 22 listing checks, 20 contextual discovery results, and 30 Twitch-collection products; live health/SafeSearch and EventSub remained enabled. Release `d40896b` passed CI run `41409674947` and strict release validation 12/12.
 - Render validation used signed synthetic EventSub messages. Repeat an actual broadcaster chat command for the recorded proof; the earlier real-chat evidence predates the migration.
 - The topic was restored, but prior Blob approvals and aggregate counts were not migrated. Approve a real result during rehearsal before claiming creator approval in footage.
 - The stable deployed `/proof/` slate was refreshed and verified. It displays Hosted Test 0.0.3, 12 API tests, 22 listing checks, and the Codex session ID.
