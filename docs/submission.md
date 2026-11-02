@@ -39,7 +39,7 @@ StreamCart ranks with contextual relevance, creator approval, catalogue quality,
 - Live application: `https://streamcart-twitchcon-site-20261102.onrender.com`
 - Public judge walkthrough: `https://streamcart-twitchcon-site-20261102.onrender.com/?channel=demo` (read-only creator actions; no Twitch credentials required)
 - Validation proof: `https://streamcart-twitchcon-site-20261102.onrender.com/proof/`
-- Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.6`
+- Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.7`
 - Demo video URL: add after the final sub-three-minute recording is validated.
 
 Render hosts the public application and API. The existing `https://streamcart-twitchcon.vercel.app` origin remains the Twitch API and EventSub callback proxy to the Render API.

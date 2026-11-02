@@ -16,12 +16,12 @@ Verified against the official Devpost overview and FAQ on 1 November 2026; deadl
 | Text description covering features and Codex use | `docs/submission.md` | Ready |
 | Primary Codex session ID | `01a193cc-90fd-7643-9517-dfd3517e1d11` | Ready |
 | Publicly visible YouTube demo under three minutes | URL pending recording/upload | **Missing** |
-| Footage showing the project functioning on Twitch | Timed Hosted Test sequence in `docs/demo-script.md` | Pending recording |
-| Footage showing how Codex built the project | Timed Codex evidence beat in `docs/demo-script.md` | Pending recording |
+| Footage showing the project functioning on Twitch | Fresh Hosted Test 0.0.7 recording with the live product card | Captured; edit and validate the final video |
+| Footage showing how Codex built the project | Fresh capture of the Codex thread, source, and run-sheet update | Captured; edit and validate the final video |
 | YouTube title, description, settings, and upload validation | `docs/youtube-upload.md` | Ready |
-| One-screen Codex and validation slate | `https://streamcart-twitchcon-site-20261102.onrender.com/proof/` | Public Render page is still 0.0.5 / 12 tests; local candidate is 0.0.6 / 15 tests. Refresh Render after owner approval before recording. |
-| Twitch Hosted Test package | Version `0.0.6`, hash-matched, configured for Panel + Video - Fullscreen, and active in Overlay 1 | Extension Manager verified; actual in-player rendering and interaction still need a live rehearsal |
-| Test viewer access | Separate viewer account added beside the broadcaster to the 0.0.6 Testing Account Allowlist | Saved and rechecked after restoring Hosted Test; Firefox playback still needs verification |
+| One-screen Codex and validation slate | `https://streamcart-twitchcon-site-20261102.onrender.com/proof/` | Candidate shows 0.0.7, 17 automated tests, 22 listing checks, and the session ID; verify the deployed page before submission |
+| Twitch Hosted Test package | Version `0.0.7`, hash-matched, configured for Panel + Video - Fullscreen, and active in Overlay 1 | Viewer card verified in-player; broadcaster approval remains unverified |
+| Test viewer access | Broadcaster and two viewer accounts in the 0.0.7 Testing Account Allowlist | Saved and rechecked; the separate viewer saw the product card |
 | Final Devpost Submit action | Owner-controlled | **Missing** |
 
 ## Judge access

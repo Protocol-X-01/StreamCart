@@ -43,7 +43,7 @@ Livestream product discovery usually becomes either an unstructured link dump or
 - EventSub subscription status is `enabled`.
 - Twitch Extension Manager identifies Hosted Test `0.0.6` with Panel `panel.html` and Video - Fullscreen `overlay.html`; Extension Manager shows it active in Overlay 1. Its testing-account allowlist includes the broadcaster and the separate viewer account.
 - Confirm that the allowlisted Firefox session sees the capsule over the stream before rehearsal. A loaded console status or local preview does not prove the overlay rendered in Twitch.
-- Confirm the public Render `/proof/` page has been refreshed to 0.0.6 and 15 API tests before showing it in the recording; the current public slate is stale.
+- Confirm the public Render `/proof/` page shows Hosted Test 0.0.6, 15 API tests, 22 listing checks, and the retained Codex session before showing it in the recording. These markers were verified live on 2 November at 18:34 UTC; recheck before capture.
 - Broadcaster `!gear streaming microphone` changes the public discovery topic.
 - Contextual discovery returns up to 20 ranked results; the separate full Twitch collection browse returns a live count. Read the on-screen count rather than promising a fixed number, and do not conflate the two counts in narration.
 - The selected AI result can be approved and appears as `creator_approved` after refresh.
@@ -73,3 +73,14 @@ If Twitch or Channel3 is unavailable during recording, do not pretend the live p
 - Twitch's design guide lists 300px as the default Panel Height (range 100–500px); the About-page panel appears about 320×335px including Twitch chrome. The panel stylesheet previously forced a 496px minimum. Version `0.0.3` removes it; visual verification on the channel showed the collapsed capsule with no inner scrollbar and the expanded card loading correctly. The expanded card remains scrollable inside Twitch's fixed panel.
 - At this earlier checkpoint, version `0.0.3` was active in Panel 1 and version `0.0.2` remained available as rollback. Twitch accepted six files; SHA-256 `605129e2dc9647da453f2e0de9f16a1309115c9875eec66e40f7b6a600008e09`; uploaded MD5 `a4c5b10d9f3faf78afa89457c3ce8b19` matched local. The Hosted Test page rendered `/0.0.3/a4c5b10d9f3faf78afa89457c3ce8b19/panel.html`.
 - At that earlier checkpoint, the 0.0.4 translucent candidate had not yet been uploaded; the 2 November activation and package identity are recorded in `docs/validation.md`.
+
+## Live capture checkpoint — 2 November 2026
+
+This checkpoint supersedes the earlier 0.0.6 references in the current recording procedure; the dated notes above remain historical.
+
+- Twitch Hosted Test 0.0.7 is active in Video Overlay 1. The allowlisted viewer saw the live Sony microphone card after the Render API origin was added to Twitch's URL Fetching Domains.
+- The broadcaster's actual `!gear streaming microphone` message remains visible in the Twitch chat history. Render discovery returned the matching topic and 20 contextual products. Show the existing message rather than sending another command solely for footage.
+- The new live recording shows the card over the stream and the viewer's **Saved** state. The save click itself was not captured. Use the short recursive preview as a deliberate transition and explain that the second account shows the viewer's perspective.
+- A live creator approval has not yet been verified: the current discovery response returned no creator-approved product. Do not imply that an approval was captured or verified. Label any local demonstration as such until the real broadcaster action is confirmed.
+- The Render proof slate was last verified showing 0.0.6, 15 API tests, 22 listing checks, and the Codex session ID. Treat that version marker as historical unless the slate is separately refreshed; show the actual Codex thread and source when explaining the build.
+- The broadcast is stopped. Finish the local edit with US narration and real Twitch and Codex footage, validate a runtime under three minutes, then obtain the separately required authorization for upload and final submission.

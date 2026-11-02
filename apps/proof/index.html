@@ -191,11 +191,13 @@
       }
 
       .proof-note {
-        margin: 24px 0 0;
-        color: #817a8d;
-        font-size: 10px;
-        line-height: 1.6;
+        margin: 16px 0 0;
+        color: #b5adbf;
+        font-size: 11px;
+        letter-spacing: .08em;
+        line-height: 1.5;
       }
+      .proof-note + .proof-note { margin-top: 8px; }
 
       nav {
         display: flex;
@@ -227,7 +229,7 @@
         .signal-step:not(:last-child)::after { content: "↓"; top: auto; right: 22px; bottom: -15px; }
       }
 
-      @media (max-height: 820px) and (min-width: 781px) {
+      @media (max-height: 950px) and (min-width: 781px) {
         main { padding: 24px 0 22px; }
         .eyebrow { margin-bottom: 9px; }
         h1 { font-size: 54px; }
@@ -282,12 +284,13 @@
 
         <aside class="panel" aria-label="Validation summary">
           <div class="stats">
-            <div class="stat"><strong>15</strong><span>API and trust-boundary tests</span></div>
+            <div class="stat"><strong>17</strong><span>Automated tests</span></div>
             <div class="stat"><strong>22</strong><span>Twitch listing checks</span></div>
-            <div class="stat"><strong>20</strong><span>Live Channel3 results</span></div>
+            <div class="stat"><strong>20</strong><span>Results in last live discovery</span></div>
             <div class="stat"><strong>0</strong><span>High production vulnerabilities</span></div>
           </div>
-          <p class="proof-note">Twitch Hosted Test 0.0.6 · 15 API tests · 22 listing checks · Credentials remain server-side</p>
+          <p class="proof-note">Twitch Hosted Test 0.0.7 · 17 automated tests · 22 listing checks · Credentials remain server-side</p>
+          <p class="proof-note">The viewer card was verified live; broadcaster approval still needs a live check.</p>
         </aside>
       </section>
     </main>

@@ -11,8 +11,8 @@ const clientId = required('TWITCH_CLIENT_ID');
 const clientSecret = required('TWITCH_CLIENT_SECRET');
 const broadcasterId = required('TWITCH_BROADCASTER_ID');
 const extensionId = required('TWITCH_EXTENSION_ID');
-const hostedVersion = process.env.TWITCH_HOSTED_TEST_VERSION?.trim() || '0.0.6';
-const hostedHash = process.env.TWITCH_HOSTED_TEST_HASH?.trim() || 'fdeb3f2663c06bfc11c56f1a80f9bdc3';
+const hostedVersion = process.env.TWITCH_HOSTED_TEST_VERSION?.trim() || '0.0.7';
+const hostedHash = process.env.TWITCH_HOSTED_TEST_HASH?.trim() || '901cb2e0619a35fdfdb04e3646a0bc27';
 const chatUserId = process.env.TWITCH_CHAT_USER_ID?.trim() || broadcasterId;
 
 if (!/^\d+\.\d+\.\d+$/.test(hostedVersion) || !/^[a-f0-9]{32}$/i.test(hostedHash)) {
@@ -55,7 +55,7 @@ if (catalogue.items.some((item) => new URL(item.productUrl).hostname !== 'buy.tr
 }
 
 await get(catalogueOrigin, 'Public catalogue');
-await get(new URL('/extension/panel.html', apiOrigin), 'Public Twitch panel');
+await get(new URL('/extension/panel.html', catalogueOrigin), 'Public Twitch panel');
 await get(new URL(`/${hostedVersion}/${hostedHash}/overlay.html`, `https://${extensionId}.ext-twitch.tv`), 'Hosted Twitch video overlay');
 
 const tokenResponse = await request('Twitch credential check', 'https://id.twitch.tv/oauth2/token', {
@@ -85,10 +85,11 @@ if (!subscription) throw new Error('No enabled EventSub subscription matches the
 console.log(JSON.stringify({
   ok: true,
   publicOrigin: apiOrigin.origin,
+  siteOrigin: catalogueOrigin.origin,
   health: { mode: health.mode, safeSearch: health.safeSearch },
   discovery: { topic: discovery.topic, itemCount: discovery.items.length },
   catalogue: { collection: catalogue.collectionName, source: catalogue.source, itemCount: catalogue.items.length },
   twitchPanel: 'reachable',
-  twitchOverlay: 'reachable',
+  twitchOverlay: { version: hostedVersion, assetHash: hostedHash, status: 'reachable' },
   eventSub: { id: subscription.id, status: subscription.status, type: subscription.type },
 }, null, 2));

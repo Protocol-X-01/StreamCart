@@ -84,3 +84,19 @@ The remaining gates are an installed-channel Hosted Test recording rehearsal, fi
 - The current local proof-slate candidate says Hosted Test 0.0.6 and 15 API tests. Public Render `/proof/` still says 0.0.5 and 12 API tests; the Vercel proof page says 0.0.4 and 12 tests. Neither was deployed in this checkpoint.
 - Twitch remains offline and no Firefox session was available in the browser inventory. Actual overlay visibility, expansion, broadcaster approval, and the viewer's explicit save action remain unverified. Do not present the hosted asset response as in-player proof.
 - Primary Codex session remains `01a193cc-90fd-7643-9517-dfd3517e1d11`.
+
+## 2026-11-02 18:34 UTC — privacy fix and current Render verification
+
+- Protocol-X approved the aggregate-ranking privacy fix. Ranking uses the same five-action view/save buckets returned to callers; exact totals do not affect ordering inside a bucket. Regression coverage checks hidden 0–4 counts and equivalent 5–9 buckets.
+- Commit `8532393b04a1277a2cef093225d6e540d2942c18` is published on `main`; GitHub Actions run `41500595006` passed. Render API deployment `dep-dbkdc4g473hc73fcileg` and static-site deployment `dep-dbkdd3vlk1mc73fe2oc0` are live for this commit.
+- `npm run demo:preflight` passed: 15 API tests, 22 listing checks, live health/SafeSearch, 20 contextual discovery results, 29 Twitch collection products, reachable panel and overlay, and enabled EventSub. Strict release validation passed 12/12.
+- Direct checks returned HTTP 200 for the Render API health route, Render `/proof/`, the Twitch extension page, and catalogue. The proof page displays Hosted Test 0.0.6, 15 API tests, 22 listing checks, and the primary Codex session ID. Client bundles use `https://streamcart-twitchcon-api.onrender.com`; the catalogue exposes SafeSearch controls.
+- At 18:32 UTC the channel was offline and OBS was closed. No fresh live footage, recording, video upload, or Devpost submission has been completed. Actual in-player overlay visibility and the live creator/viewer interaction remain unverified.
+
+## 2026-11-02 — Hosted Test 0.0.7 and catalogue-label candidate
+
+- Twitch Hosted Test 0.0.7 uses the approved archive SHA-256 `c3066684378b782591cf8ab4b6c66764156420673d10fc8e6dc7b815e8438056`; Twitch's reported MD5 `901cb2e0619a35fdfdb04e3646a0bc27` matched the archive. Video Overlay 1 was active, and the URL Fetching Domains included the Render API after the approved configuration change.
+- A fresh live Twitch recording showed the Sony ECM-S1 recommendation over the stream and the separate viewer's **Saved** state. The actual save click was not recorded. The broadcaster's `!gear streaming microphone` message remained visible in Twitch chat, and Render discovery returned the matching topic and 20 products.
+- Broadcaster approval remains unverified: the live discovery response returned no creator-approved product and the Twitch dashboard configuration view was blank. Do not claim a production approval until that path is verified.
+- The catalogue previously displayed a suppressed public count as `0 saves`. The local candidate instead says `Save count hidden for privacy` below the threshold and uses five-action lower bounds above it. An isolated demo catalogue visually rendered the new label; 17 automated tests and 22 listing checks passed locally, including regression coverage against the API's privacy buckets.
+- The candidate proof slate and preflight defaults now identify Hosted Test 0.0.7. These source changes have not yet been deployed to Render. The fresh Twitch and Codex recordings are edit sources; the final video, YouTube upload, and Devpost submission remain outstanding.

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { formatSaveCount } from './save-label.js';
 import './style.css';
 
 const API = import.meta.env.VITE_API_ORIGIN ?? 'http://localhost:8787';
@@ -36,7 +37,7 @@ function App() {
       <section className="results"><div className="results-head"><div><span>TWITCH COLLECTION · CHANNEL3</span><h2>{data.topic || 'Curated catalogue'}</h2></div><b>{String(visibleItems.length).padStart(2, '0')} finds</b></div>{brands.length > 0 && <div className="brand-filters" aria-label="Filter by brand"><button className={!selectedBrand ? 'active' : ''} onClick={() => setSelectedBrand('')}>All brands</button>{brands.map((brand) => <button key={brand} className={selectedBrand === brand ? 'active' : ''} onClick={() => setSelectedBrand(brand)}>{brand}</button>)}</div>}<div className="product-grid">{visibleItems.map((product: any, index: number) => <article key={product.id}>
         <div className="image-wrap"><img src={product.imageUrl} alt=""/><span>{String(index + 1).padStart(2, '0')}</span></div>
         <div className={`provenance ${product.provenance === 'creator_approved' ? 'approved' : ''}`}><i/>{product.provenance === 'creator_approved' ? 'Creator pick' : 'AI discovery'}</div>
-        {product.brand && <p className="product-brand">{product.brand}</p>}<h3>{product.title}</h3><div className="price-row"><b>{new Intl.NumberFormat('en-US', { style: 'currency', currency: product.currency }).format(product.price)}</b><small>{product.aggregateIntent?.save ?? 0} saves</small></div>
+        {product.brand && <p className="product-brand">{product.brand}</p>}<h3>{product.title}</h3><div className="price-row"><b>{new Intl.NumberFormat('en-US', { style: 'currency', currency: product.currency }).format(product.price)}</b><small title="Aggregate save actions; small counts are hidden and larger totals are grouped for privacy.">{formatSaveCount(product.aggregateIntent?.save)}</small></div>
         <a href={product.productUrl} target="_blank" rel="noreferrer">View product <span>↗</span></a>
       </article>)}</div></section>
     </main>
