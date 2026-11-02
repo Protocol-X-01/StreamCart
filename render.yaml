@@ -1,0 +1,52 @@
+services:
+  - type: web
+    name: streamcart-twitchcon-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DEMO_MODE
+        value: "false"
+      - key: SAFE_SEARCH
+        value: "true"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: streamcart-twitchcon-db
+          property: connectionString
+      - key: CHANNEL3_API_KEY
+        sync: false
+      - key: CHANNEL3_COLLECTION_ID
+        sync: false
+      - key: CHANNEL3_COLLECTION_NAME
+        value: Twitch
+      - key: CHANNEL3_BASE_URL
+        value: https://api.trychannel3.com
+      - key: CHANNEL3_COUNTRY
+        value: US
+      - key: CHANNEL3_LANGUAGE
+        value: en
+      - key: CHANNEL3_CURRENCY
+        value: USD
+      - key: TWITCH_EXTENSION_SECRET
+        sync: false
+      - key: TWITCH_WEBHOOK_SECRET
+        sync: false
+      - key: CATALOGUE_ORIGIN
+        value: https://streamcart-twitchcon.vercel.app/catalogue/
+      - key: ALLOWED_ORIGINS
+        value: https://streamcart-twitchcon.vercel.app,https://3z76w1eigzegdllmz3ud4l2q8bwjly.ext-twitch.tv
+      - key: PRODUCT_URL_HOSTS
+        value: buy.trychannel3.com
+      - key: IMAGE_URL_HOSTS
+        sync: false
+
+databases:
+  - name: streamcart-twitchcon-db
+    plan: free
+    region: frankfurt
+    databaseName: streamcart
+    user: streamcart

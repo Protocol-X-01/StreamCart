@@ -8,7 +8,7 @@ import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 import jwt from 'jsonwebtoken';
 import { createApp } from '../src/app.js';
-import { Store } from '../src/store.js';
+import { BlobStore, createStore, PostgresStore, Store } from '../src/store.js';
 
 const secret = '0123456789abcdef0123456789abcdef';
 function signedHeaders(id: string, type: string, body: string) {
@@ -154,4 +154,22 @@ test('development configuration accepts empty optional Twitch placeholders', () 
     env: { ...process.env, NODE_ENV: 'development', DEMO_MODE: 'false', TWITCH_EXTENSION_SECRET: '', TWITCH_WEBHOOK_SECRET: '' },
   });
   assert.equal(result.status, 0, result.stderr);
+});
+
+test('store selection prefers Postgres over Vercel Blob and local files', () => {
+  const previous = { database: process.env.DATABASE_URL, blob: process.env.BLOB_STORE_ID, token: process.env.BLOB_READ_WRITE_TOKEN };
+  try {
+    process.env.DATABASE_URL = 'postgresql://streamcart:local-test@127.0.0.1:5432/streamcart';
+    process.env.BLOB_STORE_ID = 'store_test';
+    assert.ok(createStore() instanceof PostgresStore);
+    delete process.env.DATABASE_URL;
+    assert.ok(createStore() instanceof BlobStore);
+    delete process.env.BLOB_STORE_ID;
+    delete process.env.BLOB_READ_WRITE_TOKEN;
+    assert.ok(createStore() instanceof Store);
+  } finally {
+    if (previous.database === undefined) delete process.env.DATABASE_URL; else process.env.DATABASE_URL = previous.database;
+    if (previous.blob === undefined) delete process.env.BLOB_STORE_ID; else process.env.BLOB_STORE_ID = previous.blob;
+    if (previous.token === undefined) delete process.env.BLOB_READ_WRITE_TOKEN; else process.env.BLOB_READ_WRITE_TOKEN = previous.token;
+  }
 });

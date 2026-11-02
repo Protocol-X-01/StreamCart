@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { BlobPreconditionFailedError, get, put } from '@vercel/blob';
+import { Pool, type PoolClient } from 'pg';
 
 export type IntentAction = 'view' | 'save';
 export type ProductMetrics = Record<IntentAction, number>;
@@ -102,6 +103,70 @@ export class BlobStore implements StorePort {
   async metrics(channelId: string) { return (await this.read()).data.metrics[channelId] ?? {}; }
 }
 
+export class PostgresStore implements StorePort {
+  private readonly pool: Pool;
+  private ready?: Promise<void>;
+
+  constructor(connectionString: string) {
+    this.pool = new Pool({ connectionString, max: 4, idleTimeoutMillis: 10_000, connectionTimeoutMillis: 10_000, allowExitOnIdle: true });
+  }
+
+  private initialize() {
+    return (this.ready ??= this.pool.query(`
+      CREATE TABLE IF NOT EXISTS streamcart_state (
+        id smallint PRIMARY KEY CHECK (id = 1),
+        payload jsonb NOT NULL,
+        updated_at timestamptz NOT NULL DEFAULT now()
+      )
+    `).then(() => undefined));
+  }
+
+  private async read(): Promise<Data> {
+    await this.initialize();
+    const result = await this.pool.query<{ payload: Partial<Data> }>('SELECT payload FROM streamcart_state WHERE id = 1');
+    return normalized(result.rows[0]?.payload);
+  }
+
+  private async mutate<T>(change: (data: Data) => T): Promise<T> {
+    await this.initialize();
+    const client: PoolClient = await this.pool.connect();
+    try {
+      await client.query('BEGIN');
+      await client.query('INSERT INTO streamcart_state (id, payload) VALUES (1, $1::jsonb) ON CONFLICT (id) DO NOTHING', [JSON.stringify(EMPTY_DATA())]);
+      const selected = await client.query<{ payload: Partial<Data> }>('SELECT payload FROM streamcart_state WHERE id = 1 FOR UPDATE');
+      const data = normalized(selected.rows[0]?.payload);
+      const result = change(data);
+      await client.query('UPDATE streamcart_state SET payload = $1::jsonb, updated_at = now() WHERE id = 1', [JSON.stringify(data)]);
+      await client.query('COMMIT');
+      return result;
+    } catch (error) {
+      await client.query('ROLLBACK').catch(() => undefined);
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
+  async approved(channelId: string) { return (await this.read()).approved[channelId] ?? []; }
+  async approve(channelId: string, productId: string) { await this.mutate((data) => { data.approved[channelId] = [...new Set([...(data.approved[channelId] ?? []), productId])]; }); }
+  async unapprove(channelId: string, productId: string) { await this.mutate((data) => { data.approved[channelId] = (data.approved[channelId] ?? []).filter((id) => id !== productId); }); }
+  async topic(channelId: string) { return (await this.read()).topics[channelId] ?? 'stream setup'; }
+  async setTopic(channelId: string, topic: string) { await this.mutate((data) => { data.topics[channelId] = topic; }); }
+  async recordIntent(channelId: string, productId: string, action: IntentAction) {
+    return this.mutate((data) => {
+      if (!data.metrics[channelId] && Object.keys(data.metrics).length >= MAX_CHANNELS) throw new Error('metric_channel_limit');
+      const channel = (data.metrics[channelId] ??= {});
+      if (!channel[productId] && Object.keys(channel).length >= MAX_PRODUCTS_PER_CHANNEL) throw new Error('metric_product_limit');
+      const product = (channel[productId] ??= { view: 0, save: 0 });
+      product[action] += 1;
+      return { ...product };
+    });
+  }
+  async metrics(channelId: string) { return (await this.read()).metrics[channelId] ?? {}; }
+}
+
 export function createStore(): StorePort {
-  return process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID ? new BlobStore() : new Store(process.env.DATA_FILE || './data/streamcart.json');
+  if (process.env.DATABASE_URL) return new PostgresStore(process.env.DATABASE_URL);
+  if (process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID) return new BlobStore();
+  return new Store(process.env.DATA_FILE || './data/streamcart.json');
 }
