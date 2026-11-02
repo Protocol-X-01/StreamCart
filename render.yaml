@@ -5,6 +5,7 @@ services:
     plan: free
     region: frankfurt
     branch: main
+    autoDeployTrigger: 'off'
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -38,11 +39,30 @@ services:
       - key: CATALOGUE_ORIGIN
         value: https://streamcart-twitchcon.vercel.app/catalogue/
       - key: ALLOWED_ORIGINS
-        value: https://streamcart-twitchcon.vercel.app,https://3z76w1eigzegdllmz3ud4l2q8bwjly.ext-twitch.tv
+        value: https://streamcart-twitchcon.vercel.app,https://3z76w1eigzegdllmz3ud4l2q8bwjly.ext-twitch.tv,https://streamcart-twitchcon-site-20261102.onrender.com
       - key: PRODUCT_URL_HOSTS
         value: buy.trychannel3.com
       - key: IMAGE_URL_HOSTS
         sync: false
+
+  - type: web
+    name: streamcart-twitchcon-site-20261102
+    runtime: static
+    branch: main
+    autoDeployTrigger: 'off'
+    buildCommand: npm ci && node scripts/build-vercel.mjs
+    staticPublishPath: dist/vercel
+    routes:
+      - type: redirect
+        source: /
+        destination: /extension/index.html
+    envVars:
+      - key: SKIP_INSTALL_DEPS
+        value: "true"
+      - key: VITE_API_ORIGIN
+        value: https://streamcart-twitchcon-api.onrender.com
+      - key: VITE_CATALOGUE_ORIGIN
+        value: https://streamcart-twitchcon-site-20261102.onrender.com/catalogue/
 
 databases:
   - name: streamcart-twitchcon-db
