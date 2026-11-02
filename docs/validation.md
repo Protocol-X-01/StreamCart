@@ -1,11 +1,11 @@
 # Validation record and remaining gates
 
-Updated: 1 November 2026.
+Updated: 2 November 2026.
 
 ## Proven locally
 
 - All three workspaces build successfully.
-- Automated suite: 11 tests passing, covering EventSub signature/challenge handling, broadcaster-only chat commands, duplicate delivery, identity-free intent, CORS, JWT channel binding, creator approval removal, collection-scoped browsing, short-query failure safety, production fail-closed configuration, optional development credentials, cohort privacy, and catalogue safety policy.
+- Automated suite: 12 tests passing, covering EventSub signature/challenge handling, broadcaster-only chat commands, duplicate delivery, identity-free intent, CORS, JWT channel binding, creator approval removal, collection-scoped browsing, short-query failure safety, production fail-closed configuration, optional development credentials, Postgres/Blob/file store selection, cohort privacy, and catalogue safety policy.
 - Production dependency audit: zero known vulnerabilities from `npm audit --omit=dev`.
 - Live Channel3 credential smoke: HTTP 200 with three products.
 - Live Channel3 through the StreamCart API: 20 normalized results for `streaming microphone`, including valid USD price and allowlisted `buy.trychannel3.com`/`cdn.trychannel3.com` URLs.
@@ -24,6 +24,11 @@ Updated: 1 November 2026.
 - Private Vercel Blob persistence was exercised on an isolated validation channel: creator approval persisted and a five-save cohort became visible without storing a viewer identity.
 - The rendered overlay was rechecked after the final interaction pass: the fallback product opens the StreamCart catalogue, and the expanded overlay can be dragged, keyboard-nudged, and reset. The true Twitch panel remains fixed to avoid iframe clipping.
 - Release validator passes the build/test, dependency audit, file-boundary, credential-scan, Codex-evidence, documentation, Twitch-config, and public-origin gates.
+- Vercel Blob quota exhaustion was reproduced as the cause of the 2 November API 500s. The owner-approved recovery deployed a free Frankfurt Render Postgres instance (`dpg-dbk36kec6qcc73ddaca0-a`, expires 2 December) and Docker API service (`srv-dbk37eoae00c73fmv2a0`) with autodeploy disabled and no public database allowlist.
+- The Postgres store preserves creator topics, approvals, and identity-free aggregate metrics under a row lock. A real local PostgreSQL 18 concurrency test preserved all 10 simultaneous intent writes, and the isolated Render validation topic survived a full service redeploy.
+- Render deployment `dep-dbk39enlk1mc73ani7j0` is live at `https://streamcart-twitchcon-api.onrender.com`. It passed signed EventSub challenge/notification handling, Twitch-origin CORS, 20-product discovery, 30-item `Twitch` collection browse, and Channel3-only product-link checks. GitHub workflow `Keep StreamCart Demo Warm` passed run `41404151695` and checks `/health` every 10 minutes to avoid free-service cold starts during judging.
+- Vercel deployment `dpl_CKeGhQ59hrAU3KvRtR2ktiKG7hYW` is promoted at `https://streamcart-twitchcon.vercel.app`; `/health` and `/v1/*` proxy to the validated Render service while the public origin, Twitch CSP contract, and EventSub callback remain unchanged. Full stable `npm run demo:preflight` passed with 12 tests, 22 listing checks, live/SafeSearch health, 20 `streaming microphone` discoveries, 30 collection items, reachable panel, and enabled EventSub `ab5ae7f1-4642-4208-835c-13a84471d602`.
+- Stable browser inspection rendered the movable capsule with drag, arrow-key, and reset affordances; expanding it showed the Sony ECM-S1 result, a direct Channel3 product action, zero fabricated viewer metrics, and the **No personal tracking** boundary. The `/proof/` slate retained Hosted Test 0.0.2 and Codex session `01a193cc-90fd-7643-9517-dfd3517e1d11`.
 
 ## Not yet proven
 
@@ -42,7 +47,7 @@ Updated: 1 November 2026.
 - GitHub Actions run `41362260826` passed for commit `fb899dcc0cc6797c5b88c5c10a9370b2e024a1b5`, including the bounded 15-second Channel3 browse timeout correction.
 - Twitch Version Details now retain the validated summary, chat-command disclosure, privacy boundary, viewer summary, `Viewer Engagement` category, 100x100 logo, 24x24 taskbar icon, opaque 300x200 discovery image, and 1024x768 screenshot. After the owner-approved Local Test edit, Twitch returned version `0.0.1` to Hosted Test without the previous missing-information alert; `Submit For Review` is enabled but was deliberately not selected.
 - The public `/proof/` recording slate renders the primary Codex session, validated Twitch-to-Channel3 path, 11 API tests, 22 listing checks, 20 live results, and zero high production vulnerabilities in a single 720p viewport. No credentials or private account data are present.
-- Container image build is not verified because the current account cannot access the local Docker service.
+- The local Docker service was unavailable, but Render built and started the committed Dockerfile successfully; the first startup exposed and then verified the workspace-dependency copy fix in commit `da5610c`.
 - Final video and Devpost submission do not exist yet.
 - GitHub Actions runs `41310597302`, `41312379918`, and `41312583175` completed successfully: clean checkout/install, workspace builds, all 9 tests, and the production dependency audit passed.
 - Public repository published at `https://github.com/Protocol-X-01/StreamCart`, initial validated commit `b90f8dddccd10743d014e9565b2e9baf8eec286a`.
