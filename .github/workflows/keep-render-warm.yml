@@ -1,0 +1,21 @@
+name: Keep StreamCart Demo Warm
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Verify live Render API
+        env:
+          HEALTH_URL: https://streamcart-twitchcon-api.onrender.com/health
+        run: |
+          response="$(curl --fail --silent --show-error --max-time 75 "$HEALTH_URL")"
+          node -e 'const value = JSON.parse(process.argv[1]); if (value.ok !== true || value.mode !== "live" || value.safeSearch !== true) process.exit(1)' "$response"
