@@ -41,6 +41,8 @@ function App() {
   }, [channel]);
 
   const product = data.items[0];
+  const saveActions = product?.aggregateIntent?.save;
+  const saveSummary = Number.isFinite(saveActions) && saveActions > 0 ? `${saveActions}+ save actions` : 'Save count hidden for privacy';
   async function record(action: 'view' | 'save') {
     if (!product) return;
     if (action === 'save') setIntentState('saving');
@@ -93,7 +95,7 @@ function App() {
     {panelMode && !open && <button className="panel-capsule" aria-expanded="false" onClick={() => setOpen(true)}><span>SC</span><b>Finds from the stream</b><i>+</i></button>}
     {open && <section className="find-card">
       {!panelMode && <button className="drag-bar" aria-label="Move recommendation panel" title="Drag to move · Arrow keys to nudge · Double-click to reset" onPointerDown={startDrag} onPointerMove={drag} onPointerUp={finishDrag} onDoubleClick={() => setPosition({ x: 0, y: 0 })} onKeyDown={nudge}><span>MOVE PANEL</span><i aria-hidden="true">••••••</i></button>}
-      <header><div><b>NOW IN FRAME</b><small>{data.topic || 'Waiting for stream context'}</small></div><span className="live-dot">LIVE</span>{panelMode && <button className="panel-collapse" aria-label="Collapse finds" onClick={() => setOpen(false)}>−</button>}</header>
+      <header><div><b>NOW IN FRAME</b><small>{data.topic || 'Waiting for stream context'}</small></div><span className="live-dot">CATALOGUE</span>{panelMode && <button className="panel-collapse" aria-label="Collapse finds" onClick={() => setOpen(false)}>−</button>}</header>
       {product ? <>
         <a className="product-primary" href={productDestination} target="_blank" rel="noreferrer" onClick={recordProductView} aria-label={`${placeholderProduct ? 'Open in catalogue' : 'View product'}: ${product.title}`}>
           <div className="product-media"><img src={product.imageUrl} alt=""/><span>{product.provenance === 'creator_approved' ? 'CREATOR PICK' : 'AI DISCOVERY'}</span></div>
@@ -101,7 +103,7 @@ function App() {
         </a>
         <div className={`signal ${product.provenance === 'creator_approved' ? 'approved' : 'discovered'}`}><i/>{product.provenance === 'creator_approved' ? 'Approved by this creator' : 'Matched to the live topic'}</div>
         {isBroadcaster && <button className="creator-control" disabled={approvalState === 'saving'} onClick={() => void toggleApproval()}><span>BROADCASTER CONTROL</span>{approvalState === 'saving' ? 'Saving…' : approvalState === 'error' ? 'Try again' : product.provenance === 'creator_approved' ? 'Remove approval' : 'Approve this find'}</button>}
-        <small className="social-proof">{product.aggregateIntent?.save ?? 0} viewers saved this</small>
+        <small className="social-proof" title="Aggregate save actions; small counts are hidden and larger totals are grouped for privacy.">{saveSummary}</small>
         <div className="actions"><a href={productDestination} target="_blank" rel="noreferrer" onClick={recordProductView}>{placeholderProduct ? 'View catalogue ↗' : 'View product ↗'}</a><button disabled={intentState === 'saving' || intentState === 'saved'} onClick={() => void record('save')}>{intentState === 'saving' ? 'Saving…' : intentState === 'saved' ? 'Saved ✓' : intentState === 'error' ? 'Try again' : 'Save interest'}</button></div>
       </> : <p className="empty">No find yet. The creator can set the topic from chat.</p>}
       <footer><span>No personal tracking</span><a href={catalogueUrl} target="_blank" rel="noreferrer">Open catalogue →</a></footer>
