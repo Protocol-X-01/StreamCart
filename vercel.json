@@ -9,7 +9,7 @@
     { "source": "/", "destination": "/extension/index.html", "permanent": false }
   ],
   "rewrites": [
-    { "source": "/health", "destination": "/api/index" },
-    { "source": "/v1/:path*", "destination": "/api/index" }
+    { "source": "/health", "destination": "https://streamcart-twitchcon-api.onrender.com/health" },
+    { "source": "/v1/:path*", "destination": "https://streamcart-twitchcon-api.onrender.com/v1/:path*" }
   ]
 }
