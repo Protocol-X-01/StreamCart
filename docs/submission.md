@@ -36,7 +36,7 @@ StreamCart ranks with contextual relevance, creator approval, catalogue quality,
 - Repository: `https://github.com/Protocol-X-01/StreamCart`
 - Stable production application: `https://streamcart-twitchcon.vercel.app`
 - Public judge walkthrough: `https://streamcart-twitchcon.vercel.app/?channel=demo` (read-only creator actions; no Twitch credentials required)
-- Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.2`
+- Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.3`
 - Demo video URL: add after the final sub-three-minute recording is validated.
 
 The Hosted Test URL is recording evidence for the owner's Twitch account, not a judge-install route. Twitch's hackathon FAQ states that judges cannot install an unreviewed Extension; judges receive the public walkthrough, repository instructions, and the video showing the Extension functioning inside Twitch.

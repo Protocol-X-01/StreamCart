@@ -1,6 +1,6 @@
 1
 00:00:00,000 --> 00:00:18,000
-This is the result: a relevant product inside Twitch, visibly approved by the creator, with viewer interest shown only after a safe cohort forms.
+This is StreamCart: relevant product discovery inside Twitch, with visible provenance and creator control. Viewers choose when to express interest.
 
 2
 00:00:18,000 --> 00:00:38,000
@@ -24,7 +24,7 @@ Channel3 supplies the live catalogue. StreamCart turns returned brands into inst
 
 7
 00:01:56,000 --> 00:02:12,000
-Counts stay hidden below five and are then bucketed. A single viewer cannot be inferred from an exact low number.
+Small action counts are suppressed and larger totals are bucketed. These are aggregate actions, not a count of unique viewers or a guarantee of anonymity.
 
 8
 00:02:12,000 --> 00:02:31,000
@@ -32,7 +32,7 @@ Codex took over the vertical slice, verified the Twitch and Channel3 contracts, 
 
 9
 00:02:31,000 --> 00:02:45,000
-The live Twitch subscription is enabled, Channel3 returns real products, and CI covers builds, eleven API tests, twenty-two listing checks, and the dependency audit.
+The Twitch subscription is enabled, Channel3 returns real products, and CI covers builds, twelve API tests, twenty-two listing checks, and the dependency audit.
 
 10
 00:02:45,000 --> 00:02:55,000
