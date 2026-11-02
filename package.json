@@ -6,7 +6,7 @@
     "apps/*"
   ],
   "engines": {
-    "node": "24.x"
+    "node": ">=20"
   },
   "scripts": {
     "dev:api": "npm run dev -w @streamcart/api",
