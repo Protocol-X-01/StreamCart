@@ -51,15 +51,15 @@ const requiredDocs = ['README.md', 'docs/demo-script.md', 'docs/security.md', 'd
 requiredDocs.every((name) => fs.existsSync(path.join(root, name))) ? pass('submission and operations documentation') : fail('submission and operations documentation');
 
 const submission = fs.readFileSync(path.join(root, 'docs/submission.md'), 'utf8');
-/^- Twitch Hosted Test URL: `https:\/\/www\.twitch\.tv\/ext\/3z76w1eigzegdllmz3ud4l2q8bwjly-0\.0\.3`$/m.test(submission)
+/^- Twitch Hosted Test URL: `https:\/\/www\.twitch\.tv\/ext\/3z76w1eigzegdllmz3ud4l2q8bwjly-0\.0\.6`$/m.test(submission)
   ? pass('submission Hosted Test URL matches installed version')
   : fail('submission Hosted Test URL matches installed version');
 
 const proof = fs.readFileSync(path.join(root, 'apps/proof/index.html'), 'utf8');
 [
   '01a193cc-90fd-7643-9517-dfd3517e1d11',
-  'Twitch Hosted Test 0.0.3',
-  '<strong>12</strong>',
+  'Twitch Hosted Test 0.0.6',
+  '<strong>15</strong>',
   'API and trust-boundary tests',
   'Twitch listing checks',
 ].every((marker) => proof.includes(marker)) ? pass('recording proof slate matches submission candidate') : fail('recording proof slate matches submission candidate');

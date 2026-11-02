@@ -2,7 +2,9 @@
 
 Updated: 2 November 2026.
 
-## Proven locally
+Earlier results below record separate release checkpoints. Their deployment, subscription, package, and test-count facts are historical measurements; the current Render static-site checkpoint at the end supersedes earlier public-origin and proof-version status.
+
+## Recorded validation evidence
 
 - All three workspaces build successfully.
 - Automated suite: 12 tests passing, covering EventSub signature/challenge handling, broadcaster-only chat commands, duplicate delivery, identity-free intent, CORS, JWT channel binding, creator approval removal, collection-scoped browsing, short-query failure safety, production fail-closed configuration, optional development credentials, Postgres/Blob/file store selection, cohort privacy, and catalogue safety policy.
@@ -16,7 +18,7 @@ Updated: 2 November 2026.
 - `.env`, data, logs, archives, dependencies, and build output are excluded from Git and Docker contexts.
 - Primary Codex session and security scan identities are retained in `docs/codex-sessions.md`.
 - Twitch OAuth completed for broadcaster `1600116434` with the minimum chat scopes used by the MVP. Tokens were validated transiently and were not printed or persisted by the helper.
-- Twitch EventSub subscription `f6721d8f-bee4-4e3b-9bf2-a702fea18cfc` is live and `enabled` for `channel.chat.message`, bound to broadcaster/chat user `1600116434`, with webhook transport to the public preview.
+- Historical preview EventSub subscription `f6721d8f-bee4-4e3b-9bf2-a702fea18cfc` was live and `enabled` for `channel.chat.message`, bound to broadcaster/chat user `1600116434`, with webhook transport to the public preview. Its replacement is recorded below.
 - Real Twitch end-to-end command proof completed on 1 November 2026: broadcaster `protocolx76` sent `!gear streaming microphone` in their own channel chat; the public discovery topic changed from `stream setup` to `streaming microphone` and returned 20 Channel3 results, led by an AI-discovered ECM-S1 Wireless Streaming Microphone.
 - Public Vercel preview is anonymously reachable at `https://streamcart-twitchcon-57nrbqad1-protocol-x.vercel.app`: `/health` reports live mode and SafeSearch enabled; public discovery returns 20 normalized Channel3 products.
 - Owner-approved stable production deployment `dpl_HZnKmxPx39MSR8b5QKs9VtADJEdy` is `READY` and aliased at `https://streamcart-twitchcon.vercel.app`. It supersedes `dpl_8miwsQawe1nUGCts3kupix6FCy6o` without changing the stable origin. Anonymous checks prove live/SafeSearch health, the public proof slate, 20-product discovery with the persisted `streaming microphone` topic, panel/config/catalogue HTTP 200 responses, the stable origin embedded in the browser bundle, and CORS access for `https://3z76w1eigzegdllmz3ud4l2q8bwjly.ext-twitch.tv`.
@@ -30,7 +32,7 @@ Updated: 2 November 2026.
 - Vercel deployment `dpl_CKeGhQ59hrAU3KvRtR2ktiKG7hYW` is promoted at `https://streamcart-twitchcon.vercel.app`; `/health` and `/v1/*` proxy to the validated Render service while the public origin, Twitch CSP contract, and EventSub callback remain unchanged. Full stable `npm run demo:preflight` passed with 12 tests, 22 listing checks, live/SafeSearch health, 20 `streaming microphone` discoveries, 30 collection items, reachable panel, and enabled EventSub `ab5ae7f1-4642-4208-835c-13a84471d602`.
 - Stable browser inspection rendered the movable capsule with drag, arrow-key, and reset affordances; expanding it showed the Sony ECM-S1 result, a direct Channel3 product action, zero fabricated viewer metrics, and the **No personal tracking** boundary. The `/proof/` slate retained Hosted Test 0.0.2 and Codex session `01a193cc-90fd-7643-9517-dfd3517e1d11`.
 
-## Not yet proven
+## Historical release checkpoints
 
 - Owner-approved EventSub migration completed: preview subscription `f6721d8f-bee4-4e3b-9bf2-a702fea18cfc` was replaced by production subscription `ab5ae7f1-4642-4208-835c-13a84471d602`, which is `enabled` at `https://streamcart-twitchcon.vercel.app/v1/twitch/eventsub`.
 - Full `npm run demo:preflight` passes against stable production: all builds, 9 automated tests, live/SafeSearch health, `streaming microphone` discovery with 20 products, catalogue, Twitch panel, and matching enabled EventSub.
@@ -54,3 +56,31 @@ Updated: 2 November 2026.
 - Earlier zero-step billing-lock failures are superseded by the successful reruns of `41310597302`; GitHub-hosted CI is operational again.
 
 The remaining gates are an installed-channel Hosted Test recording rehearsal, final YouTube recording/upload, signed-out video validation, and final Devpost submission. Twitch public review is not required for the hackathon and was not submitted.
+
+## 2026-11-02 — Twitch 0.0.4 checkpoint
+
+- Approved archive `streamcart-twitch-extension-0.0.4-translucent-candidate-r2.zip` has SHA-256 `56cdb23f9dd757c6c3303b38c62c272af3d7b084c10bb0d95cb794d9d6f7bd18` and MD5 `43d67c06b8b4bca0ed2fb102cd0b5252`. Twitch accepted it with the matching MD5 and reports version 0.0.4 as Hosted Test.
+- Extension Manager confirms 0.0.4 active in Panel 1; 0.0.3 remains installed and inactive for rollback. The channel About page loaded the exact hosted path `0.0.4/43d67c06b8b4bca0ed2fb102cd0b5252/panel.html`.
+- Live read-only discovery still reports topic `streaming microphone`; both ECM-S1 entries return zero bucketed saves and views. The local listing screenshot and source now label the panel as a sample and omit live counts; Twitch 0.0.4 still has the earlier listing image, so updating Twitch's listing requires a new version and separately approved upload.
+- The expanded Twitch `Stream Chat` column exposes `Send a message` and `Send Chat`. The broadcaster command and creator approval remain pending.
+- At this earlier checkpoint, the local proof slate, submission URL, checklist, and active runbook named 0.0.4, while public `/proof/` still served 0.0.3 and deployment approval was pending. That proof-deployment status is superseded by the verified Render static-site checkpoint below. Recording, YouTube upload, signed-out validation, and Devpost submission remain incomplete.
+
+## 2026-11-02 09:25 UTC — Current Render static-site and proof checkpoint
+
+- Read-only public checks returned HTTP 200 for `https://streamcart-twitchcon-site-20261102.onrender.com/`, following its redirect to `/extension/index.html`, and for `/proof/` on the same Render static site.
+- The Render `/proof/` response names Twitch Hosted Test `0.0.4`, 12 API tests, 22 listing checks, and primary Codex session `01a193cc-90fd-7643-9517-dfd3517e1d11`. The existing Vercel `/proof/` response returned HTTP 200 with the same markers; no further proof deployment is pending.
+- `https://streamcart-twitchcon-api.onrender.com/health` and the existing Vercel `/health` proxy both returned HTTP 200 with `ok: true`, `mode: live`, and `safeSearch: true`. Render hosts the public application and API; the stable Vercel origin remains the existing Twitch API and EventSub callback proxy.
+- Public application, judge-walkthrough, and proof links in the submission and YouTube upload copy now use the Render static-site origin. This documentation correction does not change the installed Twitch package, CSP, or EventSub callback.
+- These HTTP checks verify public availability and proof-slate text, not a new test run or a fresh real-chat rehearsal. Actual broadcaster chat, creator approval, a final short recording, YouTube upload and signed-out validation, and Devpost Submitted confirmation remain the next gates.
+
+## 2026-11-02 — Twitch 0.0.6 viewer access and release candidate
+
+- The uploaded archive is `/home/protocol-x/Documents/Codex/2026-10-31/referenced-chatgpt-conversation-this-is-an/outputs/streamcart-evidence/2026-11-02-video-overlay/streamcart-twitch-extension-0.0.6-video-overlay-candidate-r2.zip`; current SHA-256 is `c7dbdfac4e9b9784383ce945d943cc271861f688bd532c4caa71dbe30fb38b93` and MD5 is `fdeb3f2663c06bfc11c56f1a80f9bdc3`.
+- Twitch Console reports version `0.0.6` as Hosted Test with Panel `panel.html` and Video - Fullscreen `overlay.html`. The channel Extension Manager confirms `0.0.6` active in Overlay 1; 0.0.5, 0.0.4, 0.0.3, 0.0.2, and 0.0.1 remain installed but inactive.
+- With Protocol-X's approval, added a separate viewer account beside the broadcaster in version 0.0.6's Testing Account Allowlist. Twitch required a temporary transition to Local Test; the allowlist was saved, the version was returned to Hosted Test, and the saved entry was confirmed after reloading the Access page. No public-review submission occurred.
+- The exact Twitch CDN path `/0.0.6/fdeb3f2663c06bfc11c56f1a80f9bdc3/overlay.html` returned HTTP 200. This proves the hosted overlay asset is reachable, not that it renders in the Twitch video player.
+- `node --env-file=.env scripts/validate-release.mjs --strict` passed all 12 release checks: workspace build/tests, production dependency audit, release-file and credential-assignment checks, submission/proof/caption consistency, configured Twitch credentials and HTTPS origins, and Git remote.
+- `node --env-file=.env scripts/demo-preflight.mjs` passed: public health is `mode: live` with SafeSearch enabled; discovery returned 20 products for `streaming microphone`; the Channel3-backed `Twitch` collection returned 28 items; panel and exact hosted overlay assets are reachable; EventSub `ab5ae7f1-4642-4208-835c-13a84471d602` is enabled.
+- The current local proof-slate candidate says Hosted Test 0.0.6 and 15 API tests. Public Render `/proof/` still says 0.0.5 and 12 API tests; the Vercel proof page says 0.0.4 and 12 tests. Neither was deployed in this checkpoint.
+- Twitch remains offline and no Firefox session was available in the browser inventory. Actual overlay visibility, expansion, broadcaster approval, and the viewer's explicit save action remain unverified. Do not present the hosted asset response as in-player proof.
+- Primary Codex session remains `01a193cc-90fd-7643-9517-dfd3517e1d11`.

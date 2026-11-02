@@ -56,12 +56,12 @@ async function channel3Products(path: '/v1/search' | '/v1/browse', body: object)
 function baseConfig() {
   return { country: config.CHANNEL3_COUNTRY, language: config.CHANNEL3_LANGUAGE, currency: config.CHANNEL3_CURRENCY, ...(config.CHANNEL3_COLLECTION_ID ? { collection_id: config.CHANNEL3_COLLECTION_ID } : {}) };
 }
-function policy(data: Product[]) { return enforceCataloguePolicy(data, config.SAFE_SEARCH); }
+function policy(data: Product[], safeSearch: boolean) { return enforceCataloguePolicy(data, safeSearch); }
 
-export async function searchProducts(query: string) {
+export async function searchProducts(query: string, safeSearch = config.SAFE_SEARCH) {
   const normalizedQuery = query.trim();
   if (normalizedQuery.length < 2) return [];
-  const key = `search:${config.CHANNEL3_COLLECTION_ID ?? 'all'}:${config.SAFE_SEARCH}:${normalizedQuery.toLowerCase()}`;
+  const key = `search:${config.CHANNEL3_COLLECTION_ID ?? 'all'}:${safeSearch}:${normalizedQuery.toLowerCase()}`;
   const hit = cache.get(key);
   if (hit && hit.until > Date.now()) return hit.data;
   let data: Product[];
@@ -70,18 +70,18 @@ export async function searchProducts(query: string) {
   } else {
     data = await channel3Products('/v1/search', { query: normalizedQuery, limit: 20, filters: { availability: ['InStock', 'LimitedAvailability'] }, config: baseConfig() });
   }
-  data = policy(data);
+  data = policy(data, safeSearch);
   cache.set(key, { until: Date.now() + 900_000, data });
   return data;
 }
 
-export async function browseCollection() {
-  const key = `browse:${config.CHANNEL3_COLLECTION_ID ?? 'demo'}:${config.SAFE_SEARCH}`;
+export async function browseCollection(safeSearch = config.SAFE_SEARCH) {
+  const key = `browse:${config.CHANNEL3_COLLECTION_ID ?? 'demo'}:${safeSearch}`;
   const hit = cache.get(key);
   if (hit && hit.until > Date.now()) return hit.data;
   const data = policy(config.DEMO_MODE || !config.CHANNEL3_API_KEY
     ? await fixtureProducts()
-    : await channel3Products('/v1/browse', { limit: 30, filters: { availability: ['InStock', 'LimitedAvailability'] }, config: baseConfig() }));
+    : await channel3Products('/v1/browse', { limit: 30, filters: { availability: ['InStock', 'LimitedAvailability'] }, config: baseConfig() }), safeSearch);
   cache.set(key, { until: Date.now() + 900_000, data });
   return data;
 }

@@ -2,15 +2,17 @@
 
 ## One-line pitch
 
-StreamCart turns live Twitch context into creator-controlled product discovery, combining visible creator approval with Channel3 AI search and privacy-safe aggregate viewer intent.
+StreamCart turns live Twitch context into creator-controlled product discovery, combining visible creator approval with Channel3 AI search and explicit viewer intent and aggregate action counts.
 
 ## Project description
 
-Shopping recommendations during livestreams usually force a bad choice: generic affiliate link dumps or invisible behavioural tracking. StreamCart is a Twitch Panel Extension that keeps control with the broadcaster and makes every recommendation's origin visible.
+Shopping recommendations during livestreams usually force a bad choice: generic affiliate link dumps or invisible behavioural tracking. StreamCart is a Twitch video overlay with a compact, movable capsule that keeps the stream in view. A compatible Panel entry remains available, while the active Hosted Test is in Video Overlay 1.
+
+The Twitch-hosted experience is still a Twitch Extension; “Video - Fullscreen” is its overlay presentation mode. The public judge walkthrough is a separate standalone preview page, not an OBS Browser Source configuration.
 
 A broadcaster sets the live topic directly from Twitch chat with `!gear <topic>`. StreamCart verifies Twitch's signed EventSub webhook and accepts the command only from that channel's broadcaster. Channel3 then discovers relevant in-stock products. The broadcaster can approve an AI-discovered result in the extension, instantly changing its provenance to a creator pick.
 
-Viewers can open a live product directly, browse the wider catalogue, filter dynamically across every brand Channel3 returns, and explicitly save interest. StreamCart does not accept or persist a viewer identity, profile, or browsing history. It stores only channel/product/action totals, hides small cohorts, and buckets visible counts. Server-side safety policy, URL allowlists, channel-bound Twitch JWT authorization, replay controls, and production fail-closed configuration protect the demo path.
+Viewers can open a live product directly, browse the wider catalogue, filter dynamically across every brand Channel3 returns, and explicitly save interest. The application stores channel/product/action totals rather than viewer profiles or browsing histories. It suppresses small displayed action counts and buckets larger counts; aggregate ranking and infrastructure metadata are not guarantees of anonymity. Server-side safety policy, URL allowlists, channel-bound Twitch JWT authorization, replay controls, and production fail-closed configuration protect the demo path.
 
 ## How Codex was used
 
@@ -20,7 +22,7 @@ Primary Codex session/thread ID: `01a193cc-90fd-7643-9517-dfd3517e1d11`
 
 ## Technology
 
-- Twitch Panel Extension and Extension Helper
+- Twitch Video - Fullscreen overlay, Panel fallback, and Extension Helper
 - Twitch EventSub `channel.chat.message` webhook
 - Channel3 product search
 - React, Vite, TypeScript, Express, Zod
@@ -29,14 +31,17 @@ Primary Codex session/thread ID: `01a193cc-90fd-7643-9517-dfd3517e1d11`
 
 ## Privacy statement
 
-StreamCart ranks with contextual relevance, creator approval, catalogue quality, and capped aggregate intent. It does not construct viewer profiles or track people across channels. An intent event contains only channel, product, and action; the channel is bound to Twitch's verified Extension JWT in live mode.
+StreamCart ranks with contextual relevance, creator approval, catalogue quality, and capped aggregate intent. The application does not construct viewer profiles or track people across channels. Its intent payload contains channel, product, and action; the channel is bound to Twitch's verified Extension JWT in live mode. The service and its hosting providers may process normal request metadata, and suppressing displayed counts does not guarantee anonymity.
 
 ## Repository and demo placeholders
 
 - Repository: `https://github.com/Protocol-X-01/StreamCart`
-- Stable production application: `https://streamcart-twitchcon.vercel.app`
-- Public judge walkthrough: `https://streamcart-twitchcon.vercel.app/?channel=demo` (read-only creator actions; no Twitch credentials required)
-- Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.3`
+- Live application: `https://streamcart-twitchcon-site-20261102.onrender.com`
+- Public judge walkthrough: `https://streamcart-twitchcon-site-20261102.onrender.com/?channel=demo` (read-only creator actions; no Twitch credentials required)
+- Validation proof: `https://streamcart-twitchcon-site-20261102.onrender.com/proof/`
+- Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.6`
 - Demo video URL: add after the final sub-three-minute recording is validated.
 
-The Hosted Test URL is recording evidence for the owner's Twitch account, not a judge-install route. Twitch's hackathon FAQ states that judges cannot install an unreviewed Extension; judges receive the public walkthrough, repository instructions, and the video showing the Extension functioning inside Twitch.
+Render hosts the public application and API. The existing `https://streamcart-twitchcon.vercel.app` origin remains the Twitch API and EventSub callback proxy to the Render API.
+
+The Hosted Test URL is recording evidence for the broadcaster and the allowlisted test account, not a judge-install route. Twitch's hackathon FAQ states that judges cannot install an unreviewed Extension; judges receive the public walkthrough, repository instructions, and the video showing the Extension functioning inside Twitch.

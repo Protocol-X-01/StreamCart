@@ -25,6 +25,8 @@ The authoritative copy is stored in `assets/twitch/listing.json` and is checked 
 
 Editable vector sources for the taskbar icon and listing screenshot are retained beside the final PNG files. The logo and discovery artwork were generated with the built-in image-generation workflow using StreamCart's existing ink, violet, coral, and soft-white palette, then resized and audited locally.
 
+The listing screenshot now marks the panel as a sample and omits live viewer counts. Twitch 0.0.4 already inherited the previous screenshot; changing the Hosted Test listing image requires a new Local Test version and a separately approved upload.
+
 ## Review boundary
 
 Moving the extension back to Local Test, editing Version Details, uploading these files, and returning it to Hosted Test are external changes and require owner approval. Submitting for public review remains a separate action.

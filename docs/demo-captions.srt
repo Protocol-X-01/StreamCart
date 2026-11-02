@@ -1,39 +1,39 @@
 1
-00:00:00,000 --> 00:00:18,000
-This is StreamCart: relevant product discovery inside Twitch, with visible provenance and creator control. Viewers choose when to express interest.
+00:00:00,000 --> 00:00:15,000
+This is StreamCart: a small, movable discovery overlay that keeps the Twitch stream in view.
 
 2
-00:00:18,000 --> 00:00:38,000
-StreamCart combines creator picks with live Channel3 discovery. Every recommendation explains where it came from, and viewers can open the real product or the full catalogue.
+00:00:15,000 --> 00:00:35,000
+Open the capsule to see a real Channel3 product, why it appeared, and where to explore the full collection.
 
 3
-00:00:38,000 --> 00:01:02,000
-The creator steers the AI from Twitch chat. A signed EventSub webhook accepts this command only from that broadcaster.
+00:00:35,000 --> 00:00:58,000
+The broadcaster sets the live topic in Twitch chat. Signed EventSub carries that command to StreamCart.
 
 4
-00:01:02,000 --> 00:01:22,000
-The AI proposes; the creator decides. Approval changes the provenance in place, and the API binds that write to Twitch's signed channel claim.
+00:00:58,000 --> 00:01:18,000
+Channel3 finds candidates; the broadcaster decides. Approval changes the visible provenance and is authorized by Twitch's signed Extension token.
 
 5
-00:01:22,000 --> 00:01:40,000
-Viewer intent is explicit. StreamCart stores no viewer ID, profile, or browsing history—only channel, product, action, and aggregate count.
+00:01:18,000 --> 00:01:38,000
+A second test account chooses when to save interest. The event stores channel, product, and action—not a viewer ID or profile.
 
 6
-00:01:40,000 --> 00:01:56,000
-Channel3 supplies the live catalogue. StreamCart turns returned brands into instant filters while keeping the same safety policy and visible provenance.
+00:01:38,000 --> 00:01:58,000
+The full Twitch collection comes from Channel3. Every brand in its response becomes a quick catalogue filter.
 
 7
-00:01:56,000 --> 00:02:12,000
-Small action counts are suppressed and larger totals are bucketed. These are aggregate actions, not a count of unique viewers or a guarantee of anonymity.
+00:01:58,000 --> 00:02:16,000
+SafeSearch starts on. Turning it off broadens ambiguous results, while the server still blocks its mandatory weapon categories.
 
 8
-00:02:12,000 --> 00:02:31,000
-Codex took over the vertical slice, verified the Twitch and Channel3 contracts, built the signed authority and privacy boundaries, and retained release evidence for this session.
+00:02:16,000 --> 00:02:34,000
+Counts represent actions, not unique viewers. Small totals stay hidden and larger totals are grouped; this is not a guarantee of anonymity.
 
 9
-00:02:31,000 --> 00:02:45,000
-The Twitch subscription is enabled, Channel3 returns real products, and CI covers builds, twelve API tests, twenty-two listing checks, and the dependency audit.
+00:02:34,000 --> 00:02:50,000
+Codex built and validated this flow. The proof slate ties the Hosted Test, API checks, and implementation back to this session.
 
 10
-00:02:45,000 --> 00:02:55,000
-StreamCart: creator-controlled discovery, useful AI, and privacy by design—inside Twitch.
+00:02:50,000 --> 00:02:55,000
+StreamCart: creator-controlled discovery, while Twitch stays in view.

@@ -1,19 +1,57 @@
 # StreamCart
 
-Creator-controlled, AI-assisted product discovery for Twitch. StreamCart combines visibly creator-approved products with Channel3-powered discoveries, using only explicit viewer intent and identity-free aggregate metrics.
+![StreamCart concept: creator control, AI discovery and explicit viewer intent](assets/twitch/screenshot-1024x768.png)
 
-Live products open directly from the Twitch card. The browse-all catalogue preserves every brand returned by Channel3 and turns the current result set into instant brand filters without adding a tracking profile or another network request.
+[![Build, tests and audit](https://github.com/Protocol-X-01/StreamCart/actions/workflows/ci.yml/badge.svg)](https://github.com/Protocol-X-01/StreamCart/actions/workflows/ci.yml)
+
+**[Try the live walkthrough](https://streamcart-twitchcon-site-20261102.onrender.com/extension/index.html?channel=demo)** · **[Explore the collection](https://streamcart-twitchcon-site-20261102.onrender.com/catalogue/?channel=demo)** · **[View the build evidence](https://streamcart-twitchcon-site-20261102.onrender.com/proof/)**
+
+Creator-controlled, AI-assisted product discovery over Twitch video. StreamCart combines visibly creator-approved products with Channel3-powered discoveries, using only explicit viewer intent and identity-free aggregate metrics. Its active Hosted Test is a compact, draggable video overlay; a Panel placement remains available as a fallback.
+
+Live products open directly from the Twitch card. The collection catalogue turns the brands in its current Channel3 response into instant filters. Contextual search requests up to 20 products; collection browse requests up to 30 per response.
+
+<p align="center"><img src="assets/readme/panel-demo.jpg" width="320" alt="StreamCart panel showing a creator pick, product action, and privacy-preserving save count" /></p>
+
+<p align="center"><em>Standalone Panel preview with local demo data. The active Twitch build uses a movable video overlay and Channel3 products.</em></p>
+
+## How it works
+
+```mermaid
+flowchart LR
+  A["Creator: !gear topic"] --> B["Twitch EventSub"]
+  B --> C["StreamCart API"]
+  D["Channel3 collection"] --> C
+  C --> E["Ranked finds with provenance"]
+  E --> F["Twitch video overlay, Panel fallback, and catalogue"]
+  G["Creator approval"] --> C
+  H["Explicit save action"] --> C
+  C <--> I["Topics, approvals and aggregate actions"]
+```
+
+Channel3 supplies candidates. StreamCart filters them and ranks the remaining results using contextual relevance, creator approval, availability, quality and a capped aggregate-intent signal. Approval boosts a returned candidate; it does not automatically put it first. The panel labels creator picks and AI discoveries separately.
+
+Save totals represent **actions**, not unique viewers. The API suppresses counts below five and rounds larger counts down to groups of five; no viewer ID is stored with an intent event. These measures are not a guarantee of anonymity. See the [architecture](docs/architecture.md) and [security boundary](docs/security.md) for storage, verification and operational limits.
 
 ## Local demo
 
-Requires Node.js 20 or newer.
+Requires Node.js 20.11 or newer and npm. Copy the example environment and install dependencies from the repository root:
 
 ```bash
 cp .env.example .env
 npm ci
 npm run check
-npm run dev:api
+```
+
+Start these in **three separate terminals**, each from the repository root. The API command explicitly loads the root environment; the frontend defaults match the example's local ports.
+
+```bash
+# Terminal 1: API
+node --env-file=.env --import=tsx apps/api/src/server.ts
+
+# Terminal 2: extension preview
 npm run dev:extension
+
+# Terminal 3: catalogue
 npm run dev:catalogue
 ```
 Open `http://localhost:5173?channel=demo`. Trigger context:
@@ -44,7 +82,7 @@ The repository's GitHub Actions workflow repeats the clean install, workspace bu
 
 Run `npm run validate:release` for all locally provable gates. Run `npm run validate:release -- --strict` only when Twitch credentials, public HTTPS origins, and the publication remote are configured; strict mode fails while any release gate is pending.
 
-Immediately before rehearsing or recording, run `npm run demo:preflight`. It builds and tests the workspaces, then performs read-only checks against the configured public API, catalogue, Twitch panel, Channel3-backed discovery, and matching enabled EventSub subscription. Its output is credential-safe.
+Immediately before rehearsing or recording, run `npm run demo:preflight`. It builds and tests the workspaces, then performs read-only checks against the configured public API, catalogue, Twitch panel, hash-matched Hosted Test overlay asset, Channel3-backed discovery, and matching enabled EventSub subscription. Its output is credential-safe.
 
 ## Submission evidence
 
@@ -59,10 +97,10 @@ Immediately before rehearsing or recording, run `npm run demo:preflight`. It bui
 
 Twitch does not let judges install an unreviewed Extension. The public judge route therefore complements the required video and does not claim to be an installable marketplace release:
 
-1. Open the [standalone StreamCart overlay](https://streamcart-twitchcon.vercel.app/?channel=demo) and expand **Stream finds**.
-2. Open the [browse-all catalogue](https://streamcart-twitchcon.vercel.app/catalogue/) to inspect live Channel3 results, provenance, and client-side brand filters.
+1. Open the [public standalone StreamCart preview](https://streamcart-twitchcon-site-20261102.onrender.com/extension/index.html?channel=demo) and expand **Stream finds**. It shows the capsule UI without a Twitch video behind it; it is not the Hosted Test Extension or an OBS Browser Source setup.
+2. Open the [collection catalogue](https://streamcart-twitchcon-site-20261102.onrender.com/catalogue/?channel=demo) to inspect live Channel3 results, provenance, and client-side brand filters.
 3. Read the [validation record](docs/validation.md) for the real broadcaster chat → signed EventSub → Channel3 proof and the Hosted Test package identity.
-4. Open the deployment's `/proof/` page for the credential-free Codex session and validation slate used in the recording.
+4. Open the [proof page](https://streamcart-twitchcon-site-20261102.onrender.com/proof/) for the credential-free Codex session and validation slate.
 5. Run `npm ci && npm run check` for a credential-free local verification. Live Channel3, EventSub, and creator-authority checks require the environment variables documented in `.env.example`; no credentials are committed.
 
-The submission video is the authoritative evidence for the Extension running inside Twitch. The standalone route is intentionally read-only for creator-only actions because production writes require a Twitch-signed, channel-bound Extension JWT.
+The planned submission video will show the Extension running inside Twitch and the Codex build process. The standalone route is read-only for creator-only actions because production writes require a Twitch-signed, channel-bound Extension JWT.

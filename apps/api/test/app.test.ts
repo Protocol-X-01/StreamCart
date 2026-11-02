@@ -74,6 +74,16 @@ test('catalogue browse is collection-scoped and short searches fail safely', () 
   }
 }));
 
+test('catalogue SafeSearch preference is per request and rejects invalid values', () => withApi(async (base) => {
+  for (const setting of ['false', 'true', 'false']) {
+    const response = await fetch(`${base}/v1/catalogue/browse?channelId=demo&safeSearch=${setting}`);
+    assert.equal(response.status, 200);
+    assert.equal((await response.json() as { safeSearch: boolean }).safeSearch, setting === 'true');
+  }
+  const invalid = await fetch(`${base}/v1/catalogue/browse?channelId=demo&safeSearch=maybe`);
+  assert.equal(invalid.status, 400);
+}));
+
 test('CORS exposes responses only to configured browser origins', () => withApi(async (base) => {
   const allowed = await fetch(`${base}/health`, { headers: { origin: 'http://localhost:5173' } });
   assert.equal(allowed.headers.get('access-control-allow-origin'), 'http://localhost:5173');

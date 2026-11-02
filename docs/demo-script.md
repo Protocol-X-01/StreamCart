@@ -1,55 +1,57 @@
 # StreamCart: three-minute submission demo
 
-Target runtime: 2:40. Hard stop: 2:55. Record at 1080p with the Twitch player, chat, and StreamCart panel readable.
+Target and maximum runtime: 2:55, leaving five seconds below the three-minute limit. Record at 1080p with the Twitch player and overlay readable.
 
-The upload-ready caption and teleprompter track is `docs/demo-captions.srt`. Its cues match the run of show below and end at the 2:55 hard stop.
+The caption and teleprompter track is `docs/demo-captions.srt`. Its cues match the run of show below and end at 2:55.
 
 ## Situation and proof
 
-Livestream product discovery usually becomes either an unstructured link dump or invisible behavioural tracking. In under three minutes, prove the opposite: a creator changes the live shopping context from Twitch, AI finds relevant real products, the creator visibly approves one, and a viewer expresses interest without creating a viewer profile.
+Livestream product discovery usually becomes either an unstructured link dump or invisible behavioural tracking. In under three minutes, show a movable StreamCart capsule over the Twitch video, a real Channel3 discovery, visible broadcaster approval, and explicit viewer intent from a second test account—without taking the stream out of view or creating a viewer profile.
 
 ## Presenter run of show
 
 | Time | Action on screen | Narration |
 | --- | --- | --- |
-| 0:00–0:18 | Start on the expanded Twitch 0.0.3 **Finds from the stream** card showing its actual current provenance and metric. | “This is StreamCart: relevant product discovery inside Twitch, with visible provenance and creator control. Viewers choose when to express interest.” |
-| 0:18–0:38 | Collapse and reopen **Finds**; point to the provenance label and **View product** action. In the standalone judge view, briefly drag the compact capsule to show it can move out of the way. | “StreamCart combines creator picks with live Channel3 discovery. Every recommendation explains where it came from, and viewers can open the real product or the full catalogue.” |
-| 0:38–1:02 | As broadcaster, send `!gear streaming microphone` in Twitch chat and show the recommendation context change. | “The creator steers the AI from Twitch chat. A signed EventSub webhook accepts this command only from that broadcaster.” |
-| 1:02–1:22 | Show an AI-discovered microphone, then select **Approve this find** as broadcaster. | “The AI proposes; the creator decides. Approval changes the provenance in place, and the API binds that write to Twitch’s signed channel claim.” |
-| 1:22–1:40 | Show the viewer form of the card and select **Save interest** once. | “Viewer intent is explicit. StreamCart stores no viewer ID, profile, or browsing history—only channel, product, action, and aggregate count.” |
-| 1:40–1:56 | Open **Catalogue**, point out the live collection count, and tap one brand chip while showing creator-pick versus AI-discovery labels. Do not open a retailer page. | “Channel3 supplies the live catalogue. StreamCart turns the returned brands into instant filters while keeping the same server-side safety policy and visible provenance.” |
-| 1:56–2:12 | Return to the actual interest metric. Explain suppression without adding artificial saves. If showing a test fixture, label it visibly as simulated. | “Small action counts are suppressed and larger totals are bucketed. These are aggregate actions, not a count of unique viewers or a guarantee of anonymity.” |
-| 2:12–2:31 | Show the public `/proof/` slate with Hosted Test 0.0.3, 12 API tests, and the Codex session ID. | “Codex took over the vertical slice, verified the Twitch and Channel3 contracts, built the signed authority and privacy boundaries, and kept the release evidence tied to this session.” |
-| 2:31–2:45 | Show the concise validation summary, not environment files or raw headers. | “The Twitch subscription is enabled, Channel3 returns real products, and CI covers builds, twelve API tests, 22 listing checks, and the dependency audit.” |
-| 2:45–2:55 | End on the approved Twitch product card. | “StreamCart: creator-controlled discovery, useful AI, and privacy by design—inside Twitch.” |
+| 0:00–0:15 | Start on the live Twitch player with the compact 0.0.6 capsule in the corner; open it once. | “This is StreamCart: a small, movable discovery overlay that keeps the Twitch stream in view.” |
+| 0:15–0:35 | Show the real product image, `AI DISCOVERY` or `CREATOR PICK` provenance, and the catalogue action without opening a retailer page. | “Open the capsule to see a real Channel3 product, why it appeared, and where to explore the full collection.” |
+| 0:35–0:58 | As broadcaster, send `!gear streaming microphone` in Twitch chat; show the topic and recommendation change. | “The broadcaster sets the live topic in Twitch chat. Signed EventSub carries that command to StreamCart.” |
+| 0:58–1:18 | Show the refreshed AI-discovered product, then select **Approve this find** as broadcaster. | “Channel3 finds candidates; the broadcaster decides. Approval changes the visible provenance and is authorized by Twitch’s signed Extension token.” |
+| 1:18–1:38 | Switch to the allowlisted viewer account in Firefox and choose **Save interest** once. | “A second test account chooses when to save interest. The event stores channel, product, and action—not a viewer ID or profile.” |
+| 1:38–1:58 | Open **Catalogue**, point out the **Twitch** collection, and tap one dynamically returned brand filter. Do not open a retailer page. | “The full Twitch collection comes from Channel3. Every brand in its response becomes a quick catalogue filter.” |
+| 1:58–2:16 | Show SafeSearch enabled, then its opt-out control. Avoid searching for or displaying weapons. | “SafeSearch starts on. Turning it off broadens ambiguous results, while the server still blocks its mandatory weapon categories.” |
+| 2:16–2:34 | Return to the actual aggregate metric. Do not seed saves; if a simulated example is used, label it on screen. | “Counts represent actions, not unique viewers. Small totals stay hidden and larger totals are grouped; this is not a guarantee of anonymity.” |
+| 2:34–2:50 | Show readable footage of the primary Codex build thread and a resulting diff, then the refreshed Render `/proof/` slate with Hosted Test 0.0.6, 15 API tests, 22 listing checks, and the session ID. | “Codex built and validated this flow. The proof slate ties the Hosted Test, API checks, and implementation back to this session.” |
+| 2:50–2:55 | End on the Twitch video with the compact capsule visible. | “StreamCart: creator-controlled discovery, while Twitch stays in view.” |
 
 ## Recording checklist
 
-- Use a test broadcaster account and Twitch Hosted Test; do not expose the Developer Console or terminal environment.
-- Twitch registers StreamCart as a Panel below the channel, so it cannot cover the video player. The Twitch panel starts collapsed and can be reopened; the standalone judge overlay is draggable in both compact and expanded states.
+- Use the creator account in Chrome and the allowlisted test viewer in Firefox. Twitch Hosted Test 0.0.6 is active in Video Overlay 1; the separate Panel path is only a fallback.
+- Start the channel only when the owner is ready to go live. Capture the Firefox Twitch player window, not the desktop. Do not expose the Developer Console or terminal environment.
 - Do not seed artificial saves into the real channel. Counts represent actions, not verified distinct viewers. Never display secrets, JWTs, `.env`, or raw webhook headers.
-- Keep one approved product and one AI-discovered product in the visible result set.
+- Keep one creator-approved product and one AI-discovered product in the visible result set.
 - Run `npm run check` immediately before recording and retain its output as evidence.
 - Confirm the final video is under three minutes and visibly demonstrates the Twitch interaction and Codex-built implementation.
 - Include visible Codex footage or evidence, not narration alone. Keep the primary session ID `01a193cc-90fd-7643-9517-dfd3517e1d11` readable.
 - Use no copyrighted music. Avoid opening retailer pages or dwelling on third-party branding; the Twitch interaction, StreamCart UI, and Codex evidence are the subject.
 - Before recording, complete one rehearsal using only the exact path above. Do not improvise console, configuration, or alternate-product paths.
-- Keep a clean validation-summary tab ready; never open `.env`, Vercel settings, Twitch Developer Console, or raw webhook traffic while recording.
+- Keep a clean validation-summary tab ready; never open `.env`, Render/Vercel settings, Twitch Developer Console, or raw webhook traffic while recording.
 
 ## Go/no-go rehearsal gates
 
-- `npm run demo:preflight` passes. It runs the local build/tests, then checks the public API, catalogue, Twitch panel, live discovery, and matching enabled EventSub subscription without printing credentials.
+- `npm run demo:preflight` passes. It runs the local build/tests, then checks the public API, catalogue, Twitch panel path, hash-matched Hosted Test overlay asset, live discovery, and matching enabled EventSub subscription without printing credentials.
 - Public `/health` reports `mode: live` and `safeSearch: true`.
 - EventSub subscription status is `enabled`.
-- Twitch Extension Manager and the installed channel panel both identify Hosted Test version `0.0.3`; do not record `0.0.2` or `0.0.1`.
+- Twitch Extension Manager identifies Hosted Test `0.0.6` with Panel `panel.html` and Video - Fullscreen `overlay.html`; Extension Manager shows it active in Overlay 1. Its testing-account allowlist includes the broadcaster and the separate viewer account.
+- Confirm that the allowlisted Firefox session sees the capsule over the stream before rehearsal. A loaded console status or local preview does not prove the overlay rendered in Twitch.
+- Confirm the public Render `/proof/` page has been refreshed to 0.0.6 and 15 API tests before showing it in the recording; the current public slate is stale.
 - Broadcaster `!gear streaming microphone` changes the public discovery topic.
-- Contextual discovery returns up to 20 ranked results; the separate full Twitch collection browse returned 29 finds in the latest validation but is live data. Read the on-screen count rather than promising a fixed number, and do not conflate the two counts in narration.
+- Contextual discovery returns up to 20 ranked results; the separate full Twitch collection browse returns a live count. Read the on-screen count rather than promising a fixed number, and do not conflate the two counts in narration.
 - The selected AI result can be approved and appears as `creator_approved` after refresh.
 - The actual metric displays correctly; any simulated threshold demonstration is isolated and visibly labelled.
-- Both **View product** and **View catalogue** open the intended destination.
+- Both **View product** and **View catalogue** open the intended Channel3 or StreamCart destination.
 - A timed rehearsal includes both working-on-Twitch footage and visible Codex build evidence, and finishes by 2:55.
 
-The real broadcaster command path was proven on 1 November 2026 against the public preview. Re-run it during the recorded rehearsal only after the final stable deployment and EventSub callback are in place.
+The real broadcaster command path was proven on 1 November 2026 against the public preview. Re-run it during the recorded rehearsal only after the stable EventSub callback is confirmed and the channel is live.
 
 ## Failure-safe route
 
@@ -67,7 +69,7 @@ If Twitch or Channel3 is unavailable during recording, do not pretend the live p
 - Latest full stable preflight returned 12 API tests, 22 listing checks, 20 contextual discovery results, and 30 Twitch-collection products; live health/SafeSearch and EventSub remained enabled. Release `d40896b` passed CI run `41409674947` and strict release validation 12/12.
 - Render validation used signed synthetic EventSub messages. Repeat an actual broadcaster chat command for the recorded proof; the earlier real-chat evidence predates the migration.
 - The topic was restored, but prior Blob approvals and aggregate counts were not migrated. Approve a real result during rehearsal before claiming creator approval in footage.
-- The stable deployed `/proof/` slate was refreshed and verified. It displays Hosted Test 0.0.3, 12 API tests, 22 listing checks, and the Codex session ID.
+- At this earlier checkpoint, the stable deployed `/proof/` slate was refreshed and verified with Hosted Test 0.0.3, 12 API tests, 22 listing checks, and the Codex session ID. The current 0.0.4 proof verification is recorded in `docs/validation.md`.
 - Twitch's design guide lists 300px as the default Panel Height (range 100–500px); the About-page panel appears about 320×335px including Twitch chrome. The panel stylesheet previously forced a 496px minimum. Version `0.0.3` removes it; visual verification on the channel showed the collapsed capsule with no inner scrollbar and the expanded card loading correctly. The expanded card remains scrollable inside Twitch's fixed panel.
-- Version `0.0.3` is active in Panel 1 and version `0.0.2` remains available as rollback. Twitch accepted six files; SHA-256 `605129e2dc9647da453f2e0de9f16a1309115c9875eec66e40f7b6a600008e09`; uploaded MD5 `a4c5b10d9f3faf78afa89457c3ce8b19` matched local. The Hosted Test page rendered `/0.0.3/a4c5b10d9f3faf78afa89457c3ce8b19/panel.html`.
-- The current local preview and unuploaded version `0.0.4` candidate add a translucent backplate and lightly translucent capsules. Candidate `streamcart-twitch-extension-0.0.4-translucent-candidate-r2.zip` has SHA-256 `56cdb23f9dd757c6e3303b38c62c272af3d7b084c10bb0d95cb794d9d6f7bd18`; it has not been uploaded or activated. Version `0.0.3` remains the live Hosted Test until separate approval.
+- At this earlier checkpoint, version `0.0.3` was active in Panel 1 and version `0.0.2` remained available as rollback. Twitch accepted six files; SHA-256 `605129e2dc9647da453f2e0de9f16a1309115c9875eec66e40f7b6a600008e09`; uploaded MD5 `a4c5b10d9f3faf78afa89457c3ce8b19` matched local. The Hosted Test page rendered `/0.0.3/a4c5b10d9f3faf78afa89457c3ce8b19/panel.html`.
+- At that earlier checkpoint, the 0.0.4 translucent candidate had not yet been uploaded; the 2 November activation and package identity are recorded in `docs/validation.md`.

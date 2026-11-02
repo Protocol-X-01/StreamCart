@@ -12,9 +12,11 @@
 - SafeSearch defaults on. Weapons and weapon-specific accessories remain blocked even if SafeSearch is disabled.
 - Product and image URLs require HTTPS, standard TLS port, no embedded credentials, and configured hostname allowlists.
 - CORS uses an explicit origin list, JSON bodies are size-limited, and viewer writes have a bounded per-source rate limiter.
-- Local persistent writes use a private file and atomic replacement. The Vercel deployment uses a private Blob store with conditional-write retries; channel and product cardinality are bounded.
+- When `DATABASE_URL` is configured, mutable state uses a Postgres transaction and row lock. Otherwise the store can use private Blob with conditional-write retries, or a private local file with atomic replacement. Channel and product cardinality are bounded.
 - Container context excludes `.env`, data, build output, logs, and archives; runtime runs as an unprivileged user.
 
 ## Production scale-up gates
 
-Before a multi-instance public launch, replace process-local replay and rate-limit state with shared TTL storage, move mutable state from the hackathon Blob document to a transactional managed database, add gateway-level abuse controls and observability, and rotate credentials through the deployment platform's secret manager. These are scale and operations gates, not hidden claims of the hackathon build.
+Before a multi-instance public launch, replace process-local replay and rate-limit state with shared TTL storage, add gateway-level abuse controls and observability, and rotate credentials through the deployment platform's secret manager. The current Render deployment uses managed Postgres; a free database has an expiry and operational limits. These are scale and operations gates, not hidden claims of the hackathon build.
+
+Intent metrics store aggregate action counts without viewer IDs. The signed Twitch channel ID is retained, network addresses are used transiently for rate limiting, and Twitch, Channel3, retailers and hosting infrastructure may process their own data. Ranking uses the same published five-action buckets returned to callers, so suppressed per-product counts cannot independently affect result order. Published totals remain action counts rather than unique-viewer counts; bucketing does not establish anonymity or differential privacy. This behavior remains local until its API release is deployed.

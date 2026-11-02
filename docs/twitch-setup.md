@@ -4,7 +4,7 @@ No Twitch secret belongs in the extension bundle or repository.
 
 ## Required Twitch values
 
-- `TWITCH_EXTENSION_ID`: ID of a Video Component Extension.
+- `TWITCH_EXTENSION_ID`: ID of the StreamCart Twitch Extension. Placement types and viewer paths are configured per version.
 - `TWITCH_EXTENSION_SECRET`: base64 Extension JWT signing secret from the Extension Console.
 - `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET`: server-only Developer Application credentials used when creating EventSub subscriptions.
 - `TWITCH_BROADCASTER_ID`: numeric user ID of the demo broadcaster.
@@ -16,8 +16,8 @@ No Twitch secret belongs in the extension bundle or repository.
 
 ## Configure and validate
 
-1. In the Twitch Developer Console, select the existing StreamCart Panel Extension (`3z76w1eigzegdllmz3ud4l2q8bwjly`) and create or select a Developer Application.
-2. Keep the Panel Viewer Path as `panel.html`; the extension build emits that Twitch entry point plus `index.html` for the standalone overlay preview. Configure the allowlist to include the API/catalogue origins.
+1. In the Twitch Developer Console, select the existing StreamCart Extension (`3z76w1eigzegdllmz3ud4l2q8bwjly`) and create or select a Developer Application. Hosted Test version `0.0.6` is active in Video Overlay 1 and retains its Panel asset path as a fallback. Live in-player rendering still requires a stream rehearsal.
+2. For video placement, select **Panel** and **Video - Fullscreen** under Asset Hosting. Set Panel Viewer Path to `panel.html` and Video - Fullscreen View Path to `overlay.html`. This serves the small, draggable StreamCart capsule over the video; clicking it expands the product card. Keep the Panel path as a fallback. Configure the URL-fetch capability allowlist to include the API/catalogue origins.
 3. Set the production API environment with `DEMO_MODE=false`, the Twitch/Channel3 secrets, explicit CORS origins, and explicit product/image hostname allowlists. CORS must include both the stable app origin and `https://<extension-id>.ext-twitch.tv`, which is the origin used by Twitch-hosted extension frames.
 4. Deploy the API to a public HTTPS endpoint. Its EventSub callback is `/v1/twitch/eventsub` on port 443.
 5. Add `TWITCH_OAUTH_REDIRECT` to the application's OAuth Redirect URLs. If the broadcaster is also the chat user, run `node --env-file=.env scripts/authorize-twitch.mjs combined`, visit the printed Twitch URL, and authorize once. For a separate chat user, run `chat` while signed into that account and `broadcaster` while signed into the broadcaster account; `channel:bot` may be omitted when the chat user is already a moderator. The helper verifies `state`, exchanges and validates the token locally, reports only user ID/scopes, and does not persist or print either token.
@@ -28,6 +28,10 @@ No Twitch secret belongs in the extension bundle or repository.
 Twitch authorization supplies the Extension Helper's `channelId`, `userId`, and JWT token through `onAuthorized`. StreamCart sends the token to the API; the API trusts only its verified channel claim, never a browser-supplied channel ID.
 
 Deployment, EventSub registration, and Twitch upload require explicit owner approval.
+
+Hosted Test visibility is separate from the URL-fetch capability allowlist. Add each Twitch broadcaster/viewer account that must see the unreviewed version in the version's **Testing Account Allowlist**. Twitch locks this list outside Local Test; after an approved edit, return the version to Hosted Test and confirm the account remains listed.
+
+The video overlay must remain compact by default and relevant to the live topic. Twitch's public review rules also restrict off-site links to third-party product-purchase pages; Hosted Test does not establish public-review eligibility. Review the current policy before submitting for release.
 
 For the final callback migration, use the guarded helper only after explicit deletion approval:
 

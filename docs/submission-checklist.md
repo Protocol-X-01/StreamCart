@@ -12,21 +12,22 @@ Verified against the official Devpost overview and FAQ on 1 November 2026; deadl
 
 | Requirement | StreamCart evidence | Status |
 | --- | --- | --- |
-| Repository containing source, assets, and run instructions | `https://github.com/Protocol-X-01/StreamCart` and `README.md` | Ready |
+| Repository containing source, assets, and run instructions | `https://github.com/Protocol-X-01/StreamCart` and `README.md` | Existing public repository; reconcile the final candidate and README before submission |
 | Text description covering features and Codex use | `docs/submission.md` | Ready |
 | Primary Codex session ID | `01a193cc-90fd-7643-9517-dfd3517e1d11` | Ready |
 | Publicly visible YouTube demo under three minutes | URL pending recording/upload | **Missing** |
 | Footage showing the project functioning on Twitch | Timed Hosted Test sequence in `docs/demo-script.md` | Pending recording |
 | Footage showing how Codex built the project | Timed Codex evidence beat in `docs/demo-script.md` | Pending recording |
 | YouTube title, description, settings, and upload validation | `docs/youtube-upload.md` | Ready |
-| One-screen Codex and validation slate | `https://streamcart-twitchcon.vercel.app/proof/` | Refreshed deployment verified |
-| Twitch Hosted Test package | Version `0.0.3`, hash-matched and active in Panel 1 | Installed and visually verified; fresh real-chat rehearsal pending |
+| One-screen Codex and validation slate | `https://streamcart-twitchcon-site-20261102.onrender.com/proof/` | Public Render page is still 0.0.5 / 12 tests; local candidate is 0.0.6 / 15 tests. Refresh Render after owner approval before recording. |
+| Twitch Hosted Test package | Version `0.0.6`, hash-matched, configured for Panel + Video - Fullscreen, and active in Overlay 1 | Extension Manager verified; actual in-player rendering and interaction still need a live rehearsal |
+| Test viewer access | Separate viewer account added beside the broadcaster to the 0.0.6 Testing Account Allowlist | Saved and rechecked after restoring Hosted Test; Firefox playback still needs verification |
 | Final Devpost Submit action | Owner-controlled | **Missing** |
 
 ## Judge access
 
 - The official FAQ warns that judges cannot install an unreviewed Extension.
-- Use Hosted Test to record the real Twitch experience on the owner account.
+- Use Hosted Test to record the real Twitch experience with the creator in Chrome and the allowlisted viewer in Firefox.
 - Give judges the public standalone walkthrough, catalogue, repository, and validation record.
 - Do not state or imply that Hosted Test is publicly installable or Twitch-approved.
 

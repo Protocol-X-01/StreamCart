@@ -8,15 +8,15 @@ StreamCart — Creator-Controlled AI Product Discovery for Twitch
 
 ## Description
 
-StreamCart turns live Twitch context into creator-controlled product discovery.
+StreamCart keeps product discovery inside Twitch without taking viewers away from the stream. A compact, draggable video overlay shows creator-approved picks and Channel3 discoveries.
 
-A broadcaster sets the live topic with `!gear <topic>`. Twitch verifies the signed EventSub message and broadcaster identity, Channel3 discovers relevant products, and the creator decides which AI finds earn approval. Viewers can explore products and explicitly save interest without StreamCart building a viewer profile or tracking them across channels.
+A broadcaster sets the live topic with `!gear <topic>`. StreamCart verifies Twitch’s signed EventSub message and checks the broadcaster identity, Channel3 discovers relevant products, and the creator decides which AI finds earn approval. Viewers can explore products and explicitly save interest without StreamCart building a viewer profile or tracking them across channels.
 
 Built with Codex for the Codex x TwitchCon Hackathon.
 
-- Live application: https://streamcart-twitchcon.vercel.app
-- Judge walkthrough: https://streamcart-twitchcon.vercel.app/?channel=demo
-- Validation proof: https://streamcart-twitchcon.vercel.app/proof/
+- Live application: https://streamcart-twitchcon-site-20261102.onrender.com
+- Judge walkthrough: https://streamcart-twitchcon-site-20261102.onrender.com/?channel=demo
+- Validation proof: https://streamcart-twitchcon-site-20261102.onrender.com/proof/
 - Source: https://github.com/Protocol-X-01/StreamCart
 - Codex session: `01a193cc-90fd-7643-9517-dfd3517e1d11`
 
@@ -37,7 +37,7 @@ Primary line: **AI FINDS. CREATOR DECIDES.**
 
 Secondary line: **LIVE ON TWITCH**
 
-Use the StreamCart panel and violet/coral brand treatment. Avoid retailer logos, Twitch branding, prices, and dense text.
+Use the StreamCart capsule and violet/coral brand treatment. Avoid retailer logos, Twitch branding, prices, and dense text.
 
 ## Chapters
 
@@ -45,10 +45,10 @@ Do not add chapters: the submission is under three minutes and should play as on
 
 ## Pre-upload acceptance
 
-- Duration is between 2:40 and 2:55, never 3:00 or longer.
+- Duration is no longer than 2:55, never 3:00 or longer.
 - The first three seconds show StreamCart's outcome, not a title-only delay.
-- Twitch chat, the hosted panel, a live Channel3 result, creator approval, and explicit viewer intent are readable.
-- The Codex proof slate and session ID are visible on screen.
+- Twitch chat, the Hosted Test video overlay, a live Channel3 result, creator approval, and explicit viewer intent are readable.
+- The refreshed Codex proof slate and session ID are visible on screen.
 - No `.env`, token, JWT, webhook header, developer-console secret, or account setting appears.
 - Audio is intelligible; no copyrighted music is present.
 - Export is 1920x1080 H.264 with an AAC audio stream.
