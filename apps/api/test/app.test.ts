@@ -151,6 +151,17 @@ test('catalogue SafeSearch preference is per request and rejects invalid values'
   assert.equal(invalid.status, 400);
 }));
 
+test('public catalogue browse and search share a bounded service request budget', () => withApi(async (base) => {
+  for (let index = 0; index < 600; index += 1) {
+    const path = index % 2 === 0 ? '/v1/catalogue/browse' : '/v1/catalogue/search?q=streaming%20setup';
+    const response = await fetch(`${base}${path}`);
+    assert.equal(response.status, 200);
+  }
+  const limited = await fetch(`${base}/v1/catalogue/search?q=streaming%20setup`);
+  assert.equal(limited.status, 429);
+  assert.deepEqual(await limited.json(), { error: 'rate_limited' });
+}));
+
 test('CORS exposes responses only to configured browser origins', () => withApi(async (base) => {
   const allowed = await fetch(`${base}/health`, { headers: { origin: 'http://localhost:5173' } });
   assert.equal(allowed.headers.get('access-control-allow-origin'), 'http://localhost:5173');

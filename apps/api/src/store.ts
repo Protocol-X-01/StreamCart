@@ -8,8 +8,36 @@ export type ProductMetrics = Record<IntentAction, number>;
 type Data = { approved: Record<string, string[]>; topics: Record<string, string>; metrics: Record<string, Record<string, ProductMetrics>> };
 const MAX_CHANNELS = 1_000;
 const MAX_PRODUCTS_PER_CHANNEL = 500;
+export const MAX_APPROVAL_CHANNELS = MAX_CHANNELS;
+export const MAX_APPROVALS_PER_CHANNEL = MAX_PRODUCTS_PER_CHANNEL;
 const EMPTY_DATA = (): Data => ({ approved: { demo: ['kb1'] }, topics: {}, metrics: {} });
 type MaybePromise<T> = T | Promise<T>;
+
+export class StoreCapacityError extends Error {
+  constructor(readonly code: 'approval_channel_limit' | 'approval_product_limit') {
+    super(code);
+    this.name = 'StoreCapacityError';
+  }
+}
+
+function addApproval(data: Data, channelId: string, productId: string) {
+  const current = data.approved[channelId] ?? [];
+  if (current.includes(productId)) return false;
+  const activeChannels = Object.values(data.approved).reduce((total, products) => total + (products.length > 0 ? 1 : 0), 0);
+  if (current.length === 0 && activeChannels >= MAX_APPROVAL_CHANNELS) throw new StoreCapacityError('approval_channel_limit');
+  if (current.length >= MAX_APPROVALS_PER_CHANNEL) throw new StoreCapacityError('approval_product_limit');
+  data.approved[channelId] = [...current, productId];
+  return true;
+}
+
+function removeApproval(data: Data, channelId: string, productId: string) {
+  const current = data.approved[channelId] ?? [];
+  if (!current.includes(productId)) return false;
+  const remaining = current.filter((id) => id !== productId);
+  if (remaining.length) data.approved[channelId] = remaining;
+  else delete data.approved[channelId];
+  return true;
+}
 
 export interface StorePort {
   approved(channelId: string): MaybePromise<string[]>;
@@ -37,8 +65,8 @@ export class Store {
     fs.renameSync(temporary, target);
   }
   approved(channelId: string) { return this.data.approved[channelId] ?? []; }
-  approve(channelId: string, productId: string) { this.data.approved[channelId] = [...new Set([...(this.data.approved[channelId] ?? []), productId])]; this.save(); }
-  unapprove(channelId: string, productId: string) { this.data.approved[channelId] = (this.data.approved[channelId] ?? []).filter((id) => id !== productId); this.save(); }
+  approve(channelId: string, productId: string) { if (addApproval(this.data, channelId, productId)) this.save(); }
+  unapprove(channelId: string, productId: string) { if (removeApproval(this.data, channelId, productId)) this.save(); }
   topic(channelId: string) { return this.data.topics[channelId] ?? 'stream setup'; }
   setTopic(channelId: string, topic: string) { this.data.topics[channelId] = topic; this.save(); }
   recordIntent(channelId: string, productId: string, action: IntentAction) {
@@ -68,10 +96,11 @@ export class BlobStore implements StorePort {
     return { data: normalized(input), etag: result.blob.etag };
   }
 
-  private async mutate<T>(change: (data: Data) => T): Promise<T> {
+  private async mutate<T>(change: (data: Data) => T, isNoop?: (result: T) => boolean): Promise<T> {
     for (let attempt = 0; attempt < 5; attempt += 1) {
       const { data, etag } = await this.read();
       const result = change(data);
+      if (isNoop?.(result)) return result;
       try {
         await put(this.pathname, JSON.stringify(data), {
           access: 'private', addRandomSuffix: false, allowOverwrite: Boolean(etag),
@@ -86,8 +115,8 @@ export class BlobStore implements StorePort {
   }
 
   async approved(channelId: string) { return (await this.read()).data.approved[channelId] ?? []; }
-  async approve(channelId: string, productId: string) { await this.mutate((data) => { data.approved[channelId] = [...new Set([...(data.approved[channelId] ?? []), productId])]; }); }
-  async unapprove(channelId: string, productId: string) { await this.mutate((data) => { data.approved[channelId] = (data.approved[channelId] ?? []).filter((id) => id !== productId); }); }
+  async approve(channelId: string, productId: string) { await this.mutate((data) => addApproval(data, channelId, productId), (added) => !added); }
+  async unapprove(channelId: string, productId: string) { await this.mutate((data) => removeApproval(data, channelId, productId), (removed) => !removed); }
   async topic(channelId: string) { return (await this.read()).data.topics[channelId] ?? 'stream setup'; }
   async setTopic(channelId: string, topic: string) { await this.mutate((data) => { data.topics[channelId] = topic; }); }
   async recordIntent(channelId: string, productId: string, action: IntentAction) {
@@ -127,7 +156,7 @@ export class PostgresStore implements StorePort {
     return normalized(result.rows[0]?.payload);
   }
 
-  private async mutate<T>(change: (data: Data) => T): Promise<T> {
+  private async mutate<T>(change: (data: Data) => T, isNoop?: (result: T) => boolean): Promise<T> {
     await this.initialize();
     const client: PoolClient = await this.pool.connect();
     try {
@@ -136,6 +165,10 @@ export class PostgresStore implements StorePort {
       const selected = await client.query<{ payload: Partial<Data> }>('SELECT payload FROM streamcart_state WHERE id = 1 FOR UPDATE');
       const data = normalized(selected.rows[0]?.payload);
       const result = change(data);
+      if (isNoop?.(result)) {
+        await client.query('COMMIT');
+        return result;
+      }
       await client.query('UPDATE streamcart_state SET payload = $1::jsonb, updated_at = now() WHERE id = 1', [JSON.stringify(data)]);
       await client.query('COMMIT');
       return result;
@@ -148,8 +181,8 @@ export class PostgresStore implements StorePort {
   }
 
   async approved(channelId: string) { return (await this.read()).approved[channelId] ?? []; }
-  async approve(channelId: string, productId: string) { await this.mutate((data) => { data.approved[channelId] = [...new Set([...(data.approved[channelId] ?? []), productId])]; }); }
-  async unapprove(channelId: string, productId: string) { await this.mutate((data) => { data.approved[channelId] = (data.approved[channelId] ?? []).filter((id) => id !== productId); }); }
+  async approve(channelId: string, productId: string) { await this.mutate((data) => addApproval(data, channelId, productId), (added) => !added); }
+  async unapprove(channelId: string, productId: string) { await this.mutate((data) => removeApproval(data, channelId, productId), (removed) => !removed); }
   async topic(channelId: string) { return (await this.read()).topics[channelId] ?? 'stream setup'; }
   async setTopic(channelId: string, topic: string) { await this.mutate((data) => { data.topics[channelId] = topic; }); }
   async recordIntent(channelId: string, productId: string, action: IntentAction) {
