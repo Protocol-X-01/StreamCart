@@ -1,6 +1,6 @@
 # StreamCart: three-minute portfolio demo recapture plan
 
-**Status (3 November 2026):** The authenticated Devpost account showed StreamCart as **Submitted**; the [public project page](https://devpost.com/software/streamcart-yhwiup) embeds the [Unlisted demo video](https://www.youtube.com/watch?v=TIjEbeJRUt8). The player reported 106.661 seconds. The exact submission timestamp was not visible, so this does not establish whether it was submitted before the deadline. This document is now a portfolio recapture plan, not a plan for changing the judged entry. The submitted video's full visual contents were not independently reviewed; its auto-transcript describes Twitch and Codex footage but says live creator approval still needs verification. The separate 89.767-second local review cut v4 is not the submitted video.
+**Status (3 November 2026):** The authenticated Devpost account showed StreamCart as **Submitted**; the [public project page](https://devpost.com/software/streamcart-yhwiup) embeds the [Unlisted demo video](https://www.youtube.com/watch?v=TIjEbeJRUt8). The player reported 106.661 seconds. Captions were reviewed and six visual moments sampled; the sample includes Twitch context and discovery, but no approval/save click is visible in those moments and the editor segment does not clearly show direct Codex UI. The exact submission timestamp remains unknown. This document is a portfolio recapture plan, not a plan for changing the judged entry. The separate 89.767-second local review cut v4 is not the submitted video.
 
 Target and maximum runtime: 2:55, leaving five seconds below the three-minute limit. Record at 1080p with the Twitch player and overlay readable.
 
@@ -8,12 +8,12 @@ Target and maximum runtime: 2:55, leaving five seconds below the three-minute li
 
 ## Current evidence and capture gaps
 
-- The current Hosted Test is 0.0.7. The Render proof page returns HTTP 200 and shows 0.0.7, 20 automated tests, 22 listing checks, and the retained Codex session ID.
-- Commit `4d710c2` is live on both Render services. The latest local `npm run check` passed 20 API/security tests and 22 listing checks; strict release validation passed 12/12. The direct post-deployment smoke confirmed live health with SafeSearch enabled and two distinct 30-item pages from the Channel3 `Twitch` collection.
-- Strict release validation passed 12/12 checks on 3 November, including the production dependency audit and package/proof/caption consistency.
+- Twitch Hosted Test `0.0.8` is active in Video Overlay 1. The current Render API is live on commit `3c0ebe49b7a3bc2848b27dd4b1ce903d5c9c9c74`; Render auto-deploy remains off.
+- The exact `npm run check` passed on this source: all workspace builds, 29 API/security tests, and 22 Twitch listing checks. The live preflight passed against health, SafeSearch, 20 contextual results, the 29-item Channel3 `Twitch` collection, Panel, hash-matched 0.0.8 overlay, and enabled EventSub.
+- The Render static site has not yet been refreshed: its last verified deployment is `4d710c2`, and the public proof page still shows Hosted Test 0.0.7 and 20 tests. The local proof candidate now says 0.0.8 and 29 API/security tests; publishing it requires a separate site deployment approval.
 - The separate retained 89.767-second local review cut v4 includes the live Sony microphone card, the Twitch chat command, Channel3 results, and the current Render proof state. It shows the viewer's Saved state, but does not record the save click, direct StreamCart Codex UI, or a live creator-approval click. It is a private portfolio review, not the submitted 106.661-second video.
-- Current live discovery returns 20 `ai_discovered` products and zero `creator_approved` products. No live broadcaster approval click is recorded; that action remains unverified, not completed proof.
-- The local review cut has no verified direct StreamCart Codex UI clip. `code-fresh.mp4` shows a GitHub source page, not Codex; do not use it to satisfy the Codex-footage requirement. The submitted video's alleged Codex segment has not been visually verified.
+- Current live discovery returns 20 products: one `creator_approved` Sony ECM-S1 and 19 `ai_discovered` products. That live state does not prove that the approval click appears in a recording.
+- The submitted video's captions were reviewed and six frames sampled. No approval/save click appears in the sample; the local review cut is known not to record either click. Direct Codex UI is not clear in the reviewed sample. Do not claim those actions are visibly documented.
 
 ## Situation and proof
 
@@ -23,7 +23,7 @@ Livestream product discovery usually becomes either an unstructured link dump or
 
 | Time | Action on screen | Narration |
 | --- | --- | --- |
-| 0:00–0:15 | Start on the live Twitch player with the compact 0.0.7 capsule in the corner; open it once. | “This is StreamCart: a small, movable discovery overlay that keeps the Twitch stream in view.” |
+| 0:00–0:15 | Start on the live Twitch player with the compact 0.0.8 capsule in the corner; open it once. | “This is StreamCart: a small, movable discovery overlay that keeps the Twitch stream in view.” |
 | 0:15–0:35 | Show the real product image, `AI DISCOVERY` or `CREATOR PICK` provenance, and the catalogue action without opening a retailer page. | “Open the capsule to see a real Channel3 product, why it appeared, and where to explore the full collection.” |
 | 0:35–0:58 | As broadcaster, send `!gear streaming microphone` in Twitch chat; show the topic and recommendation change. | “The broadcaster sets the live topic in Twitch chat. Signed EventSub carries that command to StreamCart.” |
 | 0:58–1:18 | Show the refreshed AI-discovered product, then select **Approve this find** as broadcaster. | “Channel3 finds candidates; the broadcaster decides. Approval changes the visible provenance and is authorized by Twitch’s signed Extension token.” |
@@ -31,12 +31,12 @@ Livestream product discovery usually becomes either an unstructured link dump or
 | 1:38–1:58 | Open **Catalogue**, point out the **Twitch** collection, and tap one dynamically returned brand filter. Do not open a retailer page. | “The full Twitch collection comes from Channel3. Every brand in its response becomes a quick catalogue filter.” |
 | 1:58–2:16 | Show SafeSearch enabled, then its opt-out control. Avoid searching for or displaying weapons. | “SafeSearch starts on. Turning it off broadens ambiguous results, while the server still blocks its mandatory weapon categories.” |
 | 2:16–2:34 | Return to the actual aggregate metric. Do not seed saves; if a simulated example is used, label it on screen. | “Counts represent actions, not unique viewers. Small totals stay hidden and larger totals are grouped; this is not a guarantee of anonymity.” |
-| 2:34–2:50 | Show the actual StreamCart Codex thread and resulting diff, then Render `/proof/` with Hosted Test 0.0.7, 22 listing checks, and the session ID. If showing the 17-test or 12-release-check results, capture their current command output separately; the proof page does not show those counts. | “Codex built and validated this flow. The proof slate ties the Hosted Test and implementation evidence to the retained session.” |
+| 2:34–2:50 | Show the actual StreamCart Codex thread and resulting diff, then the refreshed Render `/proof/` with Hosted Test 0.0.8, 29 API/security tests, 22 listing checks, and the session ID. If the static site has not been approved and deployed, do not present its old slate as current. | “Codex built and validated this flow. The proof slate ties the Hosted Test and implementation evidence to the retained session.” |
 | 2:50–2:55 | End on the Twitch video with the compact capsule visible. | “StreamCart: creator-controlled discovery, while Twitch stays in view.” |
 
 ## Recording checklist
 
-- Use the creator account in Chrome and the allowlisted test viewer in Firefox. Twitch Hosted Test 0.0.7 is the current build; confirm it is active in Video Overlay 1 before recording. The separate Panel path is only a fallback.
+- Use the creator account in Chrome and a currently allowlisted test viewer in Firefox. Twitch Hosted Test 0.0.8 is active in Video Overlay 1; verify both accounts have access before recording. The separate Panel path is only a fallback.
 - Start the channel only when the owner is ready to go live. Capture the Firefox Twitch player window, not the desktop. Do not expose the Developer Console or terminal environment.
 - Do not seed artificial saves into the real channel. Counts represent actions, not verified distinct viewers. Never display secrets, JWTs, `.env`, or raw webhook headers.
 - Keep one creator-approved product and one AI-discovered product in the visible result set.
@@ -52,9 +52,9 @@ Livestream product discovery usually becomes either an unstructured link dump or
 - `npm run demo:preflight` passes. It runs the local build/tests, then checks the public API, catalogue, Twitch panel path, hash-matched Hosted Test overlay asset, live discovery, and matching enabled EventSub subscription without printing credentials.
 - Public `/health` reports `mode: live` and `safeSearch: true`.
 - EventSub subscription status is `enabled`.
-- Twitch Extension Manager identifies Hosted Test `0.0.7` with Panel `panel.html` and Video - Fullscreen `overlay.html`; confirm it is active in Overlay 1. Recheck that its testing-account allowlist includes the broadcaster and separate viewer.
+- Twitch Extension Manager identifies Hosted Test `0.0.8` with Panel `panel.html` and Video - Fullscreen `overlay.html`; confirm it remains active in Overlay 1. Recheck that its testing-account allowlist includes the broadcaster and separate viewer.
 - Confirm that the allowlisted Firefox session sees the capsule over the stream before rehearsal. A loaded console status or local preview does not prove the overlay rendered in Twitch.
-- Confirm the public Render `/proof/` page shows Hosted Test 0.0.7, 20 automated tests, 22 listing checks, and the retained Codex session before showing it. The public Vercel alias is still a stale 0.0.4 proof page; use the Render page for current release evidence.
+- Confirm the public Render `/proof/` page has been refreshed to show Hosted Test 0.0.8, 29 API/security tests, 22 listing checks, and the retained Codex session before showing it. The currently deployed static page is stale; do not show it as current until its separately approved deployment completes. Vercel deployment-history access was unavailable, so its current proof state is unknown.
 - Broadcaster `!gear streaming microphone` changes the public discovery topic.
 - Contextual discovery returns up to 20 ranked results; the separate Twitch collection browse starts with a page and offers **Load more items** while Channel3 has another page. Read the on-screen count and do not call it the entire Channel3 network.
 - The selected AI result can be approved and appears as `creator_approved` after refresh.
@@ -85,16 +85,25 @@ If Twitch or Channel3 is unavailable during recording, do not pretend the live p
 - At this earlier checkpoint, version `0.0.3` was active in Panel 1 and version `0.0.2` remained available as rollback. Twitch accepted six files; SHA-256 `605129e2dc9647da453f2e0de9f16a1309115c9875eec66e40f7b6a600008e09`; uploaded MD5 `a4c5b10d9f3faf78afa89457c3ce8b19` matched local. The Hosted Test page rendered `/0.0.3/a4c5b10d9f3faf78afa89457c3ce8b19/panel.html`.
 - At that earlier checkpoint, the 0.0.4 translucent candidate had not yet been uploaded; the 2 November activation and package identity are recorded in `docs/validation.md`.
 
-## Live capture checkpoint — 2 November 2026
+## Live capture checkpoint — 2 November 2026 (historical)
 
 This checkpoint supersedes the earlier 0.0.6 references in the current recording procedure; the dated notes above remain historical.
 
-- Twitch Hosted Test 0.0.7 is active in Video Overlay 1. The allowlisted viewer saw the live Sony microphone card after the Render API origin was added to Twitch's URL Fetching Domains.
+- Twitch Hosted Test 0.0.7 was active in Video Overlay 1 at this checkpoint. The allowlisted viewer saw the live Sony microphone card after the Render API origin was added to Twitch's URL Fetching Domains.
 - The broadcaster's actual `!gear streaming microphone` message remains visible in the Twitch chat history. Render discovery returned the matching topic and 20 contextual products. Show the existing message rather than sending another command solely for footage.
 - The new live recording shows the card over the stream and the viewer's **Saved** state. The save click itself was not captured. Use the short recursive preview as a deliberate transition and explain that the second account shows the viewer's perspective.
-- A live creator approval has not yet been verified: the current discovery response returned no creator-approved product. Do not imply that an approval was captured or verified. Label any local demonstration as such until the real broadcaster action is confirmed.
+- At that checkpoint a live creator approval had not yet been verified: the discovery response returned no creator-approved product. The later production snapshot and recording review are documented below.
 - An earlier check on 2 November showed 0.0.6 and 15 API tests on the Render proof slate. That snapshot is historical; the 3 November verification in **Current evidence and capture gaps** supersedes it. Show the actual Codex thread and source when explaining the build.
-- The broadcast is stopped. Finish the local edit with US narration and real Twitch and Codex footage, validate a runtime under three minutes, then obtain the separately required authorization for upload and final submission.
+- The broadcast was stopped. Any future portfolio recapture needs separate authorization before starting a stream or recording.
+
+## Post-release audit — 3 November 2026
+
+- GitHub `main` and the Render API were verified at `3c0ebe49b7a3bc2848b27dd4b1ce903d5c9c9c74`; Render auto-deploy is off. The Render static site remains on `4d710c2` until separately deployed.
+- Twitch Extension Manager showed Hosted Test `0.0.8` active in Video Overlay 1. Its verified hosted asset MD5 is `74e543ac2ecbb3630bc36352b3276d95`.
+- The API reports live mode and SafeSearch enabled. Current topic `streaming microphone` returns 20 results: 1 creator-approved Sony ECM-S1 and 19 AI discoveries. Twitch was offline at the time of the audit.
+- Read-only `demo:preflight` passed against the Render-backed API, Channel3 collection, Twitch Panel, exact Hosted Test overlay, and enabled EventSub. `npm run check` passed 29 API/security tests and 22 listing checks.
+- The Render `/proof/` endpoint still displays 0.0.7 and 20 tests; local proof source is updated to 0.0.8 and 29 tests but was not deployed. No Devpost, YouTube, Twitch, Vercel, or Render static-site changes were made in this audit.
+- The submitted YouTube video is 106.661 seconds. Captions and six visual moments were checked; no creator-approval or viewer-save click appears in sampled footage, and direct Codex UI is not clear. The user previously chose to keep the existing private local cut; do not start another stream or recording without fresh approval.
 
 ## Next capture required
 

@@ -1,6 +1,6 @@
 # StreamCart demo upload pack
 
-The Devpost page currently embeds an [Unlisted video](https://www.youtube.com/watch?v=TIjEbeJRUt8) whose player reported 106.661 seconds. The authenticated Devpost account showed the project as Submitted on 3 November 2026, but the exact submission timestamp and full YouTube upload settings were not visible. The local 88-second review cut is a different file and was not uploaded as the submitted video. Do not use this preparation checklist to imply that a new upload is needed or that all video claims were visually validated.
+The Devpost page currently embeds an [Unlisted video](https://www.youtube.com/watch?v=TIjEbeJRUt8) whose player reported 106.661 seconds. The authenticated Devpost account showed the project as Submitted on 3 November 2026, but the exact submission timestamp and full YouTube upload settings were not visible. Captions were reviewed and six frames were sampled; those checks do not show a creator-approval or viewer-save click, and the code/editor segment does not clearly show the Codex UI. The separate 89.767-second local review cut was not uploaded as the submitted video. Do not use this preparation checklist to imply that a new upload is needed or that all video claims were validated.
 
 This is a preparation checklist for a future portfolio recapture, not an upload todo for the submitted entry. Any new video must remain under three minutes and be Public or Unlisted.
 

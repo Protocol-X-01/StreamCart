@@ -52,17 +52,18 @@ requiredDocs.every((name) => fs.existsSync(path.join(root, name))) ? pass('submi
 
 const submission = fs.readFileSync(path.join(root, 'docs/submission.md'), 'utf8');
 /^- Twitch Hosted Test URL: `https:\/\/www\.twitch\.tv\/ext\/3z76w1eigzegdllmz3ud4l2q8bwjly-0\.0\.7`$/m.test(submission)
-  ? pass('submission Hosted Test URL matches installed version')
-  : fail('submission Hosted Test URL matches installed version');
+  ? pass('frozen submitted copy retains its recorded Hosted Test URL')
+  : fail('frozen submitted copy retains its recorded Hosted Test URL');
 
 const proof = fs.readFileSync(path.join(root, 'apps/proof/index.html'), 'utf8');
 [
   '01a193cc-90fd-7643-9517-dfd3517e1d11',
-  'Twitch Hosted Test 0.0.7',
-  '<strong>20</strong>',
-  'Automated tests',
+  'Twitch Hosted Test 0.0.8',
+  '<strong>29</strong>',
+  'API and security tests',
   'Twitch listing checks',
-].every((marker) => proof.includes(marker)) ? pass('recording proof slate matches submission candidate') : fail('recording proof slate matches submission candidate');
+  'Verified production snapshot (3 November 2026)',
+].every((marker) => proof.includes(marker)) ? pass('post-submission proof slate matches the verified release snapshot') : fail('post-submission proof slate matches the verified release snapshot');
 
 const captions = fs.readFileSync(path.join(root, 'docs/demo-captions.srt'), 'utf8');
 const cuePattern = /^(\d{2}):(\d{2}):(\d{2}),(\d{3}) --> (\d{2}):(\d{2}):(\d{2}),(\d{3})$/gm;

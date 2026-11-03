@@ -11,8 +11,8 @@ const clientId = required('TWITCH_CLIENT_ID');
 const clientSecret = required('TWITCH_CLIENT_SECRET');
 const broadcasterId = required('TWITCH_BROADCASTER_ID');
 const extensionId = required('TWITCH_EXTENSION_ID');
-const hostedVersion = process.env.TWITCH_HOSTED_TEST_VERSION?.trim() || '0.0.7';
-const hostedHash = process.env.TWITCH_HOSTED_TEST_HASH?.trim() || '901cb2e0619a35fdfdb04e3646a0bc27';
+const hostedVersion = process.env.TWITCH_HOSTED_TEST_VERSION?.trim() || '0.0.8';
+const hostedHash = process.env.TWITCH_HOSTED_TEST_HASH?.trim() || '74e543ac2ecbb3630bc36352b3276d95';
 const chatUserId = process.env.TWITCH_CHAT_USER_ID?.trim() || broadcasterId;
 
 if (!/^\d+\.\d+\.\d+$/.test(hostedVersion) || !/^[a-f0-9]{32}$/i.test(hostedHash)) {

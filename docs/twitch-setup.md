@@ -16,7 +16,7 @@ No Twitch secret belongs in the extension bundle or repository.
 
 ## Configure and validate
 
-1. In the Twitch Developer Console, select the existing StreamCart Extension (`3z76w1eigzegdllmz3ud4l2q8bwjly`) and create or select a Developer Application. Hosted Test version `0.0.7` is active in Video Overlay 1 and retains its Panel asset path as a fallback. The allowlisted viewer card was verified over a live stream; broadcaster approval still needs a live check.
+1. In the Twitch Developer Console, select the existing StreamCart Extension (`3z76w1eigzegdllmz3ud4l2q8bwjly`) and create or select a Developer Application. As checked on 3 November 2026, Hosted Test `0.0.8` is active in Video Overlay 1 and retains its Panel asset path as a fallback. Verify the broadcaster and viewer testing-account access before a new rehearsal.
 2. For video placement, select **Panel** and **Video - Fullscreen** under Asset Hosting. Set Panel Viewer Path to `panel.html` and Video - Fullscreen View Path to `overlay.html`. This serves the small, draggable StreamCart capsule over the video; clicking it expands the product card. Keep the Panel path as a fallback. Configure the URL-fetch capability allowlist to include the API/catalogue origins.
 3. Set the production API environment with `DEMO_MODE=false`, the Twitch/Channel3 secrets, explicit CORS origins, and explicit product/image hostname allowlists. CORS must include both the stable app origin and `https://<extension-id>.ext-twitch.tv`, which is the origin used by Twitch-hosted extension frames.
 4. Deploy the API to a public HTTPS endpoint. Its EventSub callback is `/v1/twitch/eventsub` on port 443.
