@@ -192,8 +192,8 @@ The remaining gates are an installed-channel Hosted Test recording rehearsal, fi
 
 ## 2026-11-03 — approved GitHub and Render static-site release
 
-- The user approved publishing `ec5920a571d681b2e8f384a7b2b1d943d93e7a92` to GitHub `main` and deploying that exact commit to Render's static site. GitHub `main` now points to this SHA. Render deployment `dep-dbkpihek1f9s73dlg2hg` is `live` on it; the Render API remains live on `3c0ebe49b7a3bc2848b27dd4b1ce903d5c9c9c74`. Both Render services have auto-deploy off.
+- The user approved publishing `ec5920a571d681b2e8f384a7b2b1d943d93e7a92` to GitHub `main` and deploying that exact commit to Render's static site. At that release point, GitHub `main` matched the Render site source. Render deployment `dep-dbkpihek1f9s73dlg2hg` is `live` on it; the Render API remains live on `3c0ebe49b7a3bc2848b27dd4b1ce903d5c9c9c74`. Both Render services have auto-deploy off.
 - HTTP checks returned 200 for Render `/proof/`, `/catalogue/`, and `/extension/index.html?channel=demo`; proof markers show Hosted Test 0.0.8, 29 API/security tests, 22 listing checks, and the retained session ID. API `/health` remains `mode: live` and `safeSearch: true`.
 - Render build-error log queries timed out twice; the exact deploy is `live` and all public route checks pass, but the build-log scan could not be completed.
 - The Vercel public `/proof/` alias returns 200 but does not contain the new 0.0.8 / 29-test markers. Vercel project history still returned 403; no manual Vercel deployment was performed. No Twitch, Devpost, YouTube, or broadcast/recording action occurred.
-- The local branch has a follow-up docs-only update recording this deployment. It is not in deployed commit `ec5920a` and awaits separate review before any additional GitHub push.
+- The user subsequently approved and pushed docs-only commit `94977bf55e8bb00f463db95693d23b68aab7b66a` to GitHub `main`. It records the release verification and log-query timeout; it does not change the Render static build, so no new Render deploy was triggered.

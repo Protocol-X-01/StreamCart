@@ -98,7 +98,7 @@ This checkpoint supersedes the earlier 0.0.6 references in the current recording
 
 ## Post-release audit — 3 November 2026
 
-- GitHub `main` and the Render static site were verified at `ec5920a571d681b2e8f384a7b2b1d943d93e7a92` (deployment `dep-dbkpihek1f9s73dlg2hg`); the Render API remains live at `3c0ebe49b7a3bc2848b27dd4b1ce903d5c9c9c74` (deployment `dep-dbkpa7rncjis73evlol0`). Render auto-deploy is off.
+- The Render static site deployment `dep-dbkpihek1f9s73dlg2hg` is live on source commit `ec5920a`; the Render API remains live on `3c0ebe4` (deployment `dep-dbkpa7rncjis73evlol0`). GitHub `main` later advanced with a docs-only follow-up; neither Render service auto-deploys.
 - Twitch Extension Manager showed Hosted Test `0.0.8` active in Video Overlay 1. Its verified hosted asset MD5 is `74e543ac2ecbb3630bc36352b3276d95`.
 - The API reports live mode and SafeSearch enabled. Current topic `streaming microphone` returns 20 results: 1 creator-approved Sony ECM-S1 and 19 AI discoveries. Twitch was offline at the time of the audit.
 - Read-only `demo:preflight` passed against the Render-backed API, Channel3 collection, Twitch Panel, exact Hosted Test overlay, and enabled EventSub. `npm run check` passed 29 API/security tests and 22 listing checks.

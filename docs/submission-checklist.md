@@ -12,7 +12,7 @@ Updated 3 November 2026. The authenticated Devpost account showed StreamCart as 
 
 | Requirement | StreamCart evidence | Status |
 | --- | --- | --- |
-| Repository containing source, assets, and run instructions | `https://github.com/Protocol-X-01/StreamCart` and `README.md` | Public repository; GitHub `main` is at `ec5920a` |
+| Repository containing source, assets, and run instructions | `https://github.com/Protocol-X-01/StreamCart` and `README.md` | Public repository; release and validation evidence are recorded on `main` |
 | Text description covering features and Codex use | `docs/submission.md` | Public project page exists; the submitted form's exact save timestamp is not visible |
 | Primary Codex session ID | `01a193cc-90fd-7643-9517-dfd3517e1d11` | Ready |
 | YouTube demo under three minutes | [Unlisted video](https://www.youtube.com/watch?v=TIjEbeJRUt8) embedded on the public project page | Player reported 106.661 seconds; captions were reviewed and six visual moments sampled; exact upload settings remain partly unverified |
@@ -44,4 +44,4 @@ Updated 3 November 2026. The authenticated Devpost account showed StreamCart as 
 
 ## Freeze after submission
 
-The deadline has passed. Do not change judged materials; use a separate copy for portfolio improvements. The local v4 review cut is separate from the linked submission video. Render's API is live on `3c0ebe4`; its static site is live on `ec5920a`. The Vercel alias did not pick up the refreshed proof markers, and no manual Vercel release was performed.
+The deadline has passed. Do not change judged materials; use a separate copy for portfolio improvements. The local v4 review cut is separate from the linked submission video. Render's API is live on the validated 3c0ebe4 release; its static site serves the refreshed 0.0.8 proof. The Vercel alias did not pick up the refreshed proof markers, and no manual Vercel release was performed.
