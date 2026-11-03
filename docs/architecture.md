@@ -134,7 +134,7 @@ Store selection is `DATABASE_URL` → Postgres, otherwise Blob configuration →
 | Private Blob | Conditional ETag replacement; at most five attempts on write conflict | Whole-document reads/writes and provider quota |
 | Local file | Mode-0600 temporary file followed by rename | Synchronous whole-file writes; no multi-process lock |
 
-Metrics allow at most **1,000 channel namespaces** and **500 products per channel**. Topics and approval arrays have no equivalent cardinality cap. There is no aggregate retention expiry or metric-deletion workflow; removing creator approval changes provenance, not historical counters. See [storage and adapter selection](../apps/api/src/store.ts#L24-L172).
+Metrics allow at most **1,000 channel namespaces** and **500 products per channel**. Creator approvals allow at most **1,000 active channels** and **500 product IDs per channel**; removing the final approval frees that channel slot. The shared topic map has no equivalent channel-count cap. There is no aggregate retention expiry or metric-deletion workflow; removing creator approval changes provenance, not historical counters. The approval limits still permit a large shared document, and approval IDs are length-bounded but not checked against the catalogue at write time. See [storage and adapter selection](../apps/api/src/store.ts#L24-L200).
 
 ## Authority and webhook boundaries
 
@@ -175,7 +175,7 @@ Current operating bounds follow directly from the implementation:
 
 - `/health` reports configuration (`ok`, mode, SafeSearch), not database, Channel3, EventSub, or Twitch broadcast readiness. The [ten-minute scheduled request](../.github/workflows/keep-render-warm.yml) is an availability aid, not an uptime guarantee.
 - Free hosting can cold-start; database lifetime and provider quotas need operator monitoring. Deployment-specific observations belong in [validation](validation.md).
-- Candidate caches, replay IDs, and rate limits are process-local. The cache has no maximum key count or general eviction pass; multiple replicas do not share it.
-- Intent writes are limited to 30 requests per minute per observed network address, with at most 10,000 limiter entries. Proxy topology affects address granularity; there is no distributed limiter or unique-person deduplication.
-- Live catalogue reads can consume upstream requests on cache misses. There is no general read-route rate limit, background inventory synchronization, or durable event retry worker.
-- Postgres protects state mutations with a transaction, but the single-document model, uncapped topic/approval growth, and absence of retention are scaling constraints rather than production guarantees.
+- Candidate caches, EventSub replay IDs, and request limits are process-local; multiple replicas do not share them. The Channel3 page cache holds at most **128 pages / 16 MiB**, with a **1 MiB per-entry** limit and 15-minute TTL. Expired entries are pruned and older entries are evicted. Responses are limited to **2 MiB**; Channel3 work is capped at **300 upstream requests per minute** and **8 concurrent requests per process**, with 7-second search and 15-second browse timeouts.
+- The public catalogue browse/search routes share a **600-request-per-minute per-process** limiter. Public discovery has no direct route limiter, but its upstream misses use the same Channel3 request and concurrency budgets. These limits are not shared across replicas and do not establish Channel3 quota or hosting-proxy enforcement.
+- Intent writes are limited to **30 requests per minute per observed network address**; creator mutations are limited to **60 per minute per channel**. Each limiter retains at most 10,000 keys. Proxy topology affects address granularity; there is no distributed limiter or unique-person deduplication.
+- Postgres protects state mutations with a transaction, but the single-document model, uncapped topic cardinality, potentially large bounded approval state, and absence of retention are scaling constraints rather than production guarantees. There is no background inventory synchronization or durable event retry worker.
