@@ -109,6 +109,9 @@ test('live creator JWT is bound to its verified channel claim', async () => {
     assert.equal(response.status, 201);
     assert.deepEqual(store.approved('channel-a'), ['kb1']);
     assert.deepEqual(store.approved('channel-b'), []);
+    const viewerApproval = await fetch(`${base}/v1/creator/products`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-extension-jwt': viewerToken }, body: JSON.stringify({ channelId: 'channel-a', productId: 'forbidden' }) });
+    assert.equal(viewerApproval.status, 403);
+    assert.deepEqual(store.approved('channel-a'), ['kb1']);
     const removed = await fetch(`${base}/v1/creator/products/kb1`, { method: 'DELETE', headers: { 'x-extension-jwt': token } });
     assert.equal(removed.status, 204);
     assert.deepEqual(store.approved('channel-a'), []);
