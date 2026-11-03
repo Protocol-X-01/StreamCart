@@ -5,6 +5,7 @@
 - Channel3 keys and Twitch secrets remain in the API environment and never enter browser bundles.
 - Production startup rejects demo mode or missing Channel3, Extension JWT, and EventSub secrets.
 - Twitch Extension JWTs are verified with HS256, role-checked, and bound to their signed `channel_id` claim.
+- Creator approval also requires the product ID to appear in the verified channel's current Channel3 topic results before it is stored; per-channel and active-channel approval caps remain enforced by the shared store mutation.
 - EventSub uses the raw request body for HMAC verification, enforces timestamp freshness, and rejects duplicate message IDs within the replay window.
 - Only a broadcaster's own `!gear <topic>` chat message changes stream context.
 - Viewer intent accepts only channel, product, and action. Product membership is revalidated; no viewer ID is required in the request or persisted as analytics.

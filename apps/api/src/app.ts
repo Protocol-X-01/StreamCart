@@ -85,7 +85,16 @@ export function createApp(store: StorePort = createStore(), options: AppOptions 
   app.get('/v1/catalogue/search', catalogueLimiter, async (request, response, next) => { try { const term = z.string().trim().min(2).max(120).parse(request.query.q); const channelId = z.string().max(80).default('demo').parse(request.query.channelId); const pageToken = z.string().min(1).max(4096).optional().parse(request.query.pageToken); const safeSearch = request.query.safeSearch === undefined ? config.SAFE_SEARCH : z.enum(['true', 'false']).parse(request.query.safeSearch) === 'true'; const page = await searchProductsPage(term, safeSearch, pageToken); response.json({ channelId, safeSearch, topic: term, collectionName: config.CHANNEL3_COLLECTION_NAME, source: demoMode ? 'demo_fixture' : 'channel3_api', items: rank(page.items, term, await store.approved(channelId), await store.metrics(channelId)), nextPageToken: page.nextPageToken }); } catch (error) { next(error); } });
   const creatorAuth = extensionAuth({ roles: ['broadcaster'], demoMode, secret: options.extensionSecret });
   const viewerAuth = extensionAuth({ roles: ['viewer', 'broadcaster'], demoMode, secret: options.extensionSecret });
-  app.post('/v1/creator/products', creatorAuth, creatorMutationLimiter, async (request, response, next) => { try { const productId = z.string().min(1).max(160).parse(request.body.productId); await store.approve(response.locals.channelId, productId); response.status(201).json({ ok: true }); } catch (error) { next(error); } });
+  app.post('/v1/creator/products', creatorAuth, creatorMutationLimiter, async (request, response, next) => {
+    try {
+      const channelId = response.locals.channelId as string;
+      const productId = z.string().min(1).max(160).parse(request.body.productId);
+      const currentProducts = await searchProducts(await store.topic(channelId));
+      if (!currentProducts.some((product) => product.id === productId)) return response.status(404).json({ error: 'unknown_product' });
+      await store.approve(channelId, productId);
+      response.status(201).json({ ok: true });
+    } catch (error) { next(error); }
+  });
   app.delete('/v1/creator/products/:id', creatorAuth, creatorMutationLimiter, async (request, response, next) => { try { await store.unapprove(response.locals.channelId, String(request.params.id)); response.status(204).send(); } catch (error) { next(error); } });
   app.post('/v1/viewer/intent', viewerAuth, viewerIntentLimiter, async (request, response, next) => {
     try {

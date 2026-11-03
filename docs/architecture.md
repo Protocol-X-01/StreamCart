@@ -61,11 +61,13 @@ sequenceDiagram
   Creator->>Overlay: Approve this find
   Overlay->>API: POST creator product + Extension JWT
   API->>API: Verify broadcaster role and channel claim
+  API->>C3: Check product ID in the verified channel's current topic results
+  C3-->>API: Current topic candidates
   API->>Store: Add approval for verified channel
   API-->>Overlay: 201; client updates provenance
 ```
 
-The [webhook route](../apps/api/src/app.ts#L36-L55) changes context; it does not fetch products during webhook acknowledgement. Discovery reads retrieve candidates and combine them with current state. The client updates approval provenance after a successful write, then subsequent polls obtain the server-ranked result.
+The [webhook route](../apps/api/src/app.ts#L36-L55) changes context; it does not fetch products during webhook acknowledgement. Discovery reads retrieve candidates and combine them with current state. Creator approval accepts only an exact product ID from the verified channel's current topic results; an unknown ID receives `404` and is not persisted. The client updates approval provenance after a successful write, then subsequent polls obtain the server-ranked result.
 
 ## Retrieval, collection browse, and safety
 

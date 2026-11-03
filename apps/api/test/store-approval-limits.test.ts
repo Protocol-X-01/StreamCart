@@ -34,9 +34,10 @@ test('creator approval cap returns a bounded conflict response', async () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'streamcart-approval-route-'));
   const channelId = 'approval-route-limit';
   const file = path.join(directory, 'state.json');
+  const productId = 'kb1';
   fs.writeFileSync(file, JSON.stringify({
     approved: { [channelId]: Array.from({ length: MAX_APPROVALS_PER_CHANNEL }, (_, index) => `product-${index}`) },
-    topics: {},
+    topics: { [channelId]: 'mechanical keyboard' },
     metrics: {},
   }));
   const store = new Store(file);
@@ -51,7 +52,7 @@ test('creator approval cap returns a bounded conflict response', async () => {
     const response = await fetch(`http://127.0.0.1:${address.port}/v1/creator/products`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-extension-jwt': token },
-      body: JSON.stringify({ productId: 'one-too-many' }),
+      body: JSON.stringify({ productId }),
     });
     assert.equal(response.status, 409);
     assert.deepEqual(await response.json(), { error: 'approval_product_limit' });

@@ -104,6 +104,18 @@ test('signed creator and viewer roles drive hybrid discovery with grouped save-a
     const initialKeyboard = initial.items.find((item) => item.id === 'kb1');
     assert.equal(initialKeyboard?.provenance, 'ai_discovered');
 
+    const unknownApproval = await fetch(`${base}/v1/creator/products`, {
+      method: 'POST', headers: authHeaders(broadcasterToken), body: JSON.stringify({ channelId, productId: 'not-in-channel3' }),
+    });
+    assert.equal(unknownApproval.status, 404);
+    assert.deepEqual(await store.approved(channelId), []);
+
+    const malformedApproval = await fetch(`${base}/v1/creator/products`, {
+      method: 'POST', headers: authHeaders(broadcasterToken), body: JSON.stringify({ channelId, productId: ['kb1'] }),
+    });
+    assert.equal(malformedApproval.status, 400);
+    assert.deepEqual(await store.approved(channelId), []);
+
     const approval = await fetch(`${base}/v1/creator/products`, {
       method: 'POST', headers: authHeaders(broadcasterToken), body: JSON.stringify({ channelId: 'forged-channel', productId: 'kb1' }),
     });
