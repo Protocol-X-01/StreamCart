@@ -154,7 +154,7 @@ The [EventSub verifier](../apps/api/src/security.ts#L33-L40) computes HMAC-SHA25
 
 Implemented handling returns the challenge from a verified request and accepts `channel.chat.message` notifications only when chatter and broadcaster IDs match. `!gear` captures a 2–80-character topic. A process-local replay map retains message IDs for ten minutes, capped at 10,000 entries.
 
-Missing lifecycle pieces are explicit: no durable delivery queue, shared replay store, persisted expected subscription-ID/condition check, automated revocation recovery, or Channel3 product-update webhook receiver. Replay IDs are remembered before parsing/storage completes, so a downstream failure can suppress a retried delivery. Subscription registration/migration is an [operator workflow](../scripts/register-eventsub.mjs), not automatic runtime recovery.
+Missing lifecycle pieces are explicit: no durable delivery queue, shared replay store, persisted expected subscription-ID/condition check, automated revocation recovery, or Channel3 product-update webhook receiver. A Twitch message ID is added to the process-local replay map only after the signed payload is parsed and its topic write completes, so a downstream storage failure remains eligible for Twitch's retry. A process restart still loses replay state. Subscription registration/migration is an [operator workflow](../scripts/register-eventsub.mjs), not automatic runtime recovery.
 
 ## Deployment and operational limits
 

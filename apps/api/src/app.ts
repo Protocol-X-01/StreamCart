@@ -55,16 +55,21 @@ export function createApp(store: StorePort = createStore(), options: AppOptions 
     const now = Date.now();
     for (const [id, receivedAt] of seenEventIds) if (now - receivedAt >= 600_000) seenEventIds.delete(id);
     if (seenEventIds.has(messageId)) return response.sendStatus(204);
-    seenEventIds.set(messageId, now);
-    if (seenEventIds.size > 10_000) seenEventIds.delete(seenEventIds.keys().next().value ?? '');
     const payload = z.object({ challenge: z.string().optional(), subscription: z.object({ type: z.string() }).optional(), event: z.object({ broadcaster_user_id: z.string(), chatter_user_id: z.string(), message: z.object({ text: z.string() }) }).optional() }).parse(JSON.parse(raw.toString('utf8')));
     const messageType = headers['twitch-eventsub-message-type'];
-    if (messageType === 'webhook_callback_verification' && payload.challenge) return response.type('text/plain').send(payload.challenge);
+    if (messageType === 'webhook_callback_verification' && payload.challenge) {
+      seenEventIds.set(messageId, now);
+      if (seenEventIds.size > 10_000) seenEventIds.delete(seenEventIds.keys().next().value ?? '');
+      return response.type('text/plain').send(payload.challenge);
+    }
     const event = payload.event;
     if (messageType === 'notification' && payload.subscription?.type === 'channel.chat.message' && event && event.chatter_user_id === event.broadcaster_user_id) {
       const topic = event.message.text.match(/^!gear\s+(.{2,80})\s*$/i)?.[1];
       if (topic) await store.setTopic(event.broadcaster_user_id, topic.trim());
     }
+    // Keep failed persistence eligible for Twitch's retry with the same message ID.
+    seenEventIds.set(messageId, now);
+    if (seenEventIds.size > 10_000) seenEventIds.delete(seenEventIds.keys().next().value ?? '');
     return response.sendStatus(204);
   });
   app.use(express.json({ limit: '64kb' }));

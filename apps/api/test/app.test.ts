@@ -16,9 +16,9 @@ function signedHeaders(id: string, type: string, body: string) {
   const signature = 'sha256=' + crypto.createHmac('sha256', secret).update(id + timestamp + body).digest('hex');
   return { 'content-type': 'application/json', 'twitch-eventsub-message-id': id, 'twitch-eventsub-message-timestamp': timestamp, 'twitch-eventsub-message-signature': signature, 'twitch-eventsub-message-type': type };
 }
-async function withApi(run: (base: string, store: Store) => Promise<void>, options: { demoMode?: boolean; extensionSecret?: string } = {}) {
+async function withApi(run: (base: string, store: Store) => Promise<void>, options: { demoMode?: boolean; extensionSecret?: string; storeFactory?: (directory: string) => Store } = {}) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'streamcart-test-'));
-  const store = new Store(path.join(directory, 'data.json'));
+  const store = options.storeFactory?.(directory) ?? new Store(path.join(directory, 'data.json'));
   const server = http.createServer(createApp(store, { eventSubSecret: secret, demoMode: options.demoMode ?? true, extensionSecret: options.extensionSecret }));
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
   const address = server.address();
@@ -47,6 +47,34 @@ test('only broadcaster !gear commands update topic and duplicate delivery is ide
   assert.equal((await fetch(`${base}/v1/twitch/eventsub`, { method: 'POST', headers, body: creatorBody })).status, 204);
   assert.equal(store.topic('42'), 'mechanical keyboard');
 }));
+
+test('EventSub retries a topic write after transient storage failure with the same message ID', () => {
+  class FlakyTopicStore extends Store {
+    private failNextTopicWrite = true;
+    override setTopic(channelId: string, topic: string) {
+      if (this.failNextTopicWrite) {
+        this.failNextTopicWrite = false;
+        throw new Error('temporary storage failure');
+      }
+      return super.setTopic(channelId, topic);
+    }
+  }
+
+  return withApi(async (base, store) => {
+    const body = JSON.stringify({
+      subscription: { type: 'channel.chat.message' },
+      event: { broadcaster_user_id: '42', chatter_user_id: '42', message: { text: '!gear retry topic' } },
+    });
+    const headers = signedHeaders('retry-after-storage-failure', 'notification', body);
+    const failed = await fetch(`${base}/v1/twitch/eventsub`, { method: 'POST', headers, body });
+    assert.equal(failed.status, 500);
+    assert.equal(store.topic('42'), 'stream setup');
+
+    const retried = await fetch(`${base}/v1/twitch/eventsub`, { method: 'POST', headers, body });
+    assert.equal(retried.status, 204);
+    assert.equal(store.topic('42'), 'retry topic');
+  }, { storeFactory: (directory) => new FlakyTopicStore(path.join(directory, 'data.json')) });
+});
 
 test('viewer intent stores aggregate counts without viewer identity', () => withApi(async (base, store) => {
   const discovery = await fetch(`${base}/v1/channels/demo/discovery`).then((response) => response.json()) as { items: Array<{ id: string; price: number; currency: string; brand?: string; brands?: string[] }> };
@@ -121,6 +149,26 @@ test('signed creator and viewer roles drive hybrid discovery with grouped save-a
     const keyboardAfterFive = afterFiveSaves.items.find((item) => item.id === 'kb1');
     assert.equal(keyboardAfterFive?.provenance, 'creator_approved');
     assert.deepEqual(keyboardAfterFive?.aggregateIntent, { view: 0, save: 5 });
+  }, { demoMode: false, extensionSecret });
+});
+
+test('creator mutation rate limit is 60 per signed channel per minute', () => {
+  const extensionSecret = Buffer.from('streamcart-test-extension-secret-32').toString('base64');
+  const signingKey = Buffer.from(extensionSecret, 'base64');
+  const expiresAt = Math.floor(Date.now() / 1000) + 60;
+  const token = (channelId: string) => jwt.sign({ role: 'broadcaster', channel_id: channelId, exp: expiresAt }, signingKey, { algorithm: 'HS256' });
+  return withApi(async (base) => {
+    const submit = (jwtToken: string) => fetch(`${base}/v1/creator/products`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-extension-jwt': jwtToken },
+      body: JSON.stringify({ productId: 'kb1' }),
+    });
+    const firstChannelToken = token('rate-limited-channel-a');
+    for (let index = 0; index < 60; index += 1) assert.equal((await submit(firstChannelToken)).status, 201);
+    const limited = await submit(firstChannelToken);
+    assert.equal(limited.status, 429);
+    assert.deepEqual(await limited.json(), { error: 'rate_limited' });
+    assert.equal((await submit(token('rate-limited-channel-b'))).status, 201);
   }, { demoMode: false, extensionSecret });
 });
 

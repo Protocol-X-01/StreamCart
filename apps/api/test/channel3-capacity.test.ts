@@ -8,7 +8,7 @@ process.env.CHANNEL3_COLLECTION_ID = 'test-twitch-collection';
 process.env.IMAGE_URL_HOSTS = 'images.example.test';
 process.env.PRODUCT_URL_HOSTS = 'buy.example.test';
 
-const { Channel3ResponseTooLargeError, MAX_CACHED_PAGES, MAX_CACHED_PAGE_ENTRY_BYTES, MAX_CHANNEL3_RESPONSE_BYTES, searchProductsPage } = await import('../src/channel3.js');
+const { Channel3ResponseTooLargeError, MAX_CACHED_PAGES, MAX_CACHED_PAGE_BYTES, MAX_CACHED_PAGE_ENTRY_BYTES, MAX_CHANNEL3_RESPONSE_BYTES, searchProductsPage } = await import('../src/channel3.js');
 
 const emptyPage = () => new Response(JSON.stringify({ products: [], next_page_token: null }), { status: 200, headers: { 'content-type': 'application/json' } });
 
@@ -25,6 +25,39 @@ test('catalogue page cache evicts older keys after reaching its entry limit', as
     const callsBeforeRepeat = calls;
     await searchProductsPage('cache eviction sentinel', true);
     assert.equal(calls, callsBeforeRepeat + 1);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('catalogue page cache evicts older entries to stay within its byte budget', async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  const description = 'x'.repeat(MAX_CACHED_PAGE_ENTRY_BYTES - 2048);
+  globalThis.fetch = (async () => {
+    calls += 1;
+    return new Response(JSON.stringify({
+      products: [{
+        id: `large-page-${calls}`,
+        title: 'Large cached record',
+        description,
+        images: [{ url: 'https://images.example.test/large.jpg' }],
+        offers: [{ availability: 'InStock', url: 'https://buy.example.test/large', price: { price: 99, currency: 'USD' } }],
+      }],
+      next_page_token: null,
+    }), { status: 200, headers: { 'content-type': 'application/json' } });
+  }) as typeof fetch;
+
+  try {
+    const sentinel = `byte-budget sentinel ${Date.now()}`;
+    await searchProductsPage(sentinel, true);
+    for (let index = 0; index < 16; index += 1) {
+      await searchProductsPage(`byte-budget page ${Date.now()} ${index}`, true);
+    }
+    const callsBeforeRepeat = calls;
+    await searchProductsPage(sentinel, true);
+    assert.equal(calls, callsBeforeRepeat + 1);
+    assert.ok(17 * (MAX_CACHED_PAGE_ENTRY_BYTES - 2048) > MAX_CACHED_PAGE_BYTES);
   } finally {
     globalThis.fetch = originalFetch;
   }

@@ -59,7 +59,7 @@ const proof = fs.readFileSync(path.join(root, 'apps/proof/index.html'), 'utf8');
 [
   '01a193cc-90fd-7643-9517-dfd3517e1d11',
   'Twitch Hosted Test 0.0.8',
-  '<strong>29</strong>',
+  '<strong>32</strong>',
   'API and security tests',
   'Twitch listing checks',
   'Verified production snapshot (3 November 2026)',
