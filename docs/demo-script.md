@@ -10,7 +10,7 @@ Target and maximum runtime: 2:55, leaving five seconds below the three-minute li
 
 - Twitch Hosted Test `0.0.8` is active in Video Overlay 1. The current Render API is live on commit `3c0ebe49b7a3bc2848b27dd4b1ce903d5c9c9c74`; Render auto-deploy remains off.
 - The exact `npm run check` passed on this source: all workspace builds, 29 API/security tests, and 22 Twitch listing checks. The live preflight passed against health, SafeSearch, 20 contextual results, the 29-item Channel3 `Twitch` collection, Panel, hash-matched 0.0.8 overlay, and enabled EventSub.
-- The Render static site has not yet been refreshed: its last verified deployment is `4d710c2`, and the public proof page still shows Hosted Test 0.0.7 and 20 tests. The local proof candidate now says 0.0.8 and 29 API/security tests; publishing it requires a separate site deployment approval.
+- Render's static site is now live on `ec5920a571d681b2e8f384a7b2b1d943d93e7a92` (deployment `dep-dbkpihek1f9s73dlg2hg`); the public proof shows Hosted Test 0.0.8, 29 API/security tests, 22 listing checks, and the retained Codex session. The Vercel alias returned HTTP 200 but lacks the 0.0.8 / 29-test markers; no manual Vercel deployment was performed.
 - The separate retained 89.767-second local review cut v4 includes the live Sony microphone card, the Twitch chat command, Channel3 results, and the current Render proof state. It shows the viewer's Saved state, but does not record the save click, direct StreamCart Codex UI, or a live creator-approval click. It is a private portfolio review, not the submitted 106.661-second video.
 - Current live discovery returns 20 products: one `creator_approved` Sony ECM-S1 and 19 `ai_discovered` products. That live state does not prove that the approval click appears in a recording.
 - The submitted video's captions were reviewed and six frames sampled. No approval/save click appears in the sample; the local review cut is known not to record either click. Direct Codex UI is not clear in the reviewed sample. Do not claim those actions are visibly documented.
@@ -54,7 +54,7 @@ Livestream product discovery usually becomes either an unstructured link dump or
 - EventSub subscription status is `enabled`.
 - Twitch Extension Manager identifies Hosted Test `0.0.8` with Panel `panel.html` and Video - Fullscreen `overlay.html`; confirm it remains active in Overlay 1. Recheck that its testing-account allowlist includes the broadcaster and separate viewer.
 - Confirm that the allowlisted Firefox session sees the capsule over the stream before rehearsal. A loaded console status or local preview does not prove the overlay rendered in Twitch.
-- Confirm the public Render `/proof/` page has been refreshed to show Hosted Test 0.0.8, 29 API/security tests, 22 listing checks, and the retained Codex session before showing it. The currently deployed static page is stale; do not show it as current until its separately approved deployment completes. Vercel deployment-history access was unavailable, so its current proof state is unknown.
+- Confirm the public Render `/proof/` page shows Hosted Test 0.0.8, 29 API/security tests, 22 listing checks, and the retained Codex session before showing it. The public Vercel alias remains stale; do not use it as current release evidence.
 - Broadcaster `!gear streaming microphone` changes the public discovery topic.
 - Contextual discovery returns up to 20 ranked results; the separate Twitch collection browse starts with a page and offers **Load more items** while Channel3 has another page. Read the on-screen count and do not call it the entire Channel3 network.
 - The selected AI result can be approved and appears as `creator_approved` after refresh.
@@ -98,11 +98,11 @@ This checkpoint supersedes the earlier 0.0.6 references in the current recording
 
 ## Post-release audit — 3 November 2026
 
-- GitHub `main` and the Render API were verified at `3c0ebe49b7a3bc2848b27dd4b1ce903d5c9c9c74`; Render auto-deploy is off. The Render static site remains on `4d710c2` until separately deployed.
+- GitHub `main` and the Render static site were verified at `ec5920a571d681b2e8f384a7b2b1d943d93e7a92` (deployment `dep-dbkpihek1f9s73dlg2hg`); the Render API remains live at `3c0ebe49b7a3bc2848b27dd4b1ce903d5c9c9c74` (deployment `dep-dbkpa7rncjis73evlol0`). Render auto-deploy is off.
 - Twitch Extension Manager showed Hosted Test `0.0.8` active in Video Overlay 1. Its verified hosted asset MD5 is `74e543ac2ecbb3630bc36352b3276d95`.
 - The API reports live mode and SafeSearch enabled. Current topic `streaming microphone` returns 20 results: 1 creator-approved Sony ECM-S1 and 19 AI discoveries. Twitch was offline at the time of the audit.
 - Read-only `demo:preflight` passed against the Render-backed API, Channel3 collection, Twitch Panel, exact Hosted Test overlay, and enabled EventSub. `npm run check` passed 29 API/security tests and 22 listing checks.
-- The Render `/proof/` endpoint still displays 0.0.7 and 20 tests; local proof source is updated to 0.0.8 and 29 tests but was not deployed. No Devpost, YouTube, Twitch, Vercel, or Render static-site changes were made in this audit.
+- The Render `/proof/` endpoint returns HTTP 200 with Hosted Test 0.0.8, 29 API/security tests, 22 listing checks, and the retained session ID. Catalogue and standalone extension routes also return HTTP 200; API health remains live/SafeSearch-on. The Vercel proof route returns HTTP 200 but lacks the new 0.0.8 / 29-test markers.
 - The submitted YouTube video is 106.661 seconds. Captions and six visual moments were checked; no creator-approval or viewer-save click appears in sampled footage, and direct Codex UI is not clear. The user previously chose to keep the existing private local cut; do not start another stream or recording without fresh approval.
 
 ## Next capture required
