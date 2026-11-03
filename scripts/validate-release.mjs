@@ -59,7 +59,7 @@ const proof = fs.readFileSync(path.join(root, 'apps/proof/index.html'), 'utf8');
 [
   '01a193cc-90fd-7643-9517-dfd3517e1d11',
   'Twitch Hosted Test 0.0.7',
-  '<strong>17</strong>',
+  '<strong>20</strong>',
   'Automated tests',
   'Twitch listing checks',
 ].every((marker) => proof.includes(marker)) ? pass('recording proof slate matches submission candidate') : fail('recording proof slate matches submission candidate');

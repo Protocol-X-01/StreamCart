@@ -8,7 +8,7 @@
 
 Creator-controlled, AI-assisted product discovery over Twitch video. StreamCart combines visibly creator-approved products with Channel3-powered discoveries, using only explicit viewer intent and identity-free aggregate metrics. Its active Hosted Test is a compact, draggable video overlay; a Panel placement remains available as a fallback.
 
-Live products open directly from the Twitch card. The collection catalogue turns the brands in its current Channel3 response into instant filters. Contextual search requests up to 20 products; collection browse requests up to 30 per response.
+Live products open through the product links returned by Channel3. The catalogue browses the curated Twitch collection page by page, extending its brand filters as viewers load more. Channel3 browse is capped at five pages; contextual search returns up to 20 products and each catalogue page up to 30. This is the full configured collection flow, not every product in Channel3's network.
 
 <p align="center"><img src="assets/readme/panel-demo.jpg" width="320" alt="StreamCart panel showing a creator pick, product action, and privacy-preserving save count" /></p>
 
@@ -103,4 +103,4 @@ Twitch does not let judges install an unreviewed Extension. The public judge rou
 4. Open the [proof page](https://streamcart-twitchcon-site-20261102.onrender.com/proof/) for the credential-free Codex session and validation slate.
 5. Run `npm ci && npm run check` for a credential-free local verification. Live Channel3, EventSub, and creator-authority checks require the environment variables documented in `.env.example`; no credentials are committed.
 
-The planned submission video will show the Extension running inside Twitch and the Codex build process. The standalone route is read-only for creator-only actions because production writes require a Twitch-signed, channel-bound Extension JWT.
+The [Devpost project](https://devpost.com/software/streamcart-yhwiup) is listed as submitted and embeds an Unlisted YouTube video at [youtube.com/watch?v=TIjEbeJRUt8](https://www.youtube.com/watch?v=TIjEbeJRUt8). That is separate from the retained post-deadline local review cut, which includes real Twitch and Channel3 footage and shows the viewer's saved state, but not the save click, StreamCart Codex build, or a live creator-approval click. The submitted video's full visual contents and exact submission timestamp have not been independently verified. See the [validation record](docs/validation.md) for evidence and limits. The standalone route is read-only for creator-only actions because production writes require a Twitch-signed, channel-bound Extension JWT.

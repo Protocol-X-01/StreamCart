@@ -33,14 +33,21 @@ Primary Codex session/thread ID: `01a193cc-90fd-7643-9517-dfd3517e1d11`
 
 StreamCart ranks with contextual relevance, creator approval, catalogue quality, and capped aggregate intent. The application does not construct viewer profiles or track people across channels. Its intent payload contains channel, product, and action; the channel is bound to Twitch's verified Extension JWT in live mode. The service and its hosting providers may process normal request metadata, and suppressing displayed counts does not guarantee anonymity.
 
-## Repository and demo placeholders
+## Submitted entry record
+
+- Devpost project: https://devpost.com/software/streamcart-yhwiup
+- Embedded Unlisted video: https://www.youtube.com/watch?v=TIjEbeJRUt8
+- The authenticated account showed **Submitted** on 3 November 2026. The exact submission timestamp was not visible; this record does not establish on-time submission.
+- The separate private 88-second review cut is not the submitted video. See `docs/validation.md` for verification limits.
+
+## Repository and demo links
 
 - Repository: `https://github.com/Protocol-X-01/StreamCart`
 - Live application: `https://streamcart-twitchcon-site-20261102.onrender.com`
 - Public judge walkthrough: `https://streamcart-twitchcon-site-20261102.onrender.com/?channel=demo` (read-only creator actions; no Twitch credentials required)
 - Validation proof: `https://streamcart-twitchcon-site-20261102.onrender.com/proof/`
 - Twitch Hosted Test URL: `https://www.twitch.tv/ext/3z76w1eigzegdllmz3ud4l2q8bwjly-0.0.7`
-- Demo video URL: add after the final sub-three-minute recording is validated.
+- Submitted demo video: `https://www.youtube.com/watch?v=TIjEbeJRUt8` (YouTube player reported 106.661 seconds).
 
 Render hosts the public application and API. The existing `https://streamcart-twitchcon.vercel.app` origin remains the Twitch API and EventSub callback proxy to the Render API.
 

@@ -77,7 +77,7 @@ All product retrieval crosses one [Channel3 adapter](../apps/api/src/channel3.ts
 | `/v1/catalogue/search` | Channel3 `/v1/search`, submitted query, limit 20 | Submitted query |
 | `/v1/catalogue/browse` | Channel3 `/v1/browse`, limit 30 | Empty query; no term-relevance contribution |
 
-Both upstream paths include the configured collection ID and availability filters for `InStock` / `LimitedAvailability`. The collection is required in production. Browse exposes one returned collection batch, not an exhaustive paginated inventory. Search requires at least two characters; the catalogue route also caps the query at 120 characters. Brand chips filter the returned batch locally without another API request.
+Both upstream paths include the configured collection ID and availability filters for `InStock` / `LimitedAvailability`. The collection is required in production. Catalogue browse and search preserve Channel3's `next_page_token`; **Load more items** requests the next page and adds its brands to the local filter list. Channel3 caps collection browse at five pages per request flow, so “full catalogue” means the available pages from the configured Twitch collection, not Channel3's entire product network. Search requires at least two characters; the catalogue route also caps the query at 120 characters.
 
 Candidate responses are cached in process for **15 minutes**, keyed by operation, collection, SafeSearch setting, and normalized search text where applicable. Ranking and approval lookup happen after retrieval, so approval changes do not wait for candidate-cache expiry. Upstream requests abort after **7 seconds for search** or **15 seconds for browse**; a live failure is not silently replaced with fixtures.
 

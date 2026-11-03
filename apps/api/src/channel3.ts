@@ -4,7 +4,8 @@ import { enforceCataloguePolicy } from './policy.js';
 import type { Product } from './types.js';
 
 let fixture: Product[];
-const cache = new Map<string, { until: number; data: Product[] }>();
+type ProductPage = { items: Product[]; nextPageToken: string | null };
+const cache = new Map<string, { until: number; data: Product[]; nextPageToken: string | null }>();
 function allowedUrl(value: unknown, hosts: string[]) {
   try {
     const url = new URL(String(value ?? ''));
@@ -41,7 +42,7 @@ async function fixtureProducts() {
   fixture ??= JSON.parse(await fs.readFile(new URL('../../../fixtures/products.json', import.meta.url), 'utf8'));
   return fixture.map(normalize).filter((item): item is Product => item !== null);
 }
-async function channel3Products(path: '/v1/search' | '/v1/browse', body: object) {
+async function channel3Products(path: '/v1/search' | '/v1/browse', body: object): Promise<ProductPage> {
   const controller = new AbortController();
   // Collection browse is materially slower than contextual search in Channel3.
   // Keep search snappy while allowing the bounded catalogue request to finish.
@@ -50,7 +51,10 @@ async function channel3Products(path: '/v1/search' | '/v1/browse', body: object)
     const response = await fetch(new URL(path, config.CHANNEL3_BASE_URL), { method: 'POST', headers: { 'x-api-key': config.CHANNEL3_API_KEY!, 'content-type': 'application/json', 'x-user-id': 'streamcart-aggregate' }, body: JSON.stringify(body), signal: controller.signal });
     if (!response.ok) throw new Error(`Channel3 request failed (${response.status})`);
     const payload: any = await response.json();
-    return (payload.products ?? []).map(normalize).filter((item: Product | null): item is Product => item !== null);
+    return {
+      items: (payload.products ?? []).map(normalize).filter((item: Product | null): item is Product => item !== null),
+      nextPageToken: typeof payload.next_page_token === 'string' && payload.next_page_token.length ? payload.next_page_token : null,
+    };
   } finally { clearTimeout(timer); }
 }
 function baseConfig() {
@@ -58,30 +62,49 @@ function baseConfig() {
 }
 function policy(data: Product[], safeSearch: boolean) { return enforceCataloguePolicy(data, safeSearch); }
 
-export async function searchProducts(query: string, safeSearch = config.SAFE_SEARCH) {
-  const normalizedQuery = query.trim();
-  if (normalizedQuery.length < 2) return [];
-  const key = `search:${config.CHANNEL3_COLLECTION_ID ?? 'all'}:${safeSearch}:${normalizedQuery.toLowerCase()}`;
+function cachedPage(key: string): ProductPage | undefined {
   const hit = cache.get(key);
-  if (hit && hit.until > Date.now()) return hit.data;
-  let data: Product[];
+  return hit && hit.until > Date.now() ? { items: hit.data, nextPageToken: hit.nextPageToken } : undefined;
+}
+function savePage(key: string, page: ProductPage) {
+  cache.set(key, { until: Date.now() + 900_000, data: page.items, nextPageToken: page.nextPageToken });
+  return page;
+}
+
+export async function searchProductsPage(query: string, safeSearch = config.SAFE_SEARCH, pageToken?: string): Promise<ProductPage> {
+  const normalizedQuery = query.trim();
+  if (normalizedQuery.length < 2) return { items: [], nextPageToken: null };
+  const key = `search:${config.CHANNEL3_COLLECTION_ID ?? 'all'}:${safeSearch}:${normalizedQuery.toLowerCase()}:${pageToken ?? 'first'}`;
+  const hit = cachedPage(key);
+  if (hit) return hit;
+  let page: ProductPage;
   if (config.DEMO_MODE || !config.CHANNEL3_API_KEY) {
-    data = await fixtureProducts();
+    page = { items: await fixtureProducts(), nextPageToken: null };
   } else {
-    data = await channel3Products('/v1/search', { query: normalizedQuery, limit: 20, filters: { availability: ['InStock', 'LimitedAvailability'] }, config: baseConfig() });
+    page = await channel3Products('/v1/search', { query: normalizedQuery, limit: 20, filters: { availability: ['InStock', 'LimitedAvailability'] }, config: baseConfig(), ...(pageToken ? { page_token: pageToken } : {}) });
   }
-  data = policy(data, safeSearch);
-  cache.set(key, { until: Date.now() + 900_000, data });
-  return data;
+  page.items = policy(page.items, safeSearch);
+  return savePage(key, page);
+}
+
+export async function searchProducts(query: string, safeSearch = config.SAFE_SEARCH) {
+  return (await searchProductsPage(query, safeSearch)).items;
+}
+
+export async function browseCollectionPage(safeSearch = config.SAFE_SEARCH, pageToken?: string): Promise<ProductPage> {
+  const key = `browse:${config.CHANNEL3_COLLECTION_ID ?? 'demo'}:${safeSearch}:${pageToken ?? 'first'}`;
+  const hit = cachedPage(key);
+  if (hit) return hit;
+  let page: ProductPage;
+  if (config.DEMO_MODE || !config.CHANNEL3_API_KEY) {
+    page = { items: await fixtureProducts(), nextPageToken: null };
+  } else {
+    page = await channel3Products('/v1/browse', { limit: 30, filters: { availability: ['InStock', 'LimitedAvailability'] }, config: baseConfig(), ...(pageToken ? { page_token: pageToken } : {}) });
+  }
+  page.items = policy(page.items, safeSearch);
+  return savePage(key, page);
 }
 
 export async function browseCollection(safeSearch = config.SAFE_SEARCH) {
-  const key = `browse:${config.CHANNEL3_COLLECTION_ID ?? 'demo'}:${safeSearch}`;
-  const hit = cache.get(key);
-  if (hit && hit.until > Date.now()) return hit.data;
-  const data = policy(config.DEMO_MODE || !config.CHANNEL3_API_KEY
-    ? await fixtureProducts()
-    : await channel3Products('/v1/browse', { limit: 30, filters: { availability: ['InStock', 'LimitedAvailability'] }, config: baseConfig() }), safeSearch);
-  cache.set(key, { until: Date.now() + 900_000, data });
-  return data;
+  return (await browseCollectionPage(safeSearch)).items;
 }

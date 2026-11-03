@@ -63,10 +63,13 @@ test('viewer intent stores aggregate counts without viewer identity', () => with
 test('catalogue browse is collection-scoped and short searches fail safely', () => withApi(async (base) => {
   const browse = await fetch(`${base}/v1/catalogue/browse?channelId=demo`);
   assert.equal(browse.status, 200);
-  const payload = await browse.json() as { collectionName: string; source: string; items: unknown[] };
+  const payload = await browse.json() as { collectionName: string; source: string; items: unknown[]; nextPageToken: string | null };
   assert.equal(payload.collectionName, 'Twitch');
   assert.equal(payload.source, 'demo_fixture');
   assert.ok(payload.items.length > 0);
+  assert.equal(payload.nextPageToken, null);
+  const invalidPageToken = await fetch(`${base}/v1/catalogue/browse?channelId=demo&pageToken=${'x'.repeat(4097)}`);
+  assert.equal(invalidPageToken.status, 400);
   for (const query of ['', 'a', ' ']) {
     const response = await fetch(`${base}/v1/catalogue/search?q=${encodeURIComponent(query)}&channelId=demo`);
     assert.equal(response.status, 400);

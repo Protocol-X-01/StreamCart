@@ -1,28 +1,28 @@
 # Codex x TwitchCon submission checklist
 
-Verified against the official Devpost overview and FAQ on 1 November 2026; deadline and real-footage requirement rechecked against the [official final-weekend update](https://twitchcon-codex.devpost.com/updates/47341-final-weekend-make-your-project-come-alive) on 2 November.
+Updated 3 November 2026. The authenticated Devpost account showed StreamCart as **Submitted** and the [public project page](https://devpost.com/software/streamcart-yhwiup) is available. The exact submission timestamp was not visible, so deadline compliance is unverified.
 
-## Hard deadline
+## Deadline and record status
 
-- **2 November 2026, 2:00 PM Pacific (PST) / 10:00 PM London / 10:00 PM UTC.**
+- **2 November 2026, 2:00 PM Pacific (PST) / 10:00 PM London / 10:00 PM UTC — passed.**
 - A saved draft is not an entry. The Devpost project must show **Submitted** before the deadline.
-- Submit early; the FAQ says the entry can be edited until the deadline, but not afterward.
+- The account showed **Submitted** on 3 November; this is after the deadline and does not establish when the entry was submitted.
 
 ## Required deliverables
 
 | Requirement | StreamCart evidence | Status |
 | --- | --- | --- |
-| Repository containing source, assets, and run instructions | `https://github.com/Protocol-X-01/StreamCart` and `README.md` | Existing public repository; reconcile the final candidate and README before submission |
-| Text description covering features and Codex use | `docs/submission.md` | Ready |
+| Repository containing source, assets, and run instructions | `https://github.com/Protocol-X-01/StreamCart` and `README.md` | Public repository; latest retained main commit is `6bf2da4` |
+| Text description covering features and Codex use | `docs/submission.md` | Public project page exists; the submitted form's exact save timestamp is not visible |
 | Primary Codex session ID | `01a193cc-90fd-7643-9517-dfd3517e1d11` | Ready |
-| Publicly visible YouTube demo under three minutes | URL pending recording/upload | **Missing** |
-| Footage showing the project functioning on Twitch | Fresh Hosted Test 0.0.7 recording with the live product card | Captured; edit and validate the final video |
-| Footage showing how Codex built the project | Fresh capture of the Codex thread, source, and run-sheet update | Captured; edit and validate the final video |
-| YouTube title, description, settings, and upload validation | `docs/youtube-upload.md` | Ready |
-| One-screen Codex and validation slate | `https://streamcart-twitchcon-site-20261102.onrender.com/proof/` | Candidate shows 0.0.7, 17 automated tests, 22 listing checks, and the session ID; verify the deployed page before submission |
-| Twitch Hosted Test package | Version `0.0.7`, hash-matched, configured for Panel + Video - Fullscreen, and active in Overlay 1 | Viewer card verified in-player; broadcaster approval remains unverified |
-| Test viewer access | Broadcaster and two viewer accounts in the 0.0.7 Testing Account Allowlist | Saved and rechecked; the separate viewer saw the product card |
-| Final Devpost Submit action | Owner-controlled | **Missing** |
+| YouTube demo under three minutes | [Unlisted video](https://www.youtube.com/watch?v=TIjEbeJRUt8) embedded on the public project page | Player reported 106.661 seconds; exact submitted settings and full visual contents were not independently reviewed |
+| Footage showing the project functioning on Twitch | Submitted video auto-transcript mentions Twitch chat and the overlay | Transcript also says live creator approval still needs verification; do not claim an approval click was shown |
+| Footage showing how Codex built the project | Submitted video auto-transcript mentions a build segment | Segment was not visually reviewed; direct StreamCart Codex UI footage is unverified |
+| YouTube title, description, settings, and upload validation | `docs/youtube-upload.md` | Public project page links the video; full upload settings were not independently validated |
+| One-screen Codex and validation slate | `https://streamcart-twitchcon-site-20261102.onrender.com/proof/` | HTTP 200; displays Hosted Test 0.0.7, 22 listing checks, and the retained session ID |
+| Twitch Hosted Test package | Version `0.0.7`, hash-matched, configured for Panel + Video - Fullscreen | Last retained evidence says active in Overlay 1; no new Twitch setting was changed in this audit |
+| Test viewer access | Version `0.0.7` Testing Account Allowlist | Last retained evidence says saved and rechecked; not rechecked in this audit |
+| Final Devpost Submit action | [Public project page](https://devpost.com/software/streamcart-yhwiup) | Authenticated account showed **Submitted** on 3 November; exact submission time is unknown |
 
 ## Judge access
 
@@ -43,4 +43,4 @@ Verified against the official Devpost overview and FAQ on 1 November 2026; deadl
 
 ## Freeze after submission
 
-The FAQ says not to change the submission, linked repository, video, or linked materials after the deadline until winners are announced. If development continues, use a separate copy rather than changing the judged artifact.
+The deadline has passed. Do not change judged materials; use a separate copy for portfolio improvements. The local review cut is separate from the linked submission video.
