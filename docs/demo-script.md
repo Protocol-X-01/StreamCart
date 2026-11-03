@@ -1,6 +1,6 @@
 # StreamCart: three-minute portfolio demo recapture plan
 
-**Status (3 November 2026):** The authenticated Devpost account showed StreamCart as **Submitted**; the [public project page](https://devpost.com/software/streamcart-yhwiup) embeds the [Unlisted demo video](https://www.youtube.com/watch?v=TIjEbeJRUt8). The player reported 106.661 seconds. The exact submission timestamp was not visible, so this does not establish whether it was submitted before the deadline. This document is now a portfolio recapture plan, not a plan for changing the judged entry. The submitted video's full visual contents were not independently reviewed; its auto-transcript describes Twitch and Codex footage but says live creator approval still needs verification. The separate 88-second local review cut is not the submitted video.
+**Status (3 November 2026):** The authenticated Devpost account showed StreamCart as **Submitted**; the [public project page](https://devpost.com/software/streamcart-yhwiup) embeds the [Unlisted demo video](https://www.youtube.com/watch?v=TIjEbeJRUt8). The player reported 106.661 seconds. The exact submission timestamp was not visible, so this does not establish whether it was submitted before the deadline. This document is now a portfolio recapture plan, not a plan for changing the judged entry. The submitted video's full visual contents were not independently reviewed; its auto-transcript describes Twitch and Codex footage but says live creator approval still needs verification. The separate 89.767-second local review cut v4 is not the submitted video.
 
 Target and maximum runtime: 2:55, leaving five seconds below the three-minute limit. Record at 1080p with the Twitch player and overlay readable.
 
@@ -8,11 +8,11 @@ Target and maximum runtime: 2:55, leaving five seconds below the three-minute li
 
 ## Current evidence and capture gaps
 
-- The current Hosted Test is 0.0.7. The Render proof page returns HTTP 200 and shows 0.0.7, 22 listing checks, and the retained Codex session ID.
-- The latest local `npm run check` passed 20 API/security tests and 22 listing checks. Earlier live preflight evidence was 17 tests; the Render proof page still shows that deployed count until a separately approved release updates it.
+- The current Hosted Test is 0.0.7. The Render proof page returns HTTP 200 and shows 0.0.7, 20 automated tests, 22 listing checks, and the retained Codex session ID.
+- Commit `4d710c2` is live on both Render services. The latest local `npm run check` passed 20 API/security tests and 22 listing checks; strict release validation passed 12/12. The direct post-deployment smoke confirmed live health with SafeSearch enabled and two distinct 30-item pages from the Channel3 `Twitch` collection.
 - Strict release validation passed 12/12 checks on 3 November, including the production dependency audit and package/proof/caption consistency.
-- The separate retained 88-second local review cut includes the live Sony microphone card, the Twitch chat command, and Channel3 results. It shows the viewer's Saved state, but does not record the save click, direct StreamCart Codex UI, or a live creator-approval click. Do not conflate it with the submitted 106.661-second video.
-- Current live discovery returns 20 AI-discovered products and zero creator-approved products. No live broadcaster approval click is recorded; that action remains a required capture, not completed proof.
+- The separate retained 89.767-second local review cut v4 includes the live Sony microphone card, the Twitch chat command, Channel3 results, and the current Render proof state. It shows the viewer's Saved state, but does not record the save click, direct StreamCart Codex UI, or a live creator-approval click. It is a private portfolio review, not the submitted 106.661-second video.
+- Current live discovery returns 20 `ai_discovered` products and zero `creator_approved` products. No live broadcaster approval click is recorded; that action remains unverified, not completed proof.
 - The local review cut has no verified direct StreamCart Codex UI clip. `code-fresh.mp4` shows a GitHub source page, not Codex; do not use it to satisfy the Codex-footage requirement. The submitted video's alleged Codex segment has not been visually verified.
 
 ## Situation and proof
@@ -54,7 +54,7 @@ Livestream product discovery usually becomes either an unstructured link dump or
 - EventSub subscription status is `enabled`.
 - Twitch Extension Manager identifies Hosted Test `0.0.7` with Panel `panel.html` and Video - Fullscreen `overlay.html`; confirm it is active in Overlay 1. Recheck that its testing-account allowlist includes the broadcaster and separate viewer.
 - Confirm that the allowlisted Firefox session sees the capsule over the stream before rehearsal. A loaded console status or local preview does not prove the overlay rendered in Twitch.
-- Confirm the public Render `/proof/` page shows Hosted Test 0.0.7, 17 tests, 22 listing checks, and the retained Codex session before showing it. The local proof candidate now says 20 tests; do not present that count as deployed until Render is separately updated. Recheck the live page before capture.
+- Confirm the public Render `/proof/` page shows Hosted Test 0.0.7, 20 automated tests, 22 listing checks, and the retained Codex session before showing it. The public Vercel alias is still a stale 0.0.4 proof page; use the Render page for current release evidence.
 - Broadcaster `!gear streaming microphone` changes the public discovery topic.
 - Contextual discovery returns up to 20 ranked results; the separate Twitch collection browse starts with a page and offers **Load more items** while Channel3 has another page. Read the on-screen count and do not call it the entire Channel3 network.
 - The selected AI result can be approved and appears as `creator_approved` after refresh.
