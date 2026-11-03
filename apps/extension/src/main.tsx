@@ -24,6 +24,7 @@ function App() {
   const [token, setToken] = useState('');
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<any>({ items: [] });
+  const [discoveryError, setDiscoveryError] = useState(false);
   const [intentState, setIntentState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [isBroadcaster, setIsBroadcaster] = useState(parameters.get('creator') === 'true');
   const [approvalState, setApprovalState] = useState<'idle' | 'saving' | 'error'>('idle');
@@ -35,32 +36,51 @@ function App() {
   useEffect(() => { window.Twitch?.ext?.onAuthorized((auth) => { setChannel(auth.channelId); setToken(auth.token); setIsBroadcaster(twitchRole(auth.token) === 'broadcaster'); }); }, []);
   useEffect(() => {
     let active = true;
-    const refresh = () => fetch(`${API}/v1/channels/${encodeURIComponent(channel)}/discovery`).then((response) => response.json()).then((next) => { if (active) setData(next); });
-    refresh(); const timer = setInterval(refresh, 5_000);
+    const refresh = async () => {
+      try {
+        const response = await fetch(`${API}/v1/channels/${encodeURIComponent(channel)}/discovery`);
+        if (!response.ok) throw new Error('discovery_request_failed');
+        const next = await response.json();
+        if (!next || !Array.isArray(next.items)) throw new Error('invalid_discovery_response');
+        if (active) { setData(next); setDiscoveryError(false); }
+      } catch {
+        if (active) setDiscoveryError(true);
+      }
+    };
+    void refresh(); const timer = setInterval(() => void refresh(), 5_000);
     return () => { active = false; clearInterval(timer); };
   }, [channel]);
 
-  const product = data.items[0];
+  const product = Array.isArray(data?.items) ? data.items[0] : undefined;
+  useEffect(() => { setIntentState('idle'); setApprovalState('idle'); }, [product?.id]);
   const saveActions = product?.aggregateIntent?.save;
   const saveSummary = Number.isFinite(saveActions) && saveActions > 0 ? `${saveActions}+ save actions` : 'Save count hidden for privacy';
   async function record(action: 'view' | 'save') {
     if (!product) return;
     if (action === 'save') setIntentState('saving');
-    const response = await fetch(`${API}/v1/viewer/intent`, { method: 'POST', headers: { 'content-type': 'application/json', ...(token ? { 'x-extension-jwt': token } : {}) }, body: JSON.stringify({ channelId: channel, productId: product.id, action }) });
-    if (action === 'save') setIntentState(response.ok ? 'saved' : 'error');
+    try {
+      const response = await fetch(`${API}/v1/viewer/intent`, { method: 'POST', headers: { 'content-type': 'application/json', ...(token ? { 'x-extension-jwt': token } : {}) }, body: JSON.stringify({ channelId: channel, productId: product.id, action }) });
+      if (action === 'save') setIntentState(response.ok ? 'saved' : 'error');
+    } catch {
+      if (action === 'save') setIntentState('error');
+    }
   }
   async function toggleApproval() {
     if (!product) return;
     setApprovalState('saving');
     const approved = product.provenance === 'creator_approved';
-    const response = await fetch(approved ? `${API}/v1/creator/products/${encodeURIComponent(product.id)}?channelId=${encodeURIComponent(channel)}` : `${API}/v1/creator/products`, {
-      method: approved ? 'DELETE' : 'POST',
-      headers: { ...(approved ? {} : { 'content-type': 'application/json' }), ...(token ? { 'x-extension-jwt': token } : {}) },
-      ...(approved ? {} : { body: JSON.stringify({ channelId: channel, productId: product.id }) }),
-    });
-    if (!response.ok) return setApprovalState('error');
-    setData((current: any) => ({ ...current, items: current.items.map((item: any) => item.id === product.id ? { ...item, provenance: approved ? 'ai_discovered' : 'creator_approved' } : item) }));
-    setApprovalState('idle');
+    try {
+      const response = await fetch(approved ? `${API}/v1/creator/products/${encodeURIComponent(product.id)}?channelId=${encodeURIComponent(channel)}` : `${API}/v1/creator/products`, {
+        method: approved ? 'DELETE' : 'POST',
+        headers: { ...(approved ? {} : { 'content-type': 'application/json' }), ...(token ? { 'x-extension-jwt': token } : {}) },
+        ...(approved ? {} : { body: JSON.stringify({ channelId: channel, productId: product.id }) }),
+      });
+      if (!response.ok) return setApprovalState('error');
+      setData((current: any) => ({ ...current, items: current.items.map((item: any) => item.id === product.id ? { ...item, provenance: approved ? 'ai_discovered' : 'creator_approved' } : item) }));
+      setApprovalState('idle');
+    } catch {
+      setApprovalState('error');
+    }
   }
   function startDrag(event: React.PointerEvent<HTMLButtonElement>) {
     const rect = overlayRef.current?.getBoundingClientRect();
@@ -89,6 +109,7 @@ function App() {
     {open && <section className="find-card">
       {!panelMode && <button className="drag-bar" aria-label="Move recommendation panel" title="Drag to move · Double-click to reset" onPointerDown={startDrag} onPointerMove={drag} onPointerUp={finishDrag} onDoubleClick={() => setPosition({ x: 0, y: 0 })}><span>MOVE PANEL</span><i aria-hidden="true">••••••</i></button>}
       <header><div><b>NOW IN FRAME</b><small>{data.topic || 'Waiting for stream context'}</small></div><span className="live-dot">CATALOGUE</span>{panelMode && <button className="panel-collapse" aria-label="Collapse finds" onClick={() => setOpen(false)}>−</button>}</header>
+      {discoveryError && product && <p className="empty" role="status">Connection interrupted. Showing the last update.</p>}
       {product ? <>
         <a className="product-primary" href={productDestination} target="_blank" rel="noreferrer" onClick={recordProductView} aria-label={`${placeholderProduct ? 'Open in catalogue' : 'View product'}: ${product.title}`}>
           <div className="product-media"><img src={product.imageUrl} alt=""/><span>{product.provenance === 'creator_approved' ? 'CREATOR PICK' : 'AI DISCOVERY'}</span></div>
@@ -99,7 +120,7 @@ function App() {
         <small className="social-proof" title="Aggregate save actions; small counts are hidden and larger totals are grouped for privacy.">{saveSummary}</small>
         <p className="link-notice">Product links may earn commission. Channel3 and retailers may process click data.</p>
         <div className="actions"><a href={productDestination} target="_blank" rel="noreferrer" onClick={recordProductView}>{placeholderProduct ? 'View catalogue ↗' : 'View product ↗'}</a><button disabled={intentState === 'saving' || intentState === 'saved'} onClick={() => void record('save')}>{intentState === 'saving' ? 'Saving…' : intentState === 'saved' ? 'Saved ✓' : intentState === 'error' ? 'Try again' : 'Save interest'}</button></div>
-      </> : <p className="empty">No find yet. The creator can set the topic from chat.</p>}
+      </> : <p className="empty" role="status">{discoveryError ? 'Finds are temporarily unavailable. Please try again shortly.' : 'No find yet. The creator can set the topic from chat.'}</p>}
       <footer><span>No viewer ad profiles</span><a href={catalogueUrl} target="_blank" rel="noreferrer">Open catalogue →</a></footer>
     </section>}
   </main>;

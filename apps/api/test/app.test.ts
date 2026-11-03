@@ -16,10 +16,10 @@ function signedHeaders(id: string, type: string, body: string) {
   const signature = 'sha256=' + crypto.createHmac('sha256', secret).update(id + timestamp + body).digest('hex');
   return { 'content-type': 'application/json', 'twitch-eventsub-message-id': id, 'twitch-eventsub-message-timestamp': timestamp, 'twitch-eventsub-message-signature': signature, 'twitch-eventsub-message-type': type };
 }
-async function withApi(run: (base: string, store: Store) => Promise<void>) {
+async function withApi(run: (base: string, store: Store) => Promise<void>, options: { demoMode?: boolean; extensionSecret?: string } = {}) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'streamcart-test-'));
   const store = new Store(path.join(directory, 'data.json'));
-  const server = http.createServer(createApp(store, { eventSubSecret: secret, demoMode: true }));
+  const server = http.createServer(createApp(store, { eventSubSecret: secret, demoMode: options.demoMode ?? true, extensionSecret: options.extensionSecret }));
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
   const address = server.address();
   assert(address && typeof address === 'object');
@@ -59,6 +59,70 @@ test('viewer intent stores aggregate counts without viewer identity', () => with
   const invalid = await fetch(`${base}/v1/viewer/intent`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ channelId: 'demo', productId: 'kb1', action: 'save', viewerId: 'should-not-be-required' }) });
   assert.equal(invalid.status, 201);
 }));
+
+test('signed creator and viewer roles drive hybrid discovery with grouped save-action counts', () => {
+  const channelId = 'hybrid-regression';
+  const extensionSecret = Buffer.from('streamcart-test-extension-secret-32').toString('base64');
+  const signingKey = Buffer.from(extensionSecret, 'base64');
+  const expiresAt = Math.floor(Date.now() / 1000) + 60;
+  const broadcasterToken = jwt.sign({ role: 'broadcaster', channel_id: channelId, exp: expiresAt }, signingKey, { algorithm: 'HS256' });
+  const viewerToken = jwt.sign({ role: 'viewer', channel_id: channelId, exp: expiresAt }, signingKey, { algorithm: 'HS256' });
+  const authHeaders = (token: string) => ({ 'content-type': 'application/json', 'x-extension-jwt': token });
+  return withApi(async (base, store) => {
+    store.setTopic(channelId, 'mechanical keyboard');
+    type DiscoveryResponse = { items: Array<{ id: string; provenance: string; aggregateIntent: { view: number; save: number } }> };
+    const getDiscovery = () => fetch(`${base}/v1/channels/${channelId}/discovery`).then((response) => response.json() as Promise<DiscoveryResponse>);
+    const initial = await getDiscovery();
+    const initialKeyboard = initial.items.find((item) => item.id === 'kb1');
+    assert.equal(initialKeyboard?.provenance, 'ai_discovered');
+
+    const approval = await fetch(`${base}/v1/creator/products`, {
+      method: 'POST', headers: authHeaders(broadcasterToken), body: JSON.stringify({ channelId: 'forged-channel', productId: 'kb1' }),
+    });
+    assert.equal(approval.status, 201);
+    assert.deepEqual(await store.approved(channelId), ['kb1']);
+    assert.deepEqual(await store.approved('forged-channel'), []);
+
+    const unauthorizedApproval = await fetch(`${base}/v1/creator/products`, {
+      method: 'POST', headers: authHeaders(viewerToken), body: JSON.stringify({ channelId, productId: 'forbidden' }),
+    });
+    assert.equal(unauthorizedApproval.status, 403);
+    assert.deepEqual(await store.approved(channelId), ['kb1']);
+
+    const afterApproval = await getDiscovery();
+    const approvedKeyboard = afterApproval.items.find((item) => item.id === 'kb1');
+    assert.equal(approvedKeyboard?.provenance, 'creator_approved');
+    assert.ok(afterApproval.items.some((item) => item.id !== 'kb1' && item.provenance === 'ai_discovered'));
+
+    const mismatchedSave = await fetch(`${base}/v1/viewer/intent`, {
+      method: 'POST', headers: authHeaders(viewerToken), body: JSON.stringify({ channelId: 'forged-channel', productId: 'kb1', action: 'save' }),
+    });
+    assert.equal(mismatchedSave.status, 403);
+    assert.deepEqual(await store.metrics(channelId), {});
+
+    for (let action = 1; action <= 4; action += 1) {
+      const save = await fetch(`${base}/v1/viewer/intent`, {
+        method: 'POST', headers: authHeaders(viewerToken), body: JSON.stringify({ channelId, productId: 'kb1', action: 'save' }),
+      });
+      assert.equal(save.status, 201);
+      assert.equal((await save.json() as { cohortVisible: boolean }).cohortVisible, false);
+    }
+    const afterFourSaves = await getDiscovery();
+    const keyboardAfterFour = afterFourSaves.items.find((item) => item.id === 'kb1');
+    assert.deepEqual(keyboardAfterFour?.aggregateIntent, { view: 0, save: 0 });
+    assert.deepEqual(afterFourSaves.items.map((item) => item.id), afterApproval.items.map((item) => item.id));
+
+    const fifthSave = await fetch(`${base}/v1/viewer/intent`, {
+      method: 'POST', headers: authHeaders(viewerToken), body: JSON.stringify({ channelId, productId: 'kb1', action: 'save' }),
+    });
+    assert.equal(fifthSave.status, 201);
+    assert.equal((await fifthSave.json() as { cohortVisible: boolean }).cohortVisible, true);
+    const afterFiveSaves = await getDiscovery();
+    const keyboardAfterFive = afterFiveSaves.items.find((item) => item.id === 'kb1');
+    assert.equal(keyboardAfterFive?.provenance, 'creator_approved');
+    assert.deepEqual(keyboardAfterFive?.aggregateIntent, { view: 0, save: 5 });
+  }, { demoMode: false, extensionSecret });
+});
 
 test('catalogue browse is collection-scoped and short searches fail safely', () => withApi(async (base) => {
   const browse = await fetch(`${base}/v1/catalogue/browse?channelId=demo`);
