@@ -150,6 +150,8 @@ The [authorization middleware](../apps/api/src/security.ts#L9-L31) verifies the 
 
 [CORS](../apps/api/src/app.ts#L34-L35) grants browser read permission to exact configured origins and allows requests without an Origin header. It does not authenticate requests or prevent direct clients. Production [configuration checks](../apps/api/src/config.ts#L30-L42) require credentials, collection configuration, and nonempty allowlists; they do not independently require SafeSearch to remain enabled.
 
+Viewer-intent requests authenticate before rate limiting. The in-memory limit is keyed by the signed channel and Twitch opaque user ID, with a request-address fallback if that optional claim is absent. These transient keys are not written to aggregate metrics, and no identity-linking permission is needed. Twitch describes the JWT claims in its [Extension JWT schema](https://dev.twitch.tv/docs/extensions/reference/).
+
 The [EventSub verifier](../apps/api/src/security.ts#L33-L40) computes HMAC-SHA256 over message ID + timestamp + the raw body, checks equal signature lengths with a timing-safe comparison, and requires an absolute timestamp difference under ten minutes. The raw 64 KiB JSON route runs before generic JSON parsing.
 
 Implemented handling returns the challenge from a verified request and accepts `channel.chat.message` notifications only when chatter and broadcaster IDs match. `!gear` captures a 2–80-character topic. A process-local replay map retains message IDs for ten minutes, capped at 10,000 entries.

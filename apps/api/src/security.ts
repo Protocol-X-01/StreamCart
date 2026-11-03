@@ -23,6 +23,9 @@ export function extensionAuth(options: AuthOptions): RequestHandler {
       if (!channelId) return response.status(401).json({ error: 'channel_required' });
       response.locals.channelId = channelId;
       response.locals.extensionRole = role;
+      // Twitch's opaque ID partitions short-lived limits without requiring identity linking.
+      const opaqueUserId = payload.opaque_user_id;
+      if (typeof opaqueUserId === 'string' && opaqueUserId.length <= 80) response.locals.extensionOpaqueUserId = opaqueUserId;
       next();
     } catch {
       return response.status(401).json({ error: 'invalid_token' });

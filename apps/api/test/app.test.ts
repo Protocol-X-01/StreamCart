@@ -172,6 +172,29 @@ test('creator mutation rate limit is 60 per signed channel per minute', () => {
   }, { demoMode: false, extensionSecret });
 });
 
+test('viewer action rate limit follows the signed opaque Twitch ID and runs after authentication', () => {
+  const channelId = 'viewer-rate-channel';
+  const extensionSecret = Buffer.from('streamcart-test-extension-secret-32').toString('base64');
+  const signingKey = Buffer.from(extensionSecret, 'base64');
+  const expiresAt = Math.floor(Date.now() / 1000) + 60;
+  const token = (opaqueUserId: string) => jwt.sign({ role: 'viewer', channel_id: channelId, opaque_user_id: opaqueUserId, exp: expiresAt }, signingKey, { algorithm: 'HS256' });
+  return withApi(async (base, store) => {
+    store.setTopic(channelId, 'mechanical keyboard');
+    const submit = (jwtToken?: string) => fetch(`${base}/v1/viewer/intent`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...(jwtToken ? { 'x-extension-jwt': jwtToken } : {}) },
+      body: JSON.stringify({ channelId, productId: 'kb1', action: 'view' }),
+    });
+
+    assert.equal((await submit()).status, 401);
+    const firstViewer = token('A-session-1');
+    for (let index = 0; index < 30; index += 1) assert.equal((await submit(firstViewer)).status, 201);
+    assert.equal((await submit(firstViewer)).status, 429);
+    assert.equal((await submit(token('A-session-2'))).status, 201);
+    assert.deepEqual(store.metrics(channelId).kb1, { view: 31, save: 0 });
+  }, { demoMode: false, extensionSecret });
+});
+
 test('catalogue browse is collection-scoped and short searches fail safely', () => withApi(async (base) => {
   const browse = await fetch(`${base}/v1/catalogue/browse?channelId=demo`);
   assert.equal(browse.status, 200);

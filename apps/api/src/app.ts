@@ -45,6 +45,12 @@ export function createApp(store: StorePort = createStore(), options: AppOptions 
   const seenEventIds = new Map<string, number>();
   const catalogueLimiter = globalFixedWindowLimiter(600, 60_000);
   const creatorMutationLimiter = fixedWindowLimiter(60, 60_000, (_request, response) => String(response.locals.channelId ?? 'unknown'));
+  const viewerIntentLimiter = fixedWindowLimiter(30, 60_000, (request, response) => {
+    const channelId = String(response.locals.channelId ?? 'unknown');
+    const opaqueUserId = response.locals.extensionOpaqueUserId;
+    const client = typeof opaqueUserId === 'string' && opaqueUserId ? `viewer:${opaqueUserId}` : `ip:${request.ip ?? request.socket.remoteAddress ?? 'unknown'}`;
+    return `${channelId}:${client}`;
+  });
   app.use(helmet({ contentSecurityPolicy: false }));
   app.use(cors({ origin(origin, callback) { callback(null, !origin || config.ALLOWED_ORIGINS.includes(origin)); } }));
   app.post('/v1/twitch/eventsub', express.raw({ type: 'application/json', limit: '64kb' }), async (request, response) => {
@@ -81,7 +87,7 @@ export function createApp(store: StorePort = createStore(), options: AppOptions 
   const viewerAuth = extensionAuth({ roles: ['viewer', 'broadcaster'], demoMode, secret: options.extensionSecret });
   app.post('/v1/creator/products', creatorAuth, creatorMutationLimiter, async (request, response, next) => { try { const productId = z.string().min(1).max(160).parse(request.body.productId); await store.approve(response.locals.channelId, productId); response.status(201).json({ ok: true }); } catch (error) { next(error); } });
   app.delete('/v1/creator/products/:id', creatorAuth, creatorMutationLimiter, async (request, response, next) => { try { await store.unapprove(response.locals.channelId, String(request.params.id)); response.status(204).send(); } catch (error) { next(error); } });
-  app.post('/v1/viewer/intent', fixedWindowLimiter(30, 60_000), viewerAuth, async (request, response, next) => {
+  app.post('/v1/viewer/intent', viewerAuth, viewerIntentLimiter, async (request, response, next) => {
     try {
       const input = intentSchema.parse(request.body);
       const channelId = response.locals.channelId as string;
