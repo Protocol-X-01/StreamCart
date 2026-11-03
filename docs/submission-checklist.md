@@ -44,4 +44,4 @@ Updated 3 November 2026. The authenticated Devpost account showed StreamCart as 
 
 ## Freeze after submission
 
-The deadline has passed. Do not change judged materials; use a separate copy for portfolio improvements. The local v4 review cut is separate from the linked submission video. Render's API is live on the validated 3c0ebe4 release; its static site serves the refreshed 0.0.8 proof. The Vercel alias did not pick up the refreshed proof markers, and no manual Vercel release was performed.
+The deadline has passed. Do not change judged materials; use a separate copy for portfolio improvements. The local v4 review cut is separate from the linked submission video. Render's API is live on the validated `bf830fd` release; its static site still serves the earlier 0.0.8 / 29-test proof. The Vercel alias did not pick up the refreshed proof markers, and no manual Vercel release was performed.
